@@ -217,7 +217,7 @@ function ListDeposit(props) {
                         onChange={(dates, dateStrings) => setRangeTime(dateStrings)}
                     />
                 </div>
-                <button className={styles.yellowBtn} onClick={handleExport}>
+                <button className={styles.yellowBtn} onClick={debouncedClick}>
                     <img width={20} style={{ marginRight: 6 }} src={ic_export} alt="" />
                     {formatMessage({ id: 'EXPORT' })}
                 </button>
