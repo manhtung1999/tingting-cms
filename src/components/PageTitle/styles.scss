@@ -1,0 +1,21 @@
+@import "@/base.scss";
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  .titleText {
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 15px 10px;
+    display: flex;
+    align-items: center;
+    span {
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 23px;
+      margin-left: 20px;
+    }
+  }
+}

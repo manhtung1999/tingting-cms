@@ -1,0 +1,14 @@
+@import "@/base.scss";
+
+.content {
+    overflow-y: auto;
+
+    .form {
+        width: 70%;
+        margin-bottom: 50px;
+
+        .textInput {
+            width: 100%;
+        }
+    }
+}

@@ -1,0 +1,52 @@
+@import "@/base.scss";
+
+.content {
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--purple-color);
+    border-radius: 8px;
+    height: 100%;
+    padding: 20px;
+    position: relative;
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #383E49;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+
+        h3 {
+            font-size: 19px;
+        }
+
+        p {
+            font-size: 13px;
+        }
+
+        .datePicker {
+            :global {
+                .ant-picker {
+                    background-color: var(--background-color);
+                    border-radius: 6px;
+                    border: 1px solid #6C7078;
+
+                }
+            }
+        }
+    }
+
+    .pageFilter {
+        margin-bottom: 20px;
+
+        .select {
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+
+        // .primaryBtn {
+        //     margin-left: auto;
+        // }
+    }
+}

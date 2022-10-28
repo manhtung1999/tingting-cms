@@ -1,0 +1,22 @@
+.modal {
+  :global {
+    .ant-modal-content {
+      border-radius: 10px;
+      .ant-modal-header {
+        border-radius: 10px 10px 0 0;
+        .ant-modal-title {
+          text-align: center;
+        }
+      }
+      .ant-modal-body {
+        padding-top: 0;
+        border-radius: 0 0 10px 10px;
+      }
+    }
+  }
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}

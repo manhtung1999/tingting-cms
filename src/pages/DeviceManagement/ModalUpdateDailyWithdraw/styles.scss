@@ -1,0 +1,38 @@
+@import "@/base.scss";
+
+.addRecip {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .add {
+        font-size: 25px;
+        border-radius: 100%;
+        background-color: var(--blue-color);
+        margin-right: 10px;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .password {
+        color: var(--dark-color);
+    }
+
+
+}
+
+.modal {
+    :global {
+        .ant-modal-footer {
+            .ant-btn-default {
+                span {
+                    color: var(--dark-color);
+                }
+            }
+        }
+    }
+}

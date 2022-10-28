@@ -1,0 +1,54 @@
+@import "@/base.scss";
+
+.modal {
+    :global {
+        .ant-modal {
+            min-width: 1250px;
+        }
+
+        .ant-modal-footer {
+            .ant-btn-default {
+                span {
+                    color: var(--dark-color);
+                }
+            }
+        }
+    }
+
+
+    .tableDrag {
+        thead {
+            tr {
+                width: 100%;
+            }
+        }
+
+        th {
+            background: #131031 !important;
+            color: #fff !important;
+            width: 100%;
+        }
+
+        tr {
+            td {
+                border-bottom: none;
+                background: var(--purple-color) !important;
+            }
+
+            background: var(--purple-color) !important;
+
+            &:hover,
+            &:focus {
+                background: #131031 !important;
+
+                td {
+                    background: #131031 !important;
+                }
+            }
+        }
+    }
+}
+
+.textInputLight {
+    width: 100%;
+}

@@ -1,0 +1,45 @@
+@import '@/base.scss';
+
+.login {
+    position: absolute;
+    right: 35px;
+    top: 20px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+
+    .user {
+        display: flex;
+        align-items: center;
+
+        span {
+            margin-left: 8px;
+            font-weight: 700;
+        }
+
+        .logout {
+            color: var(--active-color);
+            font-size: 1.4rem;
+            margin-left: 8px;
+        }
+    }
+
+    .select {
+        margin-right: 15px;
+    }
+
+    :global {
+        .ant-select-selector {
+            border: none !important;
+            background-color: var(--purple-color) !important;
+            border-radius: 4px;
+            margin-right: 5px;
+
+        }
+    }
+}
+
+.disabledLogin {
+    pointer-events: none;
+    cursor: not-allowed;
+}

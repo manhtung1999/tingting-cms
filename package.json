@@ -1,0 +1,77 @@
+{
+  "name": "tingtingpay-cms",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "PORT=4000 umi dev",
+    "build": "UMI_ENV=prod umi build",
+    "start_build": "UMI_ENV=prod umi start",
+    "test": "umi test",
+    "precommit": "lint-staged",
+    "lint": "eslint './src/**/*.{js,jsx}'",
+    "lint:fix": "eslint './src/**/*.{js,jsx}' --fix"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.2.1",
+    "@emailjs/browser": "^3.6.2",
+    "antd": "^4.16.13",
+    "axios": "^0.20.0",
+    "bizcharts": "^4.1.15",
+    "cleave.js": "^1.6.0",
+    "dva": "^2.6.0-beta.6",
+    "eslint-plugin-react-hooks": "^4.0.4",
+    "formik": "^2.2.9",
+    "immutability-helper": "^3.1.1",
+    "js-cookie": "^3.0.1",
+    "lodash": "^4.17.20",
+    "md5": "^2.3.0",
+    "moment": "^2.24.0",
+    "react": "^16.8.6",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^16.8.6",
+    "react-pdf": "^5.7.1",
+    "recharts": "^2.1.9",
+    "superagent": "^5.2.2",
+    "yorkie": "^2.0.0",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "babel-eslint": "^9.0.0",
+    "eslint": "^7.1.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-umi": "^1.4.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.3.0",
+    "node-sass": "^4.13.1",
+    "prettier": "^1.19.1",
+    "sass-loader": "^8.0.2",
+    "umi": "^2.9.6",
+    "umi-plugin-react": "^1.8.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "npx prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{js,jsx}": [
+      "npx prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}

@@ -1,0 +1,128 @@
+.menuHeader {
+    border-right: 1px solid var(--border-color);
+    margin-right: 10px;
+    position: relative;
+
+    .logoMenu {
+        display: flex;
+        justify-content: center;
+        margin-top: 35px;
+    }
+
+    .money {
+        position: absolute;
+        bottom: 80px;
+        right: 10px;
+        left: 10px;
+        z-index: 1;
+
+        .balance {
+            text-align: center;
+
+            span {
+                font-weight: 600;
+            }
+        }
+
+    }
+
+
+    :global {
+        .ant-layout-sider {
+            background-color: transparent;
+            padding-bottom: 0;
+            background-color: var(--background-color);
+            min-height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .ant-menu-root {
+            margin-bottom: 0;
+            background: transparent;
+            border-right: none;
+            padding: 40px 20px 20px 20px;
+
+            .ant-menu-submenu-title .ant-menu-item-icon+span {
+                margin-left: 0;
+            }
+
+            &>li {
+                cursor: pointer;
+                border-radius: 5px;
+                margin-bottom: 10px;
+                font-weight: bold;
+                font-size: 14px;
+                color: #fff;
+                line-height: 34px;
+
+                &:after {
+                    border-right: 0 !important;
+                }
+
+                &:hover {
+                    background: var(--primary-color) !important;
+                }
+
+                img {
+                    margin-right: 7px;
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+
+            .ant-menu-submenu {
+                .ant-menu-submenu-title {
+                    border-radius: 5px;
+                }
+
+                .ant-menu-submenu-arrow {
+                    color: var(--white-color);
+                }
+
+                &:hover {
+                    background: transparent !important;
+
+                    .ant-menu-submenu-title {
+                        background: var(--primary-color) !important;
+                        color: #fff;
+                    }
+                }
+
+                .ant-menu-sub {
+                    margin-bottom: 0;
+                    background: transparent;
+                    border-right: none;
+
+                    li {
+                        cursor: pointer;
+                        border-radius: 5px;
+                        margin-bottom: 10px;
+                        font-weight: bold;
+                        font-size: 14px;
+                        color: #fff;
+                        line-height: 34px;
+
+                        &:hover {
+                            color: var(--blue-color);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.activeAdmin {
+    background: var(--primary-color) !important;
+}
+
+.menuText {
+    color: #fff;
+    line-height: 18px;
+    font-size: 14px;
+}
+
+a {
+    text-decoration: none !important;
+}

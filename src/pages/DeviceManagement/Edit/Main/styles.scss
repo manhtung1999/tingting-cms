@@ -1,0 +1,20 @@
+@import "@/base.scss";
+
+.content {
+    overflow-y: auto;
+
+    .textInput {
+        display: none;
+    }
+
+    .submit {
+        width: 70%;
+        margin-top: 1rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .labelLogo {
+        margin-top: 0;
+    }
+}
