@@ -1,26 +1,28 @@
 import ic_export from '@/assets/image/ic_export.svg';
 import {
+    ADMIN_KEY,
     DATE_TRANSACTION,
+    EXPORT_KEY,
     PaymentType,
     Role,
     RoleName,
+    TIME_DELAY_EXPORT,
     TOKEN_KEY,
     TransactionStatus,
 } from '@/config/constant';
 import config from '@/config/index';
+import { useLocalStorage } from '@/hooks';
+import { formatVnd } from '@/util/function';
 import { DatePicker, Input, message, Select } from 'antd';
+import Cleave from 'cleave.js/react';
 import { connect } from 'dva';
 import moment from 'moment';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import TableData from './TableData';
-import { useLocalStorage } from '@/hooks';
-import { ADMIN_KEY } from '@/config/constant';
-import { formatVnd } from '@/util/function';
-import Cleave from 'cleave.js/react';
-import _ from 'lodash';
+
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
@@ -51,6 +53,8 @@ function ListDeposit(props) {
     const [pageIndex, setPageIndex] = useState(1);
 
     const [admin] = useLocalStorage(ADMIN_KEY);
+
+    const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
 
     useEffect(() => {
         dispatch({ type: 'DEPOSIT/getPaymentType' });
@@ -144,15 +148,19 @@ function ListDeposit(props) {
             .join('&');
     };
 
-    const INTERVAL = 60 * 1000;
-    const debouncedClick = _.debounce(
-        () => {
-            handleExport();
-        },
-        INTERVAL,
-        { leading: true, trailing: false, maxWait: INTERVAL },
-    );
     const handleExport = () => {
+        let isDisabled =
+            exportTime !== ''
+                ? Math.abs(new Date() - new Date(exportTime)) < TIME_DELAY_EXPORT
+                : false;
+        if (isDisabled) {
+            message.warn(
+                `${formatMessage({ id: 'DELAY_EXPORT' })}: ${TIME_DELAY_EXPORT / 1000 -
+                    Math.round(Math.abs(new Date() - new Date(exportTime)) / 1000)}s`,
+            );
+            return;
+        }
+
         if (!rangeTime[0] && !rangeTime[1]) {
             message.warn(formatMessage({ id: 'PLEASE_SET_TIME_EXPORT' }));
             return;
@@ -197,6 +205,7 @@ function ListDeposit(props) {
                 // Clean up and remove the link
                 link.parentNode.removeChild(link);
             });
+        setExportTime(new Date().valueOf());
     };
 
     const handleChangeMin = e => {
@@ -217,7 +226,7 @@ function ListDeposit(props) {
                         onChange={(dates, dateStrings) => setRangeTime(dateStrings)}
                     />
                 </div>
-                <button className={styles.yellowBtn} onClick={debouncedClick}>
+                <button className={styles.yellowBtn} onClick={handleExport}>
                     <img width={20} style={{ marginRight: 6 }} src={ic_export} alt="" />
                     {formatMessage({ id: 'EXPORT' })}
                 </button>

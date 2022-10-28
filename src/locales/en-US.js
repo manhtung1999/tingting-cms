@@ -60,6 +60,8 @@ export default {
     parentCount: 'Parent Count',
     childIndexes: 'Child Indexes',
 
+    DELAY_EXPORT: 'Time left to export',
+
     // Thao tác
 
     // Authen

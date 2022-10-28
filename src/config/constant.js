@@ -16,7 +16,10 @@ const ROLE_ADMIN_COMPANY = 2; // 2
 const TOKEN_KEY = 'token';
 const ADMIN_KEY = 'Admin';
 const DEVICE_KEY = 'device_key';
+const EXPORT_KEY = 'export_key';
+
 const MIN_WITHDRAW = 10000;
+const TIME_DELAY_EXPORT = 180000; // 3 phut
 const ADMIN_ID = 1;
 const TIEN_KHONG_RO_NGUON = 'Tiền không rõ nguồn.';
 const Role = {
@@ -126,4 +129,6 @@ export {
     ADMIN_ID,
     TIEN_KHONG_RO_NGUON,
     SystemTransactionType,
+    EXPORT_KEY,
+    TIME_DELAY_EXPORT,
 };

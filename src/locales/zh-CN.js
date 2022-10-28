@@ -46,6 +46,8 @@ export default {
     ADD_MANIPULATION: 'Thêm thao tác',
     INFO_LIST: 'Danh sách info',
     EDIT_INFO: 'Cập nhật info',
+    DELAY_EXPORT: 'Thời gian còn lại để xuất báo cáo tiếp theo',
+
     // end thao tác
 
     LET_GET_STARTED: '我们开始吧',

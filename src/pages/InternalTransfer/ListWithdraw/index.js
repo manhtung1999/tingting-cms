@@ -1,17 +1,24 @@
 import ic_export from '@/assets/image/ic_export.svg';
-import { ADMIN_KEY, DATE_TRANSACTION, Role, TOKEN_KEY, TransactionStatus } from '@/config/constant';
+import {
+    ADMIN_KEY,
+    DATE_TRANSACTION,
+    EXPORT_KEY,
+    Role,
+    TIME_DELAY_EXPORT,
+    TOKEN_KEY,
+    TransactionStatus,
+} from '@/config/constant';
 import config from '@/config/index';
 import { useLocalStorage } from '@/hooks';
 import { DatePicker, message, Select } from 'antd';
 import Cleave from 'cleave.js/react';
 import { connect } from 'dva';
 import moment from 'moment';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import TableData from './TableData';
-import _ from 'lodash';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -35,6 +42,7 @@ function ListInternalTransfer(props) {
     const [max, setMax] = useState();
 
     const [admin] = useLocalStorage(ADMIN_KEY);
+    const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
 
     useEffect(() => {
         dispatch({ type: 'INTERNAL_TRANSFER/getDevices' });
@@ -92,19 +100,19 @@ function ListInternalTransfer(props) {
             .join('&');
     };
 
-    const INTERVAL = 60 * 1000;
-    const debouncedClick = useCallback(
-        _.debounce(
-            () => {
-                handleExport();
-            },
-            INTERVAL,
-            { leading: true, trailing: false, maxWait: INTERVAL },
-        ),
-        [],
-    );
-
     const handleExport = () => {
+        let isDisabled =
+            exportTime !== ''
+                ? Math.abs(new Date() - new Date(exportTime)) < TIME_DELAY_EXPORT
+                : false;
+        if (isDisabled) {
+            message.warn(
+                `${formatMessage({ id: 'DELAY_EXPORT' })}: ${TIME_DELAY_EXPORT / 1000 -
+                    Math.round(Math.abs(new Date() - new Date(exportTime)) / 1000)}s`,
+            );
+            return;
+        }
+
         if (!rangeTime[0] && !rangeTime[1]) {
             message.warn(formatMessage({ id: 'PLEASE_SET_TIME_EXPORT' }));
             return;
@@ -142,6 +150,7 @@ function ListInternalTransfer(props) {
                 // Clean up and remove the link
                 link.parentNode.removeChild(link);
             });
+        setExportTime(new Date().valueOf());
     };
 
     const handleChangeMin = e => {

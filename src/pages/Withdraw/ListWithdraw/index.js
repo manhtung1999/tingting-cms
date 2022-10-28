@@ -6,6 +6,8 @@ import {
     RoleName,
     TOKEN_KEY,
     TransactionStatus,
+    TIME_DELAY_EXPORT,
+    EXPORT_KEY,
 } from '@/config/constant';
 import config from '@/config/index';
 import { useLocalStorage } from '@/hooks';
@@ -47,6 +49,7 @@ function ListWithdraw(props) {
     const [amount, setAmount] = useState();
 
     const [admin] = useLocalStorage(ADMIN_KEY);
+    const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
 
     useEffect(() => {
         dispatch({ type: 'WITHDRAW/getDevices' });
@@ -124,19 +127,19 @@ function ListWithdraw(props) {
             .join('&');
     };
 
-    const INTERVAL = 60 * 1000;
-    const debouncedClick = useCallback(
-        _.debounce(
-            () => {
-                handleExport();
-            },
-            INTERVAL,
-            { leading: true, trailing: false, maxWait: INTERVAL },
-        ),
-        [],
-    );
-
     const handleExport = () => {
+        let isDisabled =
+            exportTime !== ''
+                ? Math.abs(new Date() - new Date(exportTime)) < TIME_DELAY_EXPORT
+                : false;
+        if (isDisabled) {
+            message.warn(
+                `${formatMessage({ id: 'DELAY_EXPORT' })}: ${TIME_DELAY_EXPORT / 1000 -
+                    Math.round(Math.abs(new Date() - new Date(exportTime)) / 1000)}s`,
+            );
+            return;
+        }
+
         if (!rangeTime[0] && !rangeTime[1]) {
             message.warn(formatMessage({ id: 'PLEASE_SET_TIME_EXPORT' }));
             return;
@@ -182,6 +185,7 @@ function ListWithdraw(props) {
                 // Clean up and remove the link
                 link.parentNode.removeChild(link);
             });
+        setExportTime(new Date().valueOf());
     };
 
     const handleChangeMin = e => {

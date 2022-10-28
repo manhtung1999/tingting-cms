@@ -1,13 +1,20 @@
 import ic_back from '@/assets/image/ic_back.png';
 import ic_export from '@/assets/image/ic_export.svg';
-import { ADMIN_KEY, DATE_TRANSACTION, Role, RoleName, TOKEN_KEY } from '@/config/constant';
+import {
+    ADMIN_KEY,
+    DATE_TRANSACTION,
+    Role,
+    RoleName,
+    TOKEN_KEY,
+    TIME_DELAY_EXPORT,
+    EXPORT_KEY,
+} from '@/config/constant';
 import config from '@/config/index';
 import { useLocalStorage } from '@/hooks';
 import { DatePicker, message, Select } from 'antd';
 import { connect } from 'dva';
-import _ from 'lodash';
 import moment from 'moment';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { router, withRouter } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
@@ -18,14 +25,14 @@ const { RangePicker } = DatePicker;
 
 function ListHistory(props) {
     const { historyStore, dispatch } = props;
-    const { listMerchant, deleteResponse, updateResponse, devices } = historyStore;
+    const { listMerchant } = historyStore;
     const [rangeTime, setRangeTime] = useState([]);
     const [userId, setUserId] = useState();
-    const [orderCode, setOrderCode] = useState();
 
     const [pageIndex, setPageIndex] = useState(1);
 
     const [admin] = useLocalStorage(ADMIN_KEY);
+    const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
 
     useEffect(() => {
         dispatch({ type: 'HISTORY/getDevices' });
@@ -67,19 +74,19 @@ function ListHistory(props) {
             .join('&');
     };
 
-    const INTERVAL = 60 * 1000;
-    const debouncedClick = useCallback(
-        _.debounce(
-            () => {
-                handleExport();
-            },
-            INTERVAL,
-            { leading: true, trailing: false, maxWait: INTERVAL },
-        ),
-        [],
-    );
-
     const handleExport = () => {
+        let isDisabled =
+            exportTime !== ''
+                ? Math.abs(new Date() - new Date(exportTime)) < TIME_DELAY_EXPORT
+                : false;
+        if (isDisabled) {
+            message.warn(
+                `${formatMessage({ id: 'DELAY_EXPORT' })}: ${TIME_DELAY_EXPORT / 1000 -
+                    Math.round(Math.abs(new Date() - new Date(exportTime)) / 1000)}s`,
+            );
+            return;
+        }
+
         if (!rangeTime[0] && !rangeTime[1]) {
             message.warn(formatMessage({ id: 'PLEASE_SET_TIME_EXPORT' }));
             return;
@@ -116,6 +123,7 @@ function ListHistory(props) {
                 // Clean up and remove the link
                 link.parentNode.removeChild(link);
             });
+        setExportTime(new Date().valueOf());
     };
 
     return (

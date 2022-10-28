@@ -37,6 +37,8 @@ export default {
     INFO_LIST: 'Danh sách info',
     EDIT_INFO: 'Cập nhật info',
 
+    DELAY_EXPORT: 'Thời gian còn lại để xuất báo cáo tiếp theo',
+
     // Authen
     LET_GET_STARTED: 'Bắt đầu',
     PASSWORD: 'Mật khẩu',

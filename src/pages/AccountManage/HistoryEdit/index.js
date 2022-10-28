@@ -6,6 +6,8 @@ import {
     Role,
     RoleName,
     TOKEN_KEY,
+    EXPORT_KEY,
+    TIME_DELAY_EXPORT,
 } from '@/config/constant';
 import config from '@/config/index';
 import { useLocalStorage } from '@/hooks';
@@ -25,20 +27,15 @@ function ListReport(props) {
     const { reportStore, dispatch } = props;
     const { listMerchant, deleteResponse, updateResponse, devices } = reportStore;
     const [rangeTime, setRangeTime] = useState([]);
-    // const [transactionStatus, setTransactionStatus] = useState();
     const [paymentType, setPaymentType] = useState();
     const [deviceId, setDeviceId] = useState();
     const [userId, setUserId] = useState();
     const [orderCode, setOrderCode] = useState();
-
     const [pageIndex, setPageIndex] = useState(1);
-
     const [admin] = useLocalStorage(ADMIN_KEY);
+    const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
 
     useEffect(() => {
-        // const payload = {
-        //     page: 0,
-        // };
         dispatch({ type: 'REPORT/getDevices' });
     }, [dispatch]);
 
@@ -104,6 +101,18 @@ function ListReport(props) {
     };
 
     const handleExport = () => {
+        let isDisabled =
+            exportTime !== ''
+                ? Math.abs(new Date() - new Date(exportTime)) < TIME_DELAY_EXPORT
+                : false;
+        if (isDisabled) {
+            message.warn(
+                `${formatMessage({ id: 'DELAY_EXPORT' })}: ${TIME_DELAY_EXPORT / 1000 -
+                    Math.round(Math.abs(new Date() - new Date(exportTime)) / 1000)}s`,
+            );
+            return;
+        }
+
         if (!rangeTime[0] && !rangeTime[1]) {
             message.warn(formatMessage({ id: 'PLEASE_SET_TIME_EXPORT' }));
             return;
@@ -143,6 +152,7 @@ function ListReport(props) {
                 // Clean up and remove the link
                 link.parentNode.removeChild(link);
             });
+        setExportTime(new Date().valueOf());
     };
 
     return (
