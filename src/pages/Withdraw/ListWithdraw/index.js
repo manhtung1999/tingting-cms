@@ -146,8 +146,12 @@ function ListWithdraw(props) {
         }
         const url = 'api/v1/transaction/export';
         let userIdExport = userId;
+        let agentId;
         if (admin?.role === Role.ROLE_USER) {
             userIdExport = admin?.id;
+        }
+        if (admin?.role === Role.ROLE_AGENT) {
+            agentId = admin?.id;
         }
         var params = getQueryString({
             page: pageIndex - 1,
@@ -160,6 +164,7 @@ function ListWithdraw(props) {
             endDate: rangeTime[1],
             systemTransactionType: 'MONEY_IN_SYSTEM',
             userId: userIdExport,
+            agentId,
         });
         fetch(config.API_DOMAIN + url + '?' + params, {
             method: 'GET',

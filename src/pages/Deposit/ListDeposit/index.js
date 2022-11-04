@@ -167,8 +167,12 @@ function ListDeposit(props) {
         }
         const url = 'api/v1/transaction/export';
         let userIdExport = userId;
+        let agentId;
         if (admin?.role === Role.ROLE_USER) {
             userIdExport = admin?.id;
+        }
+        if (admin?.role === Role.ROLE_AGENT) {
+            agentId = admin?.id;
         }
         var params = getQueryString({
             page: pageIndex - 1,
@@ -179,6 +183,7 @@ function ListDeposit(props) {
             orderCode,
             startDate: rangeTime[0],
             endDate: rangeTime[1],
+            agentId,
         });
 
         fetch(config.API_DOMAIN + url + '?' + params, {
