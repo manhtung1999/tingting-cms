@@ -48,7 +48,7 @@ function ListDeposit(props) {
     const [code, setCode] = useState();
     const [username, setUsername] = useState();
     const [amount, setAmount] = useState();
-    const [currentExchange, setCurrentExchange] = React.useState();
+    const [currentExchange, setCurrentExchange] = useState();
 
     const [pageIndex, setPageIndex] = useState(1);
 
@@ -234,6 +234,7 @@ function ListDeposit(props) {
             <div className={styles.pageFilter}>
                 {(admin?.role === Role.ROLE_ACCOUNTANT ||
                     admin?.role === Role.ROLE_ADMIN ||
+                    admin?.role === Role.ROLE_AGENT ||
                     admin?.role === Role.ROLE_STAFF) && (
                     <div className={styles.select}>
                         <div className="mb-1">{formatMessage({ id: 'MERCHANT' })}:</div>
@@ -335,7 +336,8 @@ function ListDeposit(props) {
                     {currentExchange &&
                         (admin?.role === Role.ROLE_ADMIN ||
                             admin?.role === Role.ROLE_STAFF ||
-                            admin?.role === Role.ROLE_ACCOUNTANT) && (
+                            admin?.role === Role.ROLE_ACCOUNTANT ||
+                            admin?.role === Role.ROLE_AGENT) && (
                             <div
                                 style={{ marginLeft: 10 }}
                                 className="d-flex flex-grow-1 flex-column justify-content-end"
@@ -377,6 +379,16 @@ function ListDeposit(props) {
                                                     currentExchange,
                                             ).toFixed(2)}{' '}
                                             USDT
+                                        </span>
+                                        )
+                                    </h6>
+                                </div>
+                                <div className="d-flex">
+                                    <h6 style={{ fontSize: 12, marginRight: 15 }}>
+                                        {formatMessage({ id: 'commission' })}: {formatVnd(agentFee)}{' '}
+                                        (
+                                        <span style={{ fontSize: 12 }}>
+                                            {Number(agentFee / currentExchange).toFixed(2)} USDT
                                         </span>
                                         )
                                     </h6>
