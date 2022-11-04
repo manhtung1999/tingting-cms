@@ -358,7 +358,7 @@ function ListDeposit(props) {
                                         )
                                     </h6>
                                 </div>
-                                <div className="d-flex">
+                                {/* <div className="d-flex">
                                     <h6 style={{ fontSize: 12, marginRight: 15 }}>
                                         {formatMessage({ id: 'FEE' })}:{' '}
                                         {formatVnd(systemFee + agentFee)} (
@@ -382,7 +382,7 @@ function ListDeposit(props) {
                                         </span>
                                         )
                                     </h6>
-                                </div>
+                                </div> */}
                                 <div className="d-flex">
                                     <h6 style={{ fontSize: 12, marginRight: 15 }}>
                                         {formatMessage({ id: 'commission' })}: {formatVnd(agentFee)}{' '}
