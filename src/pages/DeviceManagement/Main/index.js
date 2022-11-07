@@ -159,13 +159,13 @@ function DeviceManagement(props) {
                         />
                         {admin?.role === Role.ROLE_ADMIN && (
                             <>
-                                <img
+                                {/* <img
                                     style={{ marginRight: 7 }}
                                     onClick={() => goToEdit(value.id)}
                                     className={styles.iconSize}
                                     src={ic_edit}
                                     alt=""
-                                />
+                                /> */}
                                 <img
                                     className={styles.sizeIcon}
                                     src={ic_delete}
