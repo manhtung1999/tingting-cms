@@ -363,41 +363,48 @@ function ListDeposit(props) {
                                         )
                                     </h6>
                                 </div>
-                                {/* <div className="d-flex">
-                                    <h6 style={{ fontSize: 12, marginRight: 15 }}>
-                                        {formatMessage({ id: 'FEE' })}:{' '}
-                                        {formatVnd(systemFee + agentFee)} (
-                                        <span style={{ fontSize: 12 }}>
-                                            {Number(
-                                                (systemFee + agentFee) / currentExchange,
-                                            ).toFixed(2)}{' '}
-                                            USDT
-                                        </span>
-                                        )
-                                    </h6>
-                                    <h6 style={{ fontSize: 12 }}>
-                                        {formatMessage({ id: 'BALANCE' })}:{' '}
-                                        {formatVnd(nap - rut - systemFee - agentFee)} (
-                                        <span style={{ fontSize: 12 }}>
-                                            {Number(
-                                                (nap - rut - systemFee - agentFee) /
-                                                    currentExchange,
-                                            ).toFixed(2)}{' '}
-                                            USDT
-                                        </span>
-                                        )
-                                    </h6>
-                                </div> */}
-                                <div className="d-flex">
-                                    <h6 style={{ fontSize: 12, marginRight: 15 }}>
-                                        {formatMessage({ id: 'commission' })}: {formatVnd(agentFee)}{' '}
-                                        (
-                                        <span style={{ fontSize: 12 }}>
-                                            {Number(agentFee / currentExchange).toFixed(2)} USDT
-                                        </span>
-                                        )
-                                    </h6>
-                                </div>
+                                {(admin?.role === Role.ROLE_ADMIN ||
+                                    admin?.role === Role.ROLE_STAFF ||
+                                    admin?.role === Role.ROLE_ACCOUNTANT) && (
+                                    <div className="d-flex">
+                                        <h6 style={{ fontSize: 12, marginRight: 15 }}>
+                                            {formatMessage({ id: 'FEE' })}:{' '}
+                                            {formatVnd(systemFee + agentFee)} (
+                                            <span style={{ fontSize: 12 }}>
+                                                {Number(
+                                                    (systemFee + agentFee) / currentExchange,
+                                                ).toFixed(2)}{' '}
+                                                USDT
+                                            </span>
+                                            )
+                                        </h6>
+                                        <h6 style={{ fontSize: 12 }}>
+                                            {formatMessage({ id: 'BALANCE' })}:{' '}
+                                            {formatVnd(nap - rut - systemFee - agentFee)} (
+                                            <span style={{ fontSize: 12 }}>
+                                                {Number(
+                                                    (nap - rut - systemFee - agentFee) /
+                                                        currentExchange,
+                                                ).toFixed(2)}{' '}
+                                                USDT
+                                            </span>
+                                            )
+                                        </h6>
+                                    </div>
+                                )}
+
+                                {admin?.role === Role.ROLE_AGENT && (
+                                    <div className="d-flex">
+                                        <h6 style={{ fontSize: 12, marginRight: 15 }}>
+                                            {formatMessage({ id: 'commission' })}:{' '}
+                                            {formatVnd(agentFee)} (
+                                            <span style={{ fontSize: 12 }}>
+                                                {Number(agentFee / currentExchange).toFixed(2)} USDT
+                                            </span>
+                                            )
+                                        </h6>
+                                    </div>
+                                )}
                             </div>
                         )}
                 </div>

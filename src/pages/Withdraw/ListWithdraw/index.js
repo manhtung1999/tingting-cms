@@ -2,12 +2,12 @@ import ic_export from '@/assets/image/ic_export.svg';
 import {
     ADMIN_KEY,
     DATE_TRANSACTION,
+    EXPORT_KEY,
     Role,
     RoleName,
+    TIME_DELAY_EXPORT,
     TOKEN_KEY,
     TransactionStatus,
-    TIME_DELAY_EXPORT,
-    EXPORT_KEY,
 } from '@/config/constant';
 import config from '@/config/index';
 import { useLocalStorage } from '@/hooks';
@@ -15,12 +15,11 @@ import { DatePicker, Input, message, Select } from 'antd';
 import Cleave from 'cleave.js/react';
 import { connect } from 'dva';
 import moment from 'moment';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import TableData from './TableData';
-import _ from 'lodash';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
