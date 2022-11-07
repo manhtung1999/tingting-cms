@@ -26,7 +26,7 @@ function Withdraw(props) {
 
     return (
         <>
-            {admin?.role === Role.ROLE_USER && (
+            {(admin?.role === Role.ROLE_USER || admin?.role === Role.ROLE_AGENT) && (
                 <div className={styles.tabs}>
                     <button
                         className={
@@ -39,18 +39,15 @@ function Withdraw(props) {
                     >
                         {formatMessage({ id: 'WITHDRAW_LIST' })}
                     </button>
-                    {admin?.role === Role.ROLE_USER && (
-                        <button
-                            className={
-                                location.query.tab === 'add-withdraw'
-                                    ? `${styles.active}`
-                                    : undefined
-                            }
-                            onClick={() => router.push('/home/withdraw?tab=add-withdraw')}
-                        >
-                            {formatMessage({ id: 'ADD_WITHDRAW_REQUEST' })}
-                        </button>
-                    )}
+
+                    <button
+                        className={
+                            location.query.tab === 'add-withdraw' ? `${styles.active}` : undefined
+                        }
+                        onClick={() => router.push('/home/withdraw?tab=add-withdraw')}
+                    >
+                        {formatMessage({ id: 'ADD_WITHDRAW_REQUEST' })}
+                    </button>
                 </div>
             )}
             {renderComponent()}
