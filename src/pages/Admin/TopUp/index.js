@@ -32,7 +32,7 @@ function TopUp({ dispatch, adminStore }) {
 
     useEffect(() => {
         const payload = {
-            page: 0,
+            // page: 0
             role: RoleName[Role.ROLE_USER],
         };
         dispatch({ type: 'ADMIN/getMerchants', payload });

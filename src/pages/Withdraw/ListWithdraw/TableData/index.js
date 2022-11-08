@@ -161,7 +161,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                                 })}
                                             </div>
                                             {(admin?.role === Role.ROLE_ADMIN ||
-                                                admin?.role === Role.ROLE_STAFF) && (
+                                                admin?.role === Role.ROLE_ACCOUNTANT) && (
                                                 <>
                                                     <img
                                                         onClick={() => handleDeny(item.id)}

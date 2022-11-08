@@ -48,7 +48,7 @@ function ListTransaction(props) {
 
     useEffect(() => {
         const payload = {
-            page: 0,
+            // page: 0,
             role: RoleName[Role.ROLE_USER],
         };
         if (admin?.role === Role.ROLE_AGENT) {

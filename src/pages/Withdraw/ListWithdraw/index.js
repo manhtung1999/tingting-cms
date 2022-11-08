@@ -56,7 +56,7 @@ function ListWithdraw(props) {
 
     useEffect(() => {
         const payload = {
-            page: 0,
+            // page: 0,
             role: RoleName[Role.ROLE_USER],
         };
         admin?.role !== Role.ROLE_USER && dispatch({ type: 'WITHDRAW/getMerchants', payload });
