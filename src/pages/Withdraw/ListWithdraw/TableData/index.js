@@ -99,7 +99,8 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
         listWithdraw.length === 0 ? (
             <EmptyComponent />
         ) : (
-            listAgent.length &&
+            ((admin?.role !== Role.ROLE_USER && listAgent.length) ||
+                admin?.role === Role.ROLE_USER) &&
             listWithdraw
                 .filter(i => i.transactionName !== TIEN_KHONG_RO_NGUON)
                 .map((item, index) => {
