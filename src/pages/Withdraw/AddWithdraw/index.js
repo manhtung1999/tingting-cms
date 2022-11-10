@@ -31,10 +31,10 @@ function AddWithdraw({ dispatch, withdrawStore }) {
             message.error(formatMessage({ id: 'MIN_ZALOPAY_20K' }));
             return;
         }
-        // if (amountDeposit < MIN_WITHDRAW) {
-        //     message.error(formatMessage({ id: 'MIN_WITHDRAW_10000' }));
-        //     return;
-        // }
+        if (amountDeposit < MIN_WITHDRAW) {
+            message.error(formatMessage({ id: 'MIN_WITHDRAW_10000' }));
+            return;
+        }
         const payload = {
             ...values,
             totalMoney: amountDeposit,
