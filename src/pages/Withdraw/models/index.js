@@ -13,6 +13,7 @@ export default {
         totalRow: 0,
         devices: [],
         listMerchant: [],
+        listAgent: [],
         deleteResponse: undefined,
         listCardBank: [],
         listPaymentType: [],
@@ -60,6 +61,14 @@ export default {
                 ...state,
 
                 listMerchant: action.payload.body,
+            };
+        },
+
+        getAgentSuccess(state, action) {
+            console.log('listAgent', action.payload.body);
+            return {
+                ...state,
+                listAgent: action.payload.body,
             };
         },
 
@@ -153,6 +162,21 @@ export default {
                 const res = yield call(accountService.getAccounts, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'getMerchantSuccess', payload: res.body });
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *getAgents(action, { call, put }) {
+            try {
+                const res = yield call(accountService.getAccounts, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'getAgentSuccess', payload: res.body });
                 } else {
                     message.error(res.body.message);
                     yield put({ type: 'error' });

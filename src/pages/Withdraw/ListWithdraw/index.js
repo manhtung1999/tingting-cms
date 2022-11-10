@@ -28,6 +28,7 @@ function ListWithdraw(props) {
     const { withdrawStore, dispatch } = props;
     const {
         listMerchant,
+        listAgent,
         deleteResponse,
         updateResponse,
         denyResponse,
@@ -54,12 +55,22 @@ function ListWithdraw(props) {
         dispatch({ type: 'WITHDRAW/getDevices' });
     }, [dispatch]);
 
+    // get merchant
     useEffect(() => {
         const payload = {
-            // page: 0,
             role: RoleName[Role.ROLE_USER],
+            deleted: false,
         };
         admin?.role !== Role.ROLE_USER && dispatch({ type: 'WITHDRAW/getMerchants', payload });
+    }, [dispatch]);
+
+    // get agent
+    useEffect(() => {
+        const payload = {
+            role: RoleName[Role.ROLE_AGENT],
+            deleted: false,
+        };
+        admin?.role !== Role.ROLE_USER && dispatch({ type: 'WITHDRAW/getAgents', payload });
     }, [dispatch]);
 
     useEffect(() => {
@@ -228,6 +239,24 @@ function ListWithdraw(props) {
                         >
                             <Option value={''}>{formatMessage({ id: 'ALL' })}</Option>
                             {listMerchant.map(item => {
+                                return <Option value={item.id}>{item.phone}</Option>;
+                            })}
+                        </Select>
+                    </div>
+                )}
+
+                {(admin?.role === Role.ROLE_ACCOUNTANT ||
+                    admin?.role === Role.ROLE_ADMIN ||
+                    admin?.role === Role.ROLE_STAFF) && (
+                    <div className={styles.select}>
+                        <div className="mb-1">{formatMessage({ id: 'AGENT' })}:</div>
+                        <Select
+                            style={{ minWidth: 180 }}
+                            defaultValue=""
+                            onChange={value => setUserId(value)}
+                        >
+                            <Option value={''}>{formatMessage({ id: 'ALL' })}</Option>
+                            {listAgent.map(item => {
                                 return <Option value={item.id}>{item.phone}</Option>;
                             })}
                         </Select>

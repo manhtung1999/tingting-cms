@@ -25,7 +25,7 @@ import { TIEN_KHONG_RO_NGUON } from '@/config/constant';
 const { confirm } = Modal;
 
 function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
-    const { listWithdraw, totalRow, loading, listMerchant, devices } = withdrawStore;
+    const { listWithdraw, totalRow, loading, listMerchant, devices, listAgent } = withdrawStore;
     const [currentTrans, setCurrentTrans] = useState({
         id: undefined,
         isShow: false,
@@ -83,7 +83,6 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
     const renderTransferAcc = item => {
         if (item.mobileId) {
             const mobile = devices.find(device => device.id === item.mobileId);
-            console.log('mobile', mobile);
             if (mobile) {
                 return (
                     <>
@@ -100,6 +99,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
         listWithdraw.length === 0 ? (
             <EmptyComponent />
         ) : (
+            listAgent.length &&
             listWithdraw
                 .filter(i => i.transactionName !== TIEN_KHONG_RO_NGUON)
                 .map((item, index) => {
@@ -108,6 +108,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                             <td className="col-1">{item.orderCode}</td>
                             <td className="col-1">
                                 {listMerchant.find(i => i.id === item.ownerId)?.phone}
+                                {listAgent.find(i => i.id === item.ownerId)?.phone}
                                 {' - '}
                                 <span>{item.orderUsername}</span>
                             </td>
@@ -161,33 +162,67 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                                 })}
                                             </div>
                                             {(admin?.role === Role.ROLE_ADMIN ||
-                                                admin?.role === Role.ROLE_STAFF) && (
-                                                <>
-                                                    <img
-                                                        onClick={() => handleDeny(item.id)}
-                                                        className={styles.sizeIcon}
-                                                        src={ic_uncheck}
-                                                        alt="unchecked"
-                                                        style={{
-                                                            marginRight: 5,
-                                                            width: 17,
-                                                            height: 17,
-                                                        }}
-                                                    />
-                                                    <img
-                                                        onClick={() =>
-                                                            handleApprove(
-                                                                item.id,
-                                                                item.totalMoney,
-                                                                item.bankName,
-                                                            )
-                                                        }
-                                                        src={ic_check}
-                                                        alt="checked"
-                                                        style={{ width: 17, height: 17 }}
-                                                    />
-                                                </>
-                                            )}
+                                                admin?.role === Role.ROLE_STAFF) &&
+                                                !listAgent.find(
+                                                    agent => agent.id === item.ownerId,
+                                                ) && (
+                                                    <>
+                                                        <img
+                                                            onClick={() => handleDeny(item.id)}
+                                                            className={styles.sizeIcon}
+                                                            src={ic_uncheck}
+                                                            alt="unchecked"
+                                                            style={{
+                                                                marginRight: 5,
+                                                                width: 17,
+                                                                height: 17,
+                                                            }}
+                                                        />
+                                                        <img
+                                                            onClick={() =>
+                                                                handleApprove(
+                                                                    item.id,
+                                                                    item.totalMoney,
+                                                                    item.bankName,
+                                                                )
+                                                            }
+                                                            src={ic_check}
+                                                            alt="checked"
+                                                            style={{ width: 17, height: 17 }}
+                                                        />
+                                                    </>
+                                                )}
+                                            {(admin?.role === Role.ROLE_ADMIN ||
+                                                admin?.role === Role.ROLE_ACCOUNTANT) &&
+                                                listAgent.find(
+                                                    agent => agent.id === item.ownerId,
+                                                ) && (
+                                                    <>
+                                                        <img
+                                                            onClick={() => handleDeny(item.id)}
+                                                            className={styles.sizeIcon}
+                                                            src={ic_uncheck}
+                                                            alt="unchecked"
+                                                            style={{
+                                                                marginRight: 5,
+                                                                width: 17,
+                                                                height: 17,
+                                                            }}
+                                                        />
+                                                        <img
+                                                            onClick={() =>
+                                                                handleApprove(
+                                                                    item.id,
+                                                                    item.totalMoney,
+                                                                    item.bankName,
+                                                                )
+                                                            }
+                                                            src={ic_check}
+                                                            alt="checked"
+                                                            style={{ width: 17, height: 17 }}
+                                                        />
+                                                    </>
+                                                )}
                                         </>
                                     )
                                 ) : (
