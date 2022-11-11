@@ -240,7 +240,12 @@ function DeviceManagement(props) {
                 </div>
                 <div style={{ height: 40 }}>
                     <div className="mb-1">{formatMessage({ id: 'BANK_NAME' })}:</div>
-                    <Select style={{ minWidth: 180 }} onChange={value => setPaymentTypeId(value)}>
+                    <Select
+                        defaultValue={''}
+                        style={{ minWidth: 180 }}
+                        onChange={value => setPaymentTypeId(value)}
+                    >
+                        <Option value={''}>All</Option>
                         {arrayUniqueByBankName.map((item, index) => {
                             return <Option value={item.id}>{item.sortNameBank}</Option>;
                         })}
