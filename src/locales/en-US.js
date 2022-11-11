@@ -32,6 +32,7 @@ export default {
     UPDATE_AGENT: 'Update agent',
     MERCHANT_ORDER: 'Merchant order',
     UPDATE_BALANCE: 'Update Balance',
+    UPDATE_BANK: 'Update Bank',
     REFRESH_ALL: 'Refresh all',
     HISTORY_EDIT_BALANCE: 'History edit merchant balance',
     HANDLE_ACC: 'User handle',

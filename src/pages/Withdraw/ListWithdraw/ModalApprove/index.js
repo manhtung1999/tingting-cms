@@ -5,6 +5,7 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import ModalLoading from '@/components/ModalLoading';
 import { formatVnd } from '@/util/function';
+import { DeviceStatusValue } from '@/config/constant';
 
 function compare(a, b) {
     if (a.totalMoney < b.totalMoney) {
@@ -20,13 +21,6 @@ function ModalApprove({ dispatch, currentTrans, setCurrentTrans, withdrawStore }
     const { devices } = withdrawStore;
 
     const [maxBalanceDevice, setMaxBalanceDevice] = useState();
-
-    useEffect(() => {
-        const payload = {
-            status: 'on',
-        };
-        dispatch({ type: 'WITHDRAW/getDevices', payload });
-    }, [dispatch]);
 
     useEffect(() => {
         if (devices.length) {
@@ -90,17 +84,19 @@ function ModalApprove({ dispatch, currentTrans, setCurrentTrans, withdrawStore }
                     defaultValue={maxBalanceDevice}
                     onChange={value => setMaxBalanceDevice(value)}
                 >
-                    {devices.map((item, index) => {
-                        return (
-                            <Select.Option key={index} value={item.id}>
-                                <span>{item.bankName}</span>
-                                {' - '}
-                                <span>{item.numberAccount}</span>
-                                {' - '}
-                                <span>{formatVnd(item.totalMoney)}</span>
-                            </Select.Option>
-                        );
-                    })}
+                    {devices
+                        .filter(device => device.status === DeviceStatusValue.on)
+                        .map((item, index) => {
+                            return (
+                                <Select.Option key={index} value={item.id}>
+                                    <span>{item.bankName}</span>
+                                    {' - '}
+                                    <span>{item.numberAccount}</span>
+                                    {' - '}
+                                    <span>{formatVnd(item.totalMoney)}</span>
+                                </Select.Option>
+                            );
+                        })}
                 </Select>
             </div>
         </Modal>

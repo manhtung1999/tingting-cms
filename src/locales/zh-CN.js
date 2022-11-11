@@ -30,6 +30,7 @@ export default {
     UPDATE_AGENT: 'Cập nhật đại lý',
     MERCHANT_ORDER: 'Order KH',
     UPDATE_BALANCE: 'Cập nhật số dư',
+    UPDATE_BANK: 'Cập nhật bank',
     REFRESH_ALL: 'Refresh tất cả',
     HISTORY_EDIT_BALANCE: 'Lịch sử chỉnh sửa số dư KH',
     HANDLE_ACC: 'Người xử lý',

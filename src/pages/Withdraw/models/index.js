@@ -45,15 +45,9 @@ export default {
             };
         },
         getDevicesSuccess(state, action) {
-            const prevDevice = [...state.devices];
-            action.payload.body.map(i => {
-                if (!prevDevice.find(item => item.id === i.id)) {
-                    prevDevice.push(i);
-                }
-            });
             return {
                 ...state,
-                devices: prevDevice,
+                devices: action.payload.body,
             };
         },
         getMerchantSuccess(state, action) {

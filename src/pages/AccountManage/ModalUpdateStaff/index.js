@@ -6,6 +6,7 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import ModalLoading from '@/components/ModalLoading';
 import ModalUpdateBalance from '../ModalUpdateBalance';
+import ModalUpdateBank from '../ModalUpdateBank';
 
 function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStore }) {
     const { detailAccount } = accountStore;
@@ -101,6 +102,8 @@ function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStor
         >
             <div className={styles.form}>
                 <ModalUpdateBalance id={currentStaff.id} currentMoney={currentStaff.currentMoney} />
+                <ModalUpdateBalance id={currentStaff.id} currentMoney={currentStaff.currentMoney} />
+                <ModalUpdateBank id={currentStaff.id} />
 
                 {/* phi nap bank cho dai ly */}
                 <div>
