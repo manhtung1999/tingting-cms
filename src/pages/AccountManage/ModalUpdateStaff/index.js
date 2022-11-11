@@ -92,13 +92,12 @@ function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStor
         return <ModalLoading />;
     }
 
-    console.log('detailAccount.mobileDevices', detailAccount.mobileDevices);
-
     let acc = accounts.find(acc => acc.id === detailAccount.id);
     const renderBankConnected = acc
         ? acc.mobileDevices.map((item, index) => {
               return (
                   <p>
+                      <div>Bank ID: {item.paymentTypeId}</div>
                       {item.bankName}-{item.numberAccount}-{item.username}-
                       {formatVnd(item.currentMoney)}
                   </p>
