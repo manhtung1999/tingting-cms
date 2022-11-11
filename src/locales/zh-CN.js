@@ -49,6 +49,7 @@ export default {
     EDIT_INFO: 'Cập nhật info',
     DELAY_EXPORT: 'Thời gian còn lại để xuất báo cáo tiếp theo',
     ADD_MERCHANT_TO_DEVICE: 'Thêm khách hàng vào thiết vị',
+    BANK_LIEN_KET: 'Bank đã liên kết',
 
     // end thao tác
 

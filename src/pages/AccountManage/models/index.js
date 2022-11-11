@@ -1,4 +1,5 @@
 import accountService from '@/services/account';
+import deviceService from '@/services/device';
 import { message } from 'antd';
 import { handleErrorModel } from '@/util/function';
 import { router } from 'umi';
@@ -13,6 +14,7 @@ export default {
         deleteResponse: {},
         updateResponse: {},
         listSecret: [],
+        devices: [],
     },
     reducers: {
         getAccountsSuccess(state, action) {
@@ -87,9 +89,30 @@ export default {
                 listSecret: action.payload,
             };
         },
+
+        getDevicesSuccess(state, action) {
+            return {
+                ...state,
+                devices: action.payload.body,
+            };
+        },
     },
 
     effects: {
+        *getDevices(action, { call, put }) {
+            try {
+                const res = yield call(deviceService.getDevices, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'getDevicesSuccess', payload: res.body });
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
         *getAccounts(action, { call, put }) {
             yield put({ type: 'loading' });
             try {

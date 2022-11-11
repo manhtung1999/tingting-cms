@@ -6,10 +6,15 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import ModalLoading from '@/components/ModalLoading';
 import ModalUpdateBalance from '../ModalUpdateBalance';
+import { formatVnd } from '@/util/function';
 
 function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStore }) {
-    const { detailAccount } = accountStore;
+    const { detailAccount, devices, accounts } = accountStore;
     const [infoFee, setInfoFee] = useState();
+
+    useEffect(() => {
+        dispatch({ type: 'ACCOUNT/getDevices' });
+    }, [dispatch]);
 
     useEffect(() => {
         const payload = { userId: currentStaff.id };
@@ -87,6 +92,20 @@ function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStor
         return <ModalLoading />;
     }
 
+    console.log('detailAccount.mobileDevices', detailAccount.mobileDevices);
+
+    let acc = accounts.find(acc => acc.id === detailAccount.id);
+    const renderBankConnected = acc
+        ? acc.mobileDevices.map((item, index) => {
+              return (
+                  <p>
+                      {item.bankName}-{item.numberAccount}-{item.username}-
+                      {formatVnd(item.currentMoney)}
+                  </p>
+              );
+          })
+        : null;
+
     return (
         <Modal
             title={formatMessage({ id: 'CONFIG_PERCENT_DEPOSIT_WITHDRAW_AND_BALANCE' })}
@@ -98,6 +117,10 @@ function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStor
             destroyOnClose
         >
             <div className={styles.form}>
+                <div className="mb-3">
+                    <h5>{formatMessage({ id: 'BANK_LIEN_KET' })}:</h5>
+                    {renderBankConnected}
+                </div>
                 <ModalUpdateBalance id={currentStaff.id} currentMoney={currentStaff.currentMoney} />
                 {/* phi nap bank cho dai ly */}
                 <div>

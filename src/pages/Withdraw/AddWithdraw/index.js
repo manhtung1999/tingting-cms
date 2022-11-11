@@ -46,10 +46,14 @@ function AddWithdraw({ dispatch, withdrawStore }) {
         setAmountDeposit(Number(e.currentTarget.rawValue));
     };
 
-    const key = 'sortNameBank';
-    const arrayUniqueByBankName = [
-        ...new Map(listPaymentType.map(item => [item[key], item])).values(),
-    ];
+    // const key = 'sortNameBank';
+    // const arrayUniqueByBankName = [
+    //     ...new Map(listPaymentType.map(item => [item[key], item])).values(),
+    // ];
+
+    const arrayUniqueByBankName = listPaymentType.filter(paymentType =>
+        paymentType.fullNameBank.includes('System-'),
+    );
 
     return (
         <div className={styles.addWithdraw}>

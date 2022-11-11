@@ -40,6 +40,7 @@ export default {
 
     DELAY_EXPORT: 'Thời gian còn lại để xuất báo cáo tiếp theo',
     ADD_MERCHANT_TO_DEVICE: 'Thêm khách hàng vào thiết vị',
+    BANK_LIEN_KET: 'Bank đã liên kết',
 
     // Authen
     LET_GET_STARTED: 'Bắt đầu',

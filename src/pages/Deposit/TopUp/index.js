@@ -5,6 +5,9 @@ import React, { useEffect } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import { PaymentType } from '@/config/constant';
+import { ADMIN_KEY } from '@/config/constant';
+import { useLocalStorage } from '@/hooks';
+
 const { Option } = Select;
 const formItemLayout = {
     labelCol: {
@@ -20,6 +23,7 @@ function TopUp({ dispatch, depositStore }) {
     const { devices } = depositStore;
     const [form] = Form.useForm();
     const [amount, setAmount] = React.useState();
+    const [admin] = useLocalStorage(ADMIN_KEY);
 
     useEffect(() => {
         const payload = {
@@ -44,6 +48,7 @@ function TopUp({ dispatch, depositStore }) {
 
     const renderOptions = devices
         .filter(i => i.status === 1)
+        .filter(bank => bank.deviceOfUserId === admin?.id)
         .map((item, index) => {
             return (
                 <Option value={item.id}>
@@ -66,7 +71,7 @@ function TopUp({ dispatch, depositStore }) {
                         scrollToFirstError
                         onFinish={handleSubmit}
                     >
-                        {devices.length && (
+                        {devices.length > 0 && (
                             <Form.Item
                                 label={formatMessage({ id: 'ACCOUNT_RECEIPT' })}
                                 name="mobileId"

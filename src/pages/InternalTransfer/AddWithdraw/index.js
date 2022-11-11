@@ -117,15 +117,18 @@ const TransferBalance = props => {
                                 style={{ minWidth: 300 }}
                                 onChange={value => setMobileId(value)}
                             >
-                                {devices.map(item => {
-                                    return (
-                                        <Option value={item.id}>
-                                            {' '}
-                                            {item.bankName} - {item.numberAccount} - {item.username}{' '}
-                                            <span>- {formatVnd(item.totalMoney)}</span>
-                                        </Option>
-                                    );
-                                })}
+                                {devices
+                                    .filter(device => !device.deviceOfUserId)
+                                    .map(item => {
+                                        return (
+                                            <Option value={item.id}>
+                                                {' '}
+                                                {item.bankName} - {item.numberAccount} -{' '}
+                                                {item.username}{' '}
+                                                <span>- {formatVnd(item.totalMoney)}</span>
+                                            </Option>
+                                        );
+                                    })}
                             </Select>
                         </Form.Item>
 
@@ -139,16 +142,18 @@ const TransferBalance = props => {
                                     style={{ minWidth: 300 }}
                                     onChange={value => setMobileIdReceiveMoney(value)}
                                 >
-                                    {devices.map(item => {
-                                        return (
-                                            <Option value={item.id}>
-                                                {' '}
-                                                {item.bankName} - {item.numberAccount} -{' '}
-                                                {item.username}{' '}
-                                                <span>- {formatVnd(item.totalMoney)}</span>
-                                            </Option>
-                                        );
-                                    })}
+                                    {devices
+                                        .filter(device => !device.deviceOfUserId)
+                                        .map(item => {
+                                            return (
+                                                <Option value={item.id}>
+                                                    {' '}
+                                                    {item.bankName} - {item.numberAccount} -{' '}
+                                                    {item.username}{' '}
+                                                    <span>- {formatVnd(item.totalMoney)}</span>
+                                                </Option>
+                                            );
+                                        })}
                                 </Select>
                             </Form.Item>
                         ) : (

@@ -4,15 +4,12 @@ import { connect } from 'dva';
 import React, { useEffect, useState } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
-import ModalLoading from '@/components/ModalLoading';
 const { Option } = Select;
 
 function ModalUpdateUserToDevice({ deviceStore, dispatch, currentDevice, setCurrentDevice }) {
     const { listMerchant, detailDevice } = deviceStore;
 
     const [deviceOfUserId, setDeviceOfUserId] = useState();
-
-    console.log('deviceOfUserId: ', deviceOfUserId);
 
     useEffect(() => {
         if (detailDevice.deviceOfUserId) {
@@ -65,10 +62,6 @@ function ModalUpdateUserToDevice({ deviceStore, dispatch, currentDevice, setCurr
         handleClose();
     };
 
-    // if (!detailDevice || listMerchant.length === 0) {
-    //     return <ModalLoading />;
-    // }
-
     return (
         <Modal
             title={formatMessage({ id: 'ADD_MERCHANT_TO_DEVICE' })}
@@ -82,7 +75,6 @@ function ModalUpdateUserToDevice({ deviceStore, dispatch, currentDevice, setCurr
             <div className={styles.form}>
                 <Select
                     style={{ minWidth: 180 }}
-                    // defaultValue={detailDevice.deviceOfUserId}
                     value={deviceOfUserId}
                     onChange={value => setDeviceOfUserId(value)}
                 >

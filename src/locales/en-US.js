@@ -63,6 +63,7 @@ export default {
 
     DELAY_EXPORT: 'Time left to export',
     ADD_MERCHANT_TO_DEVICE: 'Add merchant to device',
+    BANK_LIEN_KET: 'Bank connected',
 
     // Thao tác
 
