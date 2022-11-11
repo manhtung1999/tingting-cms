@@ -14,13 +14,13 @@ import { formatVnd } from '../../../util/function';
 import ModalUpdateDailyWithdraw from '../ModalUpdateDailyWithdraw';
 import ModalUpdateStatus from '../ModalUpdateStatus';
 import styles from './styles.scss';
-
+import ModalLoading from '@/components/ModalLoading';
 const { confirm } = Modal;
 const { Option } = Select;
 
 function DeviceManagement(props) {
     let { dispatch, deviceStore } = props;
-    let { devices, totalRow, updateSuccess, deleteSuccess, listPaymentType } = deviceStore;
+    let { devices, totalRow, updateSuccess, deleteSuccess, listPaymentType, loading } = deviceStore;
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [pageIndex, setPageIndex] = useState(1);
     const [paymentTypeId, setPaymentTypeId] = useState();
@@ -80,112 +80,99 @@ function DeviceManagement(props) {
         });
     };
 
-    const goToEdit = deviceId => {
-        router.push(`/home/update-manipulation/${deviceId}`);
-    };
-
-    const renderDataUsers =
-        devices.length === 0 ? (
-            <EmptyComponent />
-        ) : (
-            devices.map((value, index) => (
-                <tr className="row text-center" key={(value, index)}>
-                    <td className="col-2">{value.deviceKey}</td>
-                    <td className={admin?.role === Role.ROLE_ADMIN ? 'col-2' : 'col-1'}>
-                        {value.username}
-                    </td>
-                    <td className="col-2">
-                        [{value.bankName}]{value.numberAccount}
-                    </td>
-                    <td className={`col-1 ${styles.moneyColor}`}>{formatVnd(value.totalMoney)}</td>
-                    <td className={`col-1 ${styles.moneyColor}`}>
-                        <div>+{formatVnd(value.dailySendMoney)}</div>
-                        <div>-{formatVnd(value.withdrawMoney)}</div>
-                    </td>
-                    <td className={`col-1 ${styles.moneyColor}`}>
-                        <div>+{formatVnd(value.allSendMoney)}</div>
-                        <div>-{formatVnd(value.allWithdrawMoney)}</div>
-                    </td>
-                    <td className={admin?.role === Role.ROLE_ADMIN ? 'col-1' : 'col-2'}>
-                        {formatVnd(value.dailyWithdrawMoney)}
-                        {admin?.role === Role.ROLE_ADMIN && (
-                            <span
-                                onClick={() =>
-                                    setCurrentWithdraw({
-                                        showWithdraw: true,
-                                        id: value.id,
-                                        dailyWithdrawMoney: value.dailyWithdrawMoney,
-                                    })
-                                }
-                                style={{ marginLeft: 5, cursor: 'pointer' }}
-                            >
-                                <img className={styles.iconSize} src={ic_edit} alt="" />
-                            </span>
-                        )}
-                    </td>
-                    <td
-                        className="col-1"
-                        onClick={() => {
-                            (admin?.role === Role.ROLE_ADMIN || admin?.role === Role.ROLE_STAFF) &&
-                                setCurrentUpdate({
-                                    showStatus: true,
-                                    id: value.id,
-                                    status: value.status,
-                                });
-                        }}
-                    >
+    const renderDataUsers = loading ? (
+        <ModalLoading />
+    ) : devices.length === 0 ? (
+        <EmptyComponent />
+    ) : (
+        devices.map((value, index) => (
+            <tr className="row text-center" key={(value, index)}>
+                <td className="col-2">{value.deviceKey}</td>
+                <td className={admin?.role === Role.ROLE_ADMIN ? 'col-2' : 'col-1'}>
+                    {value.username}
+                </td>
+                <td className="col-2">
+                    [{value.bankName}]{value.numberAccount}
+                </td>
+                <td className={`col-1 ${styles.moneyColor}`}>{formatVnd(value.totalMoney)}</td>
+                <td className={`col-1 ${styles.moneyColor}`}>
+                    <div>+{formatVnd(value.dailySendMoney)}</div>
+                    <div>-{formatVnd(value.withdrawMoney)}</div>
+                </td>
+                <td className={`col-1 ${styles.moneyColor}`}>
+                    <div>+{formatVnd(value.allSendMoney)}</div>
+                    <div>-{formatVnd(value.allWithdrawMoney)}</div>
+                </td>
+                <td className={admin?.role === Role.ROLE_ADMIN ? 'col-1' : 'col-2'}>
+                    {formatVnd(value.dailyWithdrawMoney)}
+                    {admin?.role === Role.ROLE_ADMIN && (
                         <span
-                            className={
-                                value.status === DeviceStatusValue.off
-                                    ? styles.lockedStatus
-                                    : value.status === DeviceStatusValue.on
-                                    ? styles.activeStatus
-                                    : styles.pauseStatus
+                            onClick={() =>
+                                setCurrentWithdraw({
+                                    showWithdraw: true,
+                                    id: value.id,
+                                    dailyWithdrawMoney: value.dailyWithdrawMoney,
+                                })
                             }
+                            style={{ marginLeft: 5, cursor: 'pointer' }}
                         >
-                            {DeviceStatus[value.status] &&
-                                formatMessage({ id: DeviceStatus[value.status] })}
+                            <img className={styles.iconSize} src={ic_edit} alt="" />
                         </span>
-                    </td>
+                    )}
+                </td>
+                <td
+                    className="col-1"
+                    onClick={() => {
+                        (admin?.role === Role.ROLE_ADMIN || admin?.role === Role.ROLE_STAFF) &&
+                            setCurrentUpdate({
+                                showStatus: true,
+                                id: value.id,
+                                status: value.status,
+                            });
+                    }}
+                >
+                    <span
+                        className={
+                            value.status === DeviceStatusValue.off
+                                ? styles.lockedStatus
+                                : value.status === DeviceStatusValue.on
+                                ? styles.activeStatus
+                                : styles.pauseStatus
+                        }
+                    >
+                        {DeviceStatus[value.status] &&
+                            formatMessage({ id: DeviceStatus[value.status] })}
+                    </span>
+                </td>
 
-                    <td className="col-1">
+                <td className="col-1">
+                    <img
+                        style={{ marginRight: 7 }}
+                        onClick={() => refresh(value.id)}
+                        src={ic_refresh}
+                        alt="refresh"
+                        width={20}
+                        height={20}
+                    />
+                    {admin?.role === Role.ROLE_ADMIN && (
                         <img
-                            style={{ marginRight: 7 }}
-                            onClick={() => refresh(value.id)}
-                            src={ic_refresh}
-                            alt="refresh"
-                            width={20}
-                            height={20}
+                            className={styles.sizeIcon}
+                            src={ic_delete}
+                            onClick={() => handleDelete(value.id)}
+                            alt="Delete"
                         />
-                        {admin?.role === Role.ROLE_ADMIN && (
-                            <>
-                                {/* <img
-                                    style={{ marginRight: 7 }}
-                                    onClick={() => goToEdit(value.id)}
-                                    className={styles.iconSize}
-                                    src={ic_edit}
-                                    alt=""
-                                /> */}
-                                <img
-                                    className={styles.sizeIcon}
-                                    src={ic_delete}
-                                    onClick={() => handleDelete(value.id)}
-                                    alt="Delete"
-                                />
-                            </>
-                        )}
-                    </td>
-                </tr>
-            ))
-        );
+                    )}
+                </td>
+            </tr>
+        ))
+    );
     const goToCreate = () => {
         router.push('/home/create-card');
     };
 
-    const key = 'sortNameBank';
-    const arrayUniqueByBankName = [
-        ...new Map(listPaymentType.map(item => [item[key], item])).values(),
-    ];
+    const arrayUniqueByBankName = listPaymentType.filter(paymentType =>
+        paymentType.fullNameBank.includes('System-'),
+    );
 
     const refresh = id => {
         let payload = {
