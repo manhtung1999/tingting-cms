@@ -9,7 +9,7 @@ import ModalUpdateBalance from '../ModalUpdateBalance';
 import { formatVnd } from '@/util/function';
 
 function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStore }) {
-    const { detailAccount, devices, accounts } = accountStore;
+    const { detailAccount, accounts } = accountStore;
     const [infoFee, setInfoFee] = useState();
 
     useEffect(() => {

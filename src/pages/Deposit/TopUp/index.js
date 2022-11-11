@@ -46,18 +46,20 @@ function TopUp({ dispatch, depositStore }) {
         setAmount(Number(e.currentTarget.rawValue));
     };
 
-    const renderOptions = devices
-        .filter(i => i.status === 1)
-        .filter(bank => bank.deviceOfUserId === admin?.id)
-        .map((item, index) => {
-            return (
-                <Option value={item.id}>
-                    <span>
-                        {item.bankName} - {item.numberAccount} - {item.username}
-                    </span>
-                </Option>
-            );
-        });
+    let userDevice = devices.filter(bank => bank.deviceOfUserId === admin?.id);
+    if (userDevice.length === 0) {
+        userDevice = [...devices];
+    }
+
+    const renderOptions = userDevice.map((item, index) => {
+        return (
+            <Option value={item.id}>
+                <span>
+                    {item.bankName} - {item.numberAccount} - {item.username}
+                </span>
+            </Option>
+        );
+    });
 
     return (
         <div className={styles.content}>
