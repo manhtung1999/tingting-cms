@@ -1,25 +1,5 @@
 @import "@/base.scss";
 
-.select {
-    :global {
-        .ant-select-selector {
-            background-color: #fff !important;
-            border: 1px solid #6C7078 !important;
-            height: 34px !important;
-            display: flex;
-            align-items: center;
-        }
-
-        .ant-select-dropdown {
-            background-color: #fff !important;
-        }
-
-        .ant-select-selection-item {
-            color: #000;
-        }
-    }
-}
-
 .addRecip {
     display: flex;
     align-items: center;
@@ -55,14 +35,4 @@
             }
         }
     }
-
-    .listSecret {
-        &>div>span {
-            color: #000 !important;
-        }
-    }
-}
-
-.textInputLight {
-    width: 100%;
 }

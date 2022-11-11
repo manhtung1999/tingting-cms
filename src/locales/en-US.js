@@ -62,6 +62,7 @@ export default {
     childIndexes: 'Child Indexes',
 
     DELAY_EXPORT: 'Time left to export',
+    ADD_MERCHANT_TO_DEVICE: 'Add merchant to device',
 
     // Thao tác
 

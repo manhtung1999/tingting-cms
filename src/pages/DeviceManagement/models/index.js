@@ -3,6 +3,7 @@ import { message } from 'antd';
 import { handleErrorModel, isJsonString } from '@/util/function';
 import { router } from 'umi';
 import depositService from '@/services/deposit';
+import accountService from '@/services/account';
 
 export default {
     namespace: 'DEVICE',
@@ -18,6 +19,7 @@ export default {
         actionObj: undefined,
         metadata: undefined,
         actionType: 'LOGIN',
+        listMerchant: [],
     },
     reducers: {
         getDevicesSuccess(state, action) {
@@ -124,9 +126,32 @@ export default {
                 actionObj,
             };
         },
+
+        getMerchantSuccess(state, action) {
+            return {
+                ...state,
+
+                listMerchant: action.payload.body,
+            };
+        },
     },
 
     effects: {
+        *getMerchants(action, { call, put }) {
+            try {
+                const res = yield call(accountService.getAccounts, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'getMerchantSuccess', payload: res.body });
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
         *getPaymentType(action, { call, put }) {
             try {
                 const res = yield call(depositService.getPaymentType, action.payload);

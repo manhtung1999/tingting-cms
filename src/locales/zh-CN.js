@@ -48,6 +48,7 @@ export default {
     INFO_LIST: 'Danh sách info',
     EDIT_INFO: 'Cập nhật info',
     DELAY_EXPORT: 'Thời gian còn lại để xuất báo cáo tiếp theo',
+    ADD_MERCHANT_TO_DEVICE: 'Thêm khách hàng vào thiết vị',
 
     // end thao tác
 

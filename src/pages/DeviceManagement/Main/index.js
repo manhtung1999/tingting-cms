@@ -1,6 +1,7 @@
 import ic_delete from '@/assets/image/ic_delete.svg';
 import ic_edit from '@/assets/image/ic_edit.svg';
 import ic_refresh from '@/assets/image/ic_refresh.png';
+import ic_agent from '@/assets/image/ic_agent.png';
 import EmptyComponent from '@/components/EmptyComponent';
 import { ADMIN_KEY, DeviceStatus, PAGE_SIZE } from '@/config/constant';
 import { useLocalStorage } from '@/hooks';
@@ -15,6 +16,7 @@ import ModalUpdateDailyWithdraw from '../ModalUpdateDailyWithdraw';
 import ModalUpdateStatus from '../ModalUpdateStatus';
 import styles from './styles.scss';
 import ModalLoading from '@/components/ModalLoading';
+import ModalUpdateUserToDevice from '../ModalUpdateUserToDevice';
 const { confirm } = Modal;
 const { Option } = Select;
 
@@ -36,6 +38,11 @@ function DeviceManagement(props) {
         showWithdraw: false,
         id: undefined,
         dailyWithdrawMoney: undefined,
+    });
+
+    const [currentDevice, setCurrentDevice] = useState({
+        isShow: false,
+        id: undefined,
     });
 
     useEffect(() => {
@@ -148,6 +155,19 @@ function DeviceManagement(props) {
                 <td className="col-1">
                     <img
                         style={{ marginRight: 7 }}
+                        onClick={() =>
+                            setCurrentDevice({
+                                isShow: true,
+                                id: value.id,
+                            })
+                        }
+                        src={ic_agent}
+                        alt="ic_agent"
+                        width={20}
+                        height={20}
+                    />
+                    <img
+                        style={{ marginRight: 7 }}
                         onClick={() => refresh(value.id)}
                         src={ic_refresh}
                         alt="refresh"
@@ -187,6 +207,12 @@ function DeviceManagement(props) {
 
     return (
         <div className={styles.content}>
+            {currentDevice && (
+                <ModalUpdateUserToDevice
+                    currentDevice={currentDevice}
+                    setCurrentDevice={setCurrentDevice}
+                />
+            )}
             <div className={styles.header}>
                 <div>
                     <h3>{formatMessage({ id: 'DEVICE_MANAGEMENT' })}</h3>

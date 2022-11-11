@@ -59,7 +59,6 @@ export default {
         },
 
         getAgentSuccess(state, action) {
-            console.log('listAgent', action.payload.body);
             return {
                 ...state,
                 listAgent: action.payload.body,
