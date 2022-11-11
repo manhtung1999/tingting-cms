@@ -27,7 +27,7 @@ function TopUp({ dispatch, depositStore }) {
 
     useEffect(() => {
         const payload = {
-            status: 'on',
+            // status: 'on',
         };
         dispatch({ type: 'DEPOSIT/getDevices', payload });
     }, [dispatch]);
@@ -51,15 +51,17 @@ function TopUp({ dispatch, depositStore }) {
         userDevice = [...devices];
     }
 
-    const renderOptions = userDevice.map((item, index) => {
-        return (
-            <Option value={item.id}>
-                <span>
-                    {item.bankName} - {item.numberAccount} - {item.username}
-                </span>
-            </Option>
-        );
-    });
+    const renderOptions = userDevice
+        .filter(device => device.status === 1)
+        .map((item, index) => {
+            return (
+                <Option value={item.id}>
+                    <span>
+                        {item.bankName} - {item.numberAccount} - {item.username}
+                    </span>
+                </Option>
+            );
+        });
 
     return (
         <div className={styles.content}>
