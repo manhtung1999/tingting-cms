@@ -153,19 +153,21 @@ function DeviceManagement(props) {
                 </td>
 
                 <td className="col-1">
-                    <img
-                        style={{ marginRight: 7 }}
-                        onClick={() =>
-                            setCurrentDevice({
-                                isShow: true,
-                                id: value.id,
-                            })
-                        }
-                        src={ic_agent}
-                        alt="ic_agent"
-                        width={20}
-                        height={20}
-                    />
+                    {admin?.role === Role.ROLE_ADMIN && (
+                        <img
+                            style={{ marginRight: 7 }}
+                            onClick={() =>
+                                setCurrentDevice({
+                                    isShow: true,
+                                    id: value.id,
+                                })
+                            }
+                            src={ic_agent}
+                            alt="ic_agent"
+                            width={20}
+                            height={20}
+                        />
+                    )}
                     <img
                         style={{ marginRight: 7 }}
                         onClick={() => refresh(value.id)}
