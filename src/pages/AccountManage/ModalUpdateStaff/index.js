@@ -9,11 +9,20 @@ import ModalUpdateBalance from '../ModalUpdateBalance';
 import { formatVnd } from '@/util/function';
 
 function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStore }) {
-    const { detailAccount, accounts } = accountStore;
+    const { detailAccount, accounts, agents } = accountStore;
     const [infoFee, setInfoFee] = useState();
 
     useEffect(() => {
         dispatch({ type: 'ACCOUNT/getDevices' });
+    }, [dispatch]);
+
+    useEffect(() => {
+        let payload = {
+            deleted: false,
+            role: 'ROLE_AGENT',
+        };
+
+        dispatch({ type: 'ACCOUNT/getAgents', payload });
     }, [dispatch]);
 
     useEffect(() => {
@@ -105,6 +114,9 @@ function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStor
           })
         : null;
 
+    let agent = agents.find(agent => agent.id === detailAccount.parentId);
+    let agentName = agent ? agent.phone : null;
+
     return (
         <Modal
             title={formatMessage({ id: 'CONFIG_PERCENT_DEPOSIT_WITHDRAW_AND_BALANCE' })}
@@ -116,6 +128,10 @@ function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStor
             destroyOnClose
         >
             <div className={styles.form}>
+                <div className="mb-3">
+                    <h5>{formatMessage({ id: 'AGENT' })}:</h5>
+                    <span>{agentName || 'Chưa có đại lý'}</span>
+                </div>
                 <div className="mb-3">
                     <h5>{formatMessage({ id: 'BANK_LIEN_KET' })}:</h5>
                     {renderBankConnected}

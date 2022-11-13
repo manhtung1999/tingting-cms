@@ -12,7 +12,6 @@ function ModalAddAgent({ accountStore, dispatch, currentAddAgent, setCurrentAddA
 
     useEffect(() => {
         let payload = {
-            page: 0,
             role: 'ROLE_AGENT',
             deleted: false,
         };
