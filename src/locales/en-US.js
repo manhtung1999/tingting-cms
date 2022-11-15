@@ -34,7 +34,7 @@ export default {
     UPDATE_BALANCE: 'Update Balance',
     UPDATE_BANK: 'Update Bank',
     REFRESH_ALL: 'Refresh all',
-    HISTORY_EDIT_BALANCE: 'History edit merchant balance',
+    HISTORY_EDIT_BALANCE: 'History edit balance',
     HANDLE_ACC: 'User handle',
     ACTION_TYPE: 'Action type',
     MANIPULATION_LIST: 'Manipulation list',

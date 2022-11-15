@@ -14,10 +14,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { router, withRouter } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
 import ModalSecret from '../ModalSecret';
-import ModalUpdateAgent from '../ModalUpdateAgent';
 import ModalUpdateStaff from '../ModalUpdateStaff';
 import ModalAddAgent from '../ModalAddAgent';
 import styles from './styles.scss';
+import ModalUpdateBalance from '../ModalUpdateBalance';
 
 const { RangePicker } = DatePicker;
 
@@ -171,13 +171,19 @@ function AccountManage(props) {
                                     className={styles.sizeIcon}
                                     src={ic_eye}
                                     onClick={() => handleGetSecret(value.id)}
-                                    alt="Edit"
+                                    alt="secret"
                                 />
                             </>
                         )}
+
+                    {/* edit số dư đại lý */}
+                    {role === RoleName[Role.ROLE_AGENT] && admin?.role === Role.ROLE_ADMIN && (
+                        <ModalUpdateBalance id={value.id} currentMoney={value.currentMoney} />
+                    )}
                     {admin?.role === Role.ROLE_ADMIN && (
                         <>
                             <img
+                                style={{ marginLeft: 10 }}
                                 className={styles.sizeIcon}
                                 src={ic_delete}
                                 onClick={() => handleDelete(value.id)}
@@ -216,8 +222,9 @@ function AccountManage(props) {
             )}
 
             {currentAgent.isShow && (
-                <ModalUpdateAgent currentAgent={currentAgent} setCurrentAgent={setCurrentAgent} />
+                <ModalUpdateBalance id={currentAgent.id} currentMoney={currentAgent.currentMoney} />
             )}
+
             {showSecret && (
                 <ModalSecret
                     listSecret={listSecret}
@@ -227,9 +234,6 @@ function AccountManage(props) {
             )}
 
             <div className={styles.header}>
-                {/* <div>
-                    <h3>{formatMessage({ id: 'ACCOUNT_MANAGEMENT' })}</h3>
-                </div> */}
                 <div className={styles.filterByRole}>
                     {admin?.role === Role.ROLE_ADMIN && (
                         <>
@@ -275,14 +279,7 @@ function AccountManage(props) {
                                 {formatMessage({ id: 'ROLE_AGENT' })}
                             </span>
 
-                            <span
-                                className={
-                                    role === RoleName[Role.ROLE_AGENT]
-                                        ? styles.activeRole
-                                        : styles.role
-                                }
-                                onClick={() => router.push('/home/history-edit')}
-                            >
+                            <span onClick={() => router.push('/home/history-edit')}>
                                 {formatMessage({ id: 'HISTORY_EDIT_BALANCE' })}
                             </span>
                         </>

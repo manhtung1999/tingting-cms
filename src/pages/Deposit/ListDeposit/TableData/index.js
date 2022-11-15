@@ -1,4 +1,3 @@
-import ic_delete from '@/assets/image/ic_delete.svg';
 import ic_check from '@/assets/image/ic_check.svg';
 import ModalLoading from '@/components/ModalLoading';
 import {

@@ -25,7 +25,7 @@ const { RangePicker } = DatePicker;
 
 function ListHistory(props) {
     const { historyStore, dispatch } = props;
-    const { listMerchant } = historyStore;
+    const { listMerchant, agents } = historyStore;
     const [rangeTime, setRangeTime] = useState([]);
     const [userId, setUserId] = useState();
 
@@ -40,7 +40,6 @@ function ListHistory(props) {
 
     useEffect(() => {
         const payload = {
-            // page: 0,
             role: RoleName[Role.ROLE_USER],
         };
         if (admin?.role === Role.ROLE_AGENT) {
@@ -48,6 +47,15 @@ function ListHistory(props) {
         }
         admin?.role !== Role.ROLE_USER && dispatch({ type: 'HISTORY/getMerchants', payload });
     }, [admin, dispatch]);
+
+    // get agent
+    useEffect(() => {
+        const payload = {
+            role: RoleName[Role.ROLE_AGENT],
+            deleted: false,
+        };
+        dispatch({ type: 'HISTORY/getAgents', payload });
+    }, [dispatch]);
 
     useEffect(() => {
         let payload = {
@@ -158,19 +166,34 @@ function ListHistory(props) {
                 {(admin?.role === Role.ROLE_ACCOUNTANT ||
                     admin?.role === Role.ROLE_ADMIN ||
                     admin?.role === Role.ROLE_STAFF) && (
-                    <div className={styles.select}>
-                        <div className="mb-1">{formatMessage({ id: 'MERCHANT' })}:</div>
-                        <Select
-                            style={{ minWidth: 180 }}
-                            defaultValue=""
-                            onChange={value => setUserId(value)}
-                        >
-                            <Option value={''}>{formatMessage({ id: 'ALL' })}</Option>
-                            {listMerchant.map(item => {
-                                return <Option value={item.id}>{item.phone}</Option>;
-                            })}
-                        </Select>
-                    </div>
+                    <>
+                        <div className={styles.select} style={{ marginRight: 15 }}>
+                            <div className="mb-1">{formatMessage({ id: 'MERCHANT' })}:</div>
+                            <Select
+                                style={{ minWidth: 180 }}
+                                defaultValue=""
+                                onChange={value => setUserId(value)}
+                            >
+                                <Option value={''}>{formatMessage({ id: 'ALL' })}</Option>
+                                {listMerchant.map(item => {
+                                    return <Option value={item.id}>{item.phone}</Option>;
+                                })}
+                            </Select>
+                        </div>
+                        <div className={styles.select}>
+                            <div className="mb-1">{formatMessage({ id: 'AGENT' })}:</div>
+                            <Select
+                                style={{ minWidth: 180 }}
+                                defaultValue=""
+                                onChange={value => setUserId(value)}
+                            >
+                                <Option value={''}>{formatMessage({ id: 'ALL' })}</Option>
+                                {agents.map(item => {
+                                    return <Option value={item.id}>{item.phone}</Option>;
+                                })}
+                            </Select>
+                        </div>
+                    </>
                 )}
             </div>
             <TableData pageIndex={pageIndex} setPageIndex={setPageIndex} />

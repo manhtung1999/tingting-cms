@@ -38,11 +38,7 @@
 
     .pageFilter {
         margin: 10px 0;
-
-        .yellowBtn {
-            height: 34px;
-            margin-bottom: -38px;
-        }
+        justify-content: flex-start;
     }
 
     .tabs {

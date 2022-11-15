@@ -16,6 +16,7 @@ export default {
         listSecret: [],
         deleteResponse: undefined,
         devices: [],
+        agents: [],
     },
     reducers: {
         loading(state, action) {
@@ -87,6 +88,13 @@ export default {
                 devices: prevDevice,
             };
         },
+
+        getAgentsSuccess(state, action) {
+            return {
+                ...state,
+                agents: action.payload.body,
+            };
+        },
     },
 
     effects: {
@@ -132,6 +140,21 @@ export default {
                 const res = yield call(accountService.getAccounts, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'getMerchantSuccess', payload: res.body });
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *getAgents(action, { call, put }) {
+            try {
+                const res = yield call(accountService.getAccounts, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'getAgentsSuccess', payload: res.body });
                 } else {
                     message.error(res.body.message);
                     yield put({ type: 'error' });

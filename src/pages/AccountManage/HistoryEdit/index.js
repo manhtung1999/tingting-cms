@@ -25,7 +25,7 @@ const { RangePicker } = DatePicker;
 
 function ListReport(props) {
     const { reportStore, dispatch } = props;
-    const { listMerchant, deleteResponse, updateResponse, devices } = reportStore;
+    const { listMerchant, deleteResponse, updateResponse, devices, agents } = reportStore;
     const [rangeTime, setRangeTime] = useState([]);
     const [paymentType, setPaymentType] = useState();
     const [deviceId, setDeviceId] = useState();
@@ -39,15 +39,22 @@ function ListReport(props) {
         dispatch({ type: 'REPORT/getDevices' });
     }, [dispatch]);
 
+    // get agent
     useEffect(() => {
         const payload = {
-            page: 0,
-            role: RoleName[Role.ROLE_USER],
+            role: RoleName[Role.ROLE_AGENT],
+            deleted: false,
         };
-        if (admin?.role === Role.ROLE_AGENT) {
-            payload.agentId = admin.id;
-        }
-        admin?.role !== Role.ROLE_USER && dispatch({ type: 'REPORT/getMerchants', payload });
+        dispatch({ type: 'REPORT/getAgents', payload });
+    }, [dispatch]);
+
+    useEffect(() => {
+        const payload = {
+            role: RoleName[Role.ROLE_USER],
+            deleted: false,
+        };
+
+        dispatch({ type: 'REPORT/getMerchants', payload });
     }, [admin, dispatch]);
 
     useEffect(() => {
@@ -236,6 +243,6 @@ function ListReport(props) {
     );
 }
 
-export default connect(({ REPORT }) => ({
-    reportStore: REPORT,
+export default connect(({ ACCOUNT }) => ({
+    reportStore: ACCOUNT,
 }))(withRouter(ListReport));

@@ -93,7 +93,7 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                                 {' - '}
                                 <span>{item.bankAccount}</span>
                             </td>
-                            <td className="col-1">{renderTransferAcc(item)}</td>
+                            <td className="col-2">{renderTransferAcc(item)}</td>
                             <td className={admin?.role === Role.ROLE_ADMIN ? 'col-1' : 'col-2'}>
                                 {item.totalCurrentMoney > 0
                                     ? formatVnd(item.totalCurrentMoney)
@@ -174,7 +174,7 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                                     '---'
                                 )}
                             </td>
-                            {admin?.role === Role.ROLE_ADMIN && (
+                            {/* {admin?.role === Role.ROLE_ADMIN && (
                                 <td className="col-1 d-flex justify-content-center">
                                     <img
                                         className={styles.sizeIcon}
@@ -183,7 +183,7 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                                         alt="delete"
                                     />
                                 </td>
-                            )}
+                            )} */}
                         </tr>
                     );
                 })
@@ -200,18 +200,14 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                     <tr className="text-center">
                         <th className="col-2">{formatMessage({ id: 'ORDER_ID' })}</th>
                         <th className="col-2">{formatMessage({ id: 'RECIPIENT_ACC' })}</th>
-                        <th className="col-1">{formatMessage({ id: 'TRANSFER_ACC' })}</th>
-
+                        <th className="col-2">{formatMessage({ id: 'TRANSFER_ACC' })}</th>
                         <th className={admin?.role === Role.ROLE_ADMIN ? 'col-1' : 'col-2'}>
                             {formatMessage({ id: 'AMOUNT' })}
                         </th>
                         <th className="col-1">{formatMessage({ id: 'STATUS' })}</th>
                         <th className="col-1">{formatMessage({ id: 'CREATED_AT' })}</th>
                         <th className="col-1">{formatMessage({ id: 'UPDATED_AT' })}</th>
-                        <th className="col-2">{formatMessage({ id: 'HANDING_AT' })}</th>
-                        {admin?.role === Role.ROLE_ADMIN && (
-                            <th className="col-1">{formatMessage({ id: 'ACTION' })}</th>
-                        )}
+                        <th className="col-2">{formatMessage({ id: 'HANDING_AT' })}</th>d */}
                     </tr>
                 </thead>
                 <tbody>{renderData}</tbody>

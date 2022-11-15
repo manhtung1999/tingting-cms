@@ -32,7 +32,7 @@ export default {
     UPDATE_BALANCE: 'Cập nhật số dư',
     UPDATE_BANK: 'Cập nhật bank',
     REFRESH_ALL: 'Refresh tất cả',
-    HISTORY_EDIT_BALANCE: 'Lịch sử chỉnh sửa số dư KH',
+    HISTORY_EDIT_BALANCE: 'Lịch sử chỉnh sửa số dư',
     HANDLE_ACC: 'Người xử lý',
     ACTION_TYPE: 'Loại thao tác',
     MANIPULATION_LIST: 'Danh sách thao tác',

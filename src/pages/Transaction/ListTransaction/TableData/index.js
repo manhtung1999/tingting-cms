@@ -34,7 +34,7 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
     const renderData = listDeposit.map((item, index) => {
         return (
             <tr className="text-center" key={index}>
-                <td className="col-1">{item.code}</td>
+                <td className="col-2">{item.code}</td>
                 <td className="col-3">
                     {item.systemTransactionType === 2 ? (
                         <span>{formatMessage({ id: 'INTERNAL_MONEY_TRANSFER' })}</span>
@@ -69,14 +69,14 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
                         </>
                     )}
                 </td>
-                <td className={admin?.role === Role.ROLE_ADMIN ? 'col-1' : 'col-2'}>
+                <td className={'col-1'}>
                     {item.totalCurrentMoney > 0
                         ? formatVnd(item.totalCurrentMoney)
                         : formatVnd(item.totalMoney)}
                 </td>
                 <td className="col-1">{moment(item.createdAt).format(DATE_TRANSACTION)}</td>
                 <td className="col-1">{moment(item.updatedAt).format(DATE_TRANSACTION)}</td>
-                {admin?.role === Role.ROLE_ADMIN && (
+                {/* {admin?.role === Role.ROLE_ADMIN && (
                     <td className="col-1 d-flex justify-content-center">
                         <img
                             className={styles.sizeIcon}
@@ -85,7 +85,7 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
                             alt="delete"
                         />
                     </td>
-                )}
+                )} */}
             </tr>
         );
     });
@@ -99,18 +99,13 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
             <table>
                 <thead>
                     <tr className="text-center">
-                        <th className="col-1">{formatMessage({ id: 'REMARK' })}</th>
+                        <th className="col-2">{formatMessage({ id: 'REMARK' })}</th>
                         <th className="col-3">{formatMessage({ id: 'TYPE' })}</th>
                         <th className="col-2">{formatMessage({ id: 'RECIPIENT_ACC' })}</th>
                         <th className="col-2">{formatMessage({ id: 'MERCHANT_CHANNEL' })}</th>
-                        <th className={admin?.role === Role.ROLE_ADMIN ? 'col-1' : 'col-2'}>
-                            {formatMessage({ id: 'AMOUNT' })}
-                        </th>
+                        <th className={'col-1'}>{formatMessage({ id: 'AMOUNT' })}</th>
                         <th className="col-1">{formatMessage({ id: 'CREATED_AT' })}</th>
                         <th className="col-1">{formatMessage({ id: 'UPDATED_AT' })}</th>
-                        {admin?.role === Role.ROLE_ADMIN && (
-                            <th className="col-1">{formatMessage({ id: 'ACTION' })}</th>
-                        )}
                     </tr>
                 </thead>
                 <tbody>{renderData}</tbody>

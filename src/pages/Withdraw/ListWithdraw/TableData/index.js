@@ -86,7 +86,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
             if (mobile) {
                 return (
                     <>
-                        <div>{mobile.bankName}</div>
+                        <div>{mobile.bankName}-</div>
                         <span>{mobile.numberAccount}</span>
                     </>
                 );
@@ -107,7 +107,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                     return (
                         <tr className="text-center" key={index}>
                             <td className="col-1">{item.orderCode}</td>
-                            <td className="col-1">
+                            <td className="col-2">
                                 {listMerchant.find(i => i.id === item.ownerId)?.phone}
                                 {listAgent.find(i => i.id === item.ownerId)?.phone}
                                 {' - '}
@@ -118,9 +118,11 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                 <span>{item.bankName}</span>
                                 {' - '}
                                 <span>{item.bankAccount}</span>
+                                {' - '}
+                                <span>{item.bankUsername}</span>
                             </td>
                             <td className="col-1">{renderTransferAcc(item)}</td>
-                            <td className={admin?.role === Role.ROLE_ADMIN ? 'col-1' : 'col-2'}>
+                            <td className={'col-1'}>
                                 {item.totalCurrentMoney > 0
                                     ? formatVnd(item.totalCurrentMoney)
                                     : formatVnd(item.totalMoney)}
@@ -263,16 +265,6 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                     '---'
                                 )}
                             </td>
-                            {admin?.role === Role.ROLE_ADMIN && (
-                                <td className="col-1 d-flex justify-content-center">
-                                    <img
-                                        className={styles.sizeIcon}
-                                        src={ic_delete}
-                                        onClick={() => handleDelete(item.id)}
-                                        alt="delete"
-                                    />
-                                </td>
-                            )}
                         </tr>
                     );
                 })
@@ -291,21 +283,16 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                 <thead>
                     <tr className="text-center">
                         <th className="col-1">{formatMessage({ id: 'MERCHANT_ORDER' })}</th>
-                        <th className="col-1">{formatMessage({ id: 'MERCHANT_USERNAME' })}</th>
+                        <th className="col-2">{formatMessage({ id: 'MERCHANT_USERNAME' })}</th>
                         <th className="col-1">{formatMessage({ id: 'ORDER_ID' })}</th>
                         <th className="col-2">{formatMessage({ id: 'RECIPIENT_ACC' })}</th>
                         <th className="col-1">{formatMessage({ id: 'TRANSFER_ACC' })}</th>
 
-                        <th className={admin?.role === Role.ROLE_ADMIN ? 'col-1' : 'col-2'}>
-                            {formatMessage({ id: 'AMOUNT' })}
-                        </th>
+                        <th className={'col-1'}>{formatMessage({ id: 'AMOUNT' })}</th>
                         <th className="col-1">{formatMessage({ id: 'STATUS' })}</th>
                         <th className="col-1">{formatMessage({ id: 'CREATED_AT' })}</th>
                         <th className="col-1">{formatMessage({ id: 'UPDATED_AT' })}</th>
                         <th className="col-1">{formatMessage({ id: 'HANDING_AT' })}</th>
-                        {admin?.role === Role.ROLE_ADMIN && (
-                            <th className="col-1">{formatMessage({ id: 'ACTION' })}</th>
-                        )}
                     </tr>
                 </thead>
                 <tbody>{renderData}</tbody>

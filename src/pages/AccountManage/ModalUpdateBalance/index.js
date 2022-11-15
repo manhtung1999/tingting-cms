@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 
-function ModalUpdateBalance({ accountStore, dispatch, id, currentMoney }) {
+function ModalUpdateBalance({ dispatch, id, currentMoney }) {
     const [isShow, setIsShow] = useState(false);
 
     const [totalMoney, setTotalMoney] = useState();
@@ -32,8 +32,11 @@ function ModalUpdateBalance({ accountStore, dispatch, id, currentMoney }) {
 
     return (
         <>
-            <div style={{ height: 40, marginLeft: 'auto' }}>
-                <button className={styles.primaryBtn} onClick={() => setIsShow(true)}>
+            <div>
+                {/* <button className={styles.primaryBtn} onClick={() => setIsShow(true)}>
+                    {formatMessage({ id: 'UPDATE_BALANCE' })}
+                </button> */}
+                <button className={styles.smallPrimaryBtn} onClick={() => setIsShow(true)}>
                     {formatMessage({ id: 'UPDATE_BALANCE' })}
                 </button>
             </div>

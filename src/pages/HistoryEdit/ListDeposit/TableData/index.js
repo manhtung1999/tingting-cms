@@ -14,7 +14,7 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import moment from 'moment';
 function TableData({ historyStore, pageIndex, setPageIndex }) {
-    const { listDeposit, totalRow, loading, listMerchant } = historyStore;
+    const { listDeposit, totalRow, loading, listMerchant, agents } = historyStore;
 
     const renderData = listDeposit
         .filter(i => i.transactionName !== TIEN_KHONG_RO_NGUON)
@@ -23,6 +23,7 @@ function TableData({ historyStore, pageIndex, setPageIndex }) {
                 <tr className="text-center" key={index}>
                     <td className="col-1">
                         {listMerchant.find(i => i.id === item.ownerId)?.phone}
+                        {agents.find(i => i.id === item.ownerId)?.phone}
                     </td>
                     <td className="col-2">
                         {item.systemTransactionType === 2 ? (
