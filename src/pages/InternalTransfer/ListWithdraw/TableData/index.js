@@ -26,17 +26,6 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
     const { listWithdraw, totalRow, loading, devices } = internalStore;
     const [admin] = useLocalStorage(ADMIN_KEY);
 
-    const handleDelete = id => {
-        confirm({
-            title: formatMessage({ id: 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_TRANSACTION' }),
-            onOk: () => {
-                const payload = { id };
-                dispatch({ type: 'INTERNAL_TRANSFER/deleteDeposit', payload });
-            },
-            onCancel: () => {},
-        });
-    };
-
     const handleDeny = id => {
         let reason;
         confirm({
@@ -92,6 +81,8 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                                 <span>{item.bankName}</span>
                                 {' - '}
                                 <span>{item.bankAccount}</span>
+                                {' - '}
+                                <span>{item.bankUsername}</span>
                             </td>
                             <td className="col-2">{renderTransferAcc(item)}</td>
                             <td className={admin?.role === Role.ROLE_ADMIN ? 'col-1' : 'col-2'}>
@@ -174,16 +165,6 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                                     '---'
                                 )}
                             </td>
-                            {/* {admin?.role === Role.ROLE_ADMIN && (
-                                <td className="col-1 d-flex justify-content-center">
-                                    <img
-                                        className={styles.sizeIcon}
-                                        src={ic_delete}
-                                        onClick={() => handleDelete(item.id)}
-                                        alt="delete"
-                                    />
-                                </td>
-                            )} */}
                         </tr>
                     );
                 })

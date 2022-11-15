@@ -1,36 +1,15 @@
-import ic_delete from '@/assets/image/ic_delete.svg';
 import ModalLoading from '@/components/ModalLoading';
-import {
-    ADMIN_ID,
-    ADMIN_KEY,
-    DATE_TRANSACTION,
-    PAGE_SIZE,
-    PaymentTypeValue,
-    Role,
-} from '@/config/constant';
-import { useLocalStorage } from '@/hooks';
+import { ADMIN_ID, DATE_TRANSACTION, PAGE_SIZE, PaymentTypeValue } from '@/config/constant';
 import { formatVnd } from '@/util/function';
-import { Modal, Pagination } from 'antd';
+import { Pagination } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import React from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
-const { confirm } = Modal;
 
 function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
     const { listDeposit, totalRow, loading, listMerchant } = transactionStore;
-    const [admin] = useLocalStorage(ADMIN_KEY);
-    const handleDelete = id => {
-        confirm({
-            title: formatMessage({ id: 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_TRANSACTION' }),
-            onOk: () => {
-                const payload = { id };
-                dispatch({ type: 'TRANSACTION/deleteTransaction', payload });
-            },
-            onCancel: () => {},
-        });
-    };
     const renderData = listDeposit.map((item, index) => {
         return (
             <tr className="text-center" key={index}>
@@ -43,7 +22,7 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
                     )}
                 </td>
                 <td className="col-2">
-                    {item.bankName} - {item.bankAccount}
+                    {item.bankName} - {item.bankAccount} - {item.bankUsername}
                 </td>
                 <td className="col-2">
                     {//  chuyển tiền nội bộ
@@ -76,16 +55,6 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
                 </td>
                 <td className="col-1">{moment(item.createdAt).format(DATE_TRANSACTION)}</td>
                 <td className="col-1">{moment(item.updatedAt).format(DATE_TRANSACTION)}</td>
-                {/* {admin?.role === Role.ROLE_ADMIN && (
-                    <td className="col-1 d-flex justify-content-center">
-                        <img
-                            className={styles.sizeIcon}
-                            src={ic_delete}
-                            onClick={() => handleDelete(item.id)}
-                            alt="delete"
-                        />
-                    </td>
-                )} */}
             </tr>
         );
     });

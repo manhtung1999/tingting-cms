@@ -2,7 +2,6 @@ import ModalLoading from '@/components/ModalLoading';
 import {
     PAGE_SIZE,
     PaymentTypeValue,
-    TIEN_KHONG_RO_NGUON,
     TransactionType,
     Role,
     DATE_FORMAT_TRANSACTION,
@@ -26,50 +25,46 @@ function TableData({ reportStore, pageIndex, setPageIndex }) {
     });
     const [admin] = useLocalStorage(ADMIN_KEY);
 
-    const renderData = listDeposit
-        // .filter(i => i.transactionName !== TIEN_KHONG_RO_NGUON)
-        .map((item, index) => {
-            return (
-                <tr className="text-center" key={index}>
-                    {admin?.role !== Role.ROLE_USER && (
-                        <td className="col-1">
-                            {listMerchant.find(i => i.id === item.ownerId)?.phone}
-                        </td>
+    const renderData = listDeposit.map((item, index) => {
+        return (
+            <tr className="text-center" key={index}>
+                {admin?.role !== Role.ROLE_USER && (
+                    <td className="col-1">
+                        {listMerchant.find(i => i.id === item.ownerId)?.phone}
+                    </td>
+                )}
+                <td className="col-1">
+                    {PaymentTypeValue[item.paymentType] &&
+                        formatMessage({ id: PaymentTypeValue[item.paymentType] })}
+                </td>
+                <td className="col-2">
+                    {item.systemTransactionType === 2 ? (
+                        <span>{formatMessage({ id: 'INTERNAL_MONEY_TRANSFER' })}</span>
+                    ) : (
+                        <span>{item.transactionName}</span>
                     )}
-                    <td className="col-1">
-                        {PaymentTypeValue[item.paymentType] &&
-                            formatMessage({ id: PaymentTypeValue[item.paymentType] })}
-                    </td>
-                    <td className="col-2">
-                        {item.systemTransactionType === 2 ? (
-                            <span>{formatMessage({ id: 'INTERNAL_MONEY_TRANSFER' })}</span>
-                        ) : (
-                            <span>{item.transactionName}</span>
-                        )}
-                    </td>
-                    <td className="col-1">
-                        {item.transactionType === TransactionType['send_money']
-                            ? formatVnd(item.totalMoneyChange)
-                            : formatVnd(item.totalCurrentMoney)}
-                    </td>
-                    <td className="col-1">
-                        {item.transactionType === TransactionType['send_money']
-                            ? formatVnd(item.totalCurrentMoney - item.totalMoneyChange)
-                            : formatVnd(item.totalMoneyChange - item.totalCurrentMoney)}
-                    </td>
-                    <td className="col-1">{formatVnd(item.userMoney)}</td>
-                    <td className="col-2">
-                        {item.bankName} - {item.bankAccount}
-                    </td>
-                    <td className={admin?.role !== Role.ROLE_USER ? 'col-1' : 'col-2'}>
-                        {item.code}
-                    </td>
-                    <td className={'col-2'}>
-                        {moment(item.updatedAt).format(DATE_FORMAT_TRANSACTION)}
-                    </td>
-                </tr>
-            );
-        });
+                </td>
+                <td className="col-1">
+                    {item.transactionType === TransactionType['send_money']
+                        ? formatVnd(item.totalMoneyChange)
+                        : formatVnd(item.totalCurrentMoney)}
+                </td>
+                <td className="col-1">
+                    {item.transactionType === TransactionType['send_money']
+                        ? formatVnd(item.totalCurrentMoney - item.totalMoneyChange)
+                        : formatVnd(item.totalMoneyChange - item.totalCurrentMoney)}
+                </td>
+                <td className="col-1">{formatVnd(item.userMoney)}</td>
+                <td className="col-2">
+                    {item.bankName} - {item.bankAccount} -{item.bankUsername}
+                </td>
+                <td className={admin?.role !== Role.ROLE_USER ? 'col-1' : 'col-2'}>{item.code}</td>
+                <td className={'col-2'}>
+                    {moment(item.updatedAt).format(DATE_FORMAT_TRANSACTION)}
+                </td>
+            </tr>
+        );
+    });
 
     if (loading) {
         return <ModalLoading />;
