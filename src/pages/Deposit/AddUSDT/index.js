@@ -80,6 +80,7 @@ function AddUSDT({ dispatch, depositStore }) {
                                 options={{
                                     numeral: true,
                                     numeralThousandsGroupStyle: 'thousand',
+                                    numeralDecimalScale: 0,
                                 }}
                             />
                         </Form.Item>
