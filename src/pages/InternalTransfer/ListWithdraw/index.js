@@ -38,9 +38,7 @@ function ListInternalTransfer(props) {
 
     const [pageIndex, setPageIndex] = useState(1);
 
-    const [min, setMin] = useState();
-    const [max, setMax] = useState();
-
+    const [amount, setAmount] = useState();
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
 
@@ -51,12 +49,12 @@ function ListInternalTransfer(props) {
     useEffect(() => {
         let payload = {
             page: pageIndex - 1,
-            // transactionType: 'withdraw_money',
             transactionStatus,
             startDate: rangeTime?.[0],
             endDate: rangeTime?.[1],
             deviceId,
             systemTransactionType: 'MONEY_SEND_INTERNAL',
+            amount,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             payload.agentId = admin.id;
@@ -84,6 +82,7 @@ function ListInternalTransfer(props) {
         approveResponse,
         admin,
         deviceId,
+        amount,
     ]);
 
     function disabledDate(current) {
@@ -154,11 +153,7 @@ function ListInternalTransfer(props) {
     };
 
     const handleChangeMin = e => {
-        setMin(Number(e.currentTarget.rawValue));
-    };
-
-    const handleChangeMax = e => {
-        setMax(Number(e.currentTarget.rawValue));
+        setAmount(Number(e.currentTarget.rawValue));
     };
 
     return (
@@ -209,23 +204,11 @@ function ListInternalTransfer(props) {
                 </div>
                 {/* filter by amount money */}
                 <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
-                    <div className="mb-1">{formatMessage({ id: 'MIN' })}</div>
+                    <div className="mb-1">{formatMessage({ id: 'AMOUNT' })}</div>
                     <Cleave
-                        value={min}
+                        value={amount}
                         className={styles.textInput}
                         onChange={handleChangeMin}
-                        options={{
-                            numeral: true,
-                            numeralThousandsGroupStyle: 'thousand',
-                        }}
-                    />
-                </div>
-                <div className={styles.select}>
-                    <div className="mb-1">{formatMessage({ id: 'MAX' })}</div>
-                    <Cleave
-                        value={max}
-                        className={styles.textInput}
-                        onChange={handleChangeMax}
                         options={{
                             numeral: true,
                             numeralThousandsGroupStyle: 'thousand',

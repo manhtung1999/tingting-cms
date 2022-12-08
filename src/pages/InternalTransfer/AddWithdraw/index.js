@@ -116,8 +116,33 @@ const TransferBalance = props => {
                             <Select
                                 style={{ minWidth: 300 }}
                                 onChange={value => setMobileId(value)}
+                                showSearch
+                                optionFilterProp="children"
+                                filterOption={(input, option) =>
+                                    (option?.label ?? '')
+                                        .toLowerCase()
+                                        .includes(input.toLowerCase())
+                                }
+                                options={devices
+                                    .filter(device => !device.deviceOfUserId)
+                                    .map(item => {
+                                        return {
+                                            value: item.id,
+                                            label: `${item.bankName} - ${item.numberAccount} - ${
+                                                item.username
+                                            }- ${formatVnd(item.totalMoney)}`,
+                                        };
+                                        // return (
+                                        //     <Option value={item.id}>
+                                        //         {' '}
+                                        //         {item.bankName} - {item.numberAccount} -{' '}
+                                        //         {item.username}{' '}
+                                        //         <span>- {formatVnd(item.totalMoney)}</span>
+                                        //     </Option>
+                                        // );
+                                    })}
                             >
-                                {devices
+                                {/* {devices
                                     .filter(device => !device.deviceOfUserId)
                                     .map(item => {
                                         return (
@@ -128,7 +153,7 @@ const TransferBalance = props => {
                                                 <span>- {formatVnd(item.totalMoney)}</span>
                                             </Option>
                                         );
-                                    })}
+                                    })} */}
                             </Select>
                         </Form.Item>
 
