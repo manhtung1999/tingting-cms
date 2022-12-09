@@ -20,6 +20,7 @@ export default {
         addCardResponse: undefined,
         denyResponse: undefined,
         approveResponse: undefined,
+        appConfirmResponse: undefined,
     },
     reducers: {
         loading(state, action) {
@@ -109,11 +110,18 @@ export default {
                 approveResponse: action.payload,
             };
         },
+
+        appConfirmMoneySuccess(state, action) {
+            return {
+                ...state,
+                loading: false,
+                appConfirmResponse: action.payload,
+            };
+        },
     },
 
     effects: {
         *getWithdraws(action, { call, put }) {
-            // yield put({ type: 'loading' });
             try {
                 const res = yield call(depositService.getDeposits, action.payload);
                 if (res.status === 200) {
@@ -278,6 +286,23 @@ export default {
                 const res = yield call(depositService.approveTransaction, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'approveTransactionSuccess', payload: res.body });
+                    message.success(formatMessage({ id: 'SUCCESS' }));
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *appConfirmMoney(action, { call, put }) {
+            yield put({ type: 'loading' });
+            try {
+                const res = yield call(depositService.appConfirmMoney, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'appConfirmMoneySuccess', payload: res.body });
                     message.success(formatMessage({ id: 'SUCCESS' }));
                 } else {
                     message.error(res.body.message);

@@ -61,11 +61,6 @@ export default {
                     Routes: ['./src/components/AdminAuthentication'],
                 },
                 {
-                    path: '/home/tranfer-balance',
-                    component: '../pages/TransferBalance',
-                    Routes: ['./src/components/AdminAuthentication'],
-                },
-                {
                     path: '/home/admin',
                     component: '../pages/Admin',
                     Routes: ['./src/components/AdminAuthentication'],

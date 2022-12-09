@@ -145,12 +145,6 @@ function PageHeader(props) {
 
     if (admin?.role === Role.ROLE_ACCOUNTANT) {
         const transferMenu = [
-            // {
-            //     page: 'transfer-manage',
-            //     icon: <img src={ic_business} />,
-            //     url: '/home/tranfer-balance',
-            //     text: formatMessage({ id: 'TRANFER_BALANCE' }),
-            // },
             {
                 page: 'internal-transfer',
                 icon: <img src={ic_business} />,

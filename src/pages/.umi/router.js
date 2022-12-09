@@ -212,27 +212,6 @@ const routes = [
         _title_default: 'TingTing',
       },
       {
-        path: '/home/tranfer-balance',
-        component: __IS_BROWSER
-          ? _dvaDynamic({
-              app: require('@tmp/dva').getApp(),
-              models: () => [
-                import(/* webpackChunkName: 'p__TransferBalance__models__index.js' */ '/Users/macair/TrungBach/TingTingPayCMS/src/pages/TransferBalance/models/index.js').then(
-                  m => {
-                    return { namespace: 'index', ...m.default };
-                  },
-                ),
-              ],
-              component: () =>
-                import(/* webpackChunkName: "p__TransferBalance" */ '../TransferBalance'),
-            })
-          : require('../TransferBalance').default,
-        Routes: [require('../../components/AdminAuthentication').default],
-        exact: true,
-        _title: 'TingTing',
-        _title_default: 'TingTing',
-      },
-      {
         path: '/home/admin',
         component: __IS_BROWSER
           ? _dvaDynamic({

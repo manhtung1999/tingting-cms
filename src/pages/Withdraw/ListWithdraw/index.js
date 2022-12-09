@@ -33,6 +33,7 @@ function ListWithdraw(props) {
         updateResponse,
         denyResponse,
         approveResponse,
+        appConfirmResponse,
         devices,
     } = withdrawStore;
     const [rangeTime, setRangeTime] = useState([]);
@@ -116,6 +117,7 @@ function ListWithdraw(props) {
         dispatch,
         denyResponse,
         approveResponse,
+        appConfirmResponse,
         admin,
         userId,
         deviceId,
@@ -282,16 +284,18 @@ function ListWithdraw(props) {
                         style={{ minWidth: 300 }}
                         defaultValue=""
                         onChange={value => setDeviceId(value)}
-                    >
-                        <Option value={''}>{formatMessage({ id: 'ALL' })}</Option>
-                        {devices.map(item => {
-                            return (
-                                <Option value={item.id}>
-                                    {item.bankName} - {item.numberAccount} - {item.username}{' '}
-                                </Option>
-                            );
+                        showSearch
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                        }
+                        options={devices.map(item => {
+                            return {
+                                value: item.id,
+                                label: `${item.bankName} - ${item.numberAccount} - ${item.username}`,
+                            };
                         })}
-                    </Select>
+                    ></Select>
                 </div>
 
                 {/* filter by order KH */}

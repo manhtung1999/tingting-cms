@@ -30,6 +30,7 @@ function ListInternalTransfer(props) {
         updateResponse,
         denyResponse,
         approveResponse,
+        appConfirmResponse,
         devices,
     } = internalStore;
     const [rangeTime, setRangeTime] = useState([]);
@@ -83,6 +84,7 @@ function ListInternalTransfer(props) {
         admin,
         deviceId,
         amount,
+        appConfirmResponse,
     ]);
 
     function disabledDate(current) {
@@ -191,16 +193,18 @@ function ListInternalTransfer(props) {
                         style={{ minWidth: 320 }}
                         defaultValue=""
                         onChange={value => setDeviceId(value)}
-                    >
-                        <Option value={''}>{formatMessage({ id: 'ALL' })}</Option>
-                        {devices.map(item => {
-                            return (
-                                <Option value={item.id}>
-                                    {item.bankName} - {item.numberAccount} - {item.username}{' '}
-                                </Option>
-                            );
+                        showSearch
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                        }
+                        options={devices.map(item => {
+                            return {
+                                value: item.id,
+                                label: `${item.bankName} - ${item.numberAccount} - ${item.username}`,
+                            };
                         })}
-                    </Select>
+                    ></Select>
                 </div>
                 {/* filter by amount money */}
                 <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>

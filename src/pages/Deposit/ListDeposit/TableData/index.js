@@ -8,21 +8,20 @@ import {
     PaymentTypeValue,
     Role,
     TIEN_KHONG_RO_NGUON,
-    TransactionStatusValue,
     TransactionStatus,
+    TransactionStatusValue,
 } from '@/config/constant';
 import { useLocalStorage } from '@/hooks';
 import { formatVnd } from '@/util/function';
-import { Modal, Pagination } from 'antd';
+import { Pagination } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import ModalConfirm from '../ModalConfirm';
 import styles from './styles.scss';
-const { confirm } = Modal;
 
-function TableData({ dispatch, depositStore, pageIndex, setPageIndex }) {
+function TableData({ depositStore, pageIndex, setPageIndex }) {
     const { listDeposit, totalRow, loading, listMerchant } = depositStore;
     const [admin] = useLocalStorage(ADMIN_KEY);
 
@@ -31,26 +30,12 @@ function TableData({ dispatch, depositStore, pageIndex, setPageIndex }) {
         id: undefined,
     });
 
-    const handleDelete = id => {
-        confirm({
-            title: formatMessage({ id: 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_TRANSACTION' }),
-            onOk: () => {
-                const payload = { id };
-                dispatch({ type: 'DEPOSIT/deleteTransaction', payload });
-            },
-            onCancel: () => {},
-        });
-    };
-
     const handleAdminConfirm = id => {
         setModalConfirm({
             isShow: true,
             id,
         });
     };
-
-    const map = listDeposit.filter(i => i.transactionName === TIEN_KHONG_RO_NGUON);
-    console.log('map', map);
 
     const renderData = listDeposit
         .filter(i => i.transactionName !== TIEN_KHONG_RO_NGUON)
@@ -93,7 +78,6 @@ function TableData({ dispatch, depositStore, pageIndex, setPageIndex }) {
                             </div>
                         )}
                     </td>
-                    {/* <td className={admin?.role === Role.ROLE_ADMIN ? 'col-1' : 'col-2'}> */}
                     <td className="col-1">
                         {item.totalCurrentMoney > 0
                             ? formatVnd(item.totalCurrentMoney)
@@ -123,16 +107,6 @@ function TableData({ dispatch, depositStore, pageIndex, setPageIndex }) {
                     </td>
                     <td className="col-1">{moment(item.createdAt).format(DATE_TRANSACTION)}</td>
                     <td className="col-1">{moment(item.updatedAt).format(DATE_TRANSACTION)}</td>
-                    {/* {admin?.role === Role.ROLE_ADMIN && (
-                        <td className="col-1 d-flex justify-content-center">
-                            <img
-                                className={styles.sizeIcon}
-                                src={ic_delete}
-                                onClick={() => handleDelete(item.id)}
-                                alt="delete"
-                            />
-                        </td>
-                    )} */}
                 </tr>
             );
         });
@@ -152,16 +126,10 @@ function TableData({ dispatch, depositStore, pageIndex, setPageIndex }) {
                         <th className="col-1">{formatMessage({ id: 'USER_ORDER' })}</th>
                         <th className="col-2">{formatMessage({ id: 'RECIPIENT_ACC' })}</th>
                         <th className="col-2">{formatMessage({ id: 'MERCHANT_CHANNEL' })}</th>
-                        {/* <th className={admin?.role === Role.ROLE_ADMIN ? 'col-1' : 'col-2'}>
-                            {formatMessage({ id: 'AMOUNT' })}
-                        </th> */}
                         <th className="col-1">{formatMessage({ id: 'AMOUNT' })}</th>
                         <th className="col-1">{formatMessage({ id: 'STATUS' })}</th>
                         <th className="col-1">{formatMessage({ id: 'CREATED_AT' })}</th>
                         <th className="col-1">{formatMessage({ id: 'UPDATED_AT' })}</th>
-                        {/* {admin?.role === Role.ROLE_ADMIN && (
-                            <th className="col-1">{formatMessage({ id: 'ACTION' })}</th>
-                        )} */}
                     </tr>
                 </thead>
                 <tbody>{renderData}</tbody>

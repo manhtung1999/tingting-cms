@@ -1,4 +1,3 @@
-import ic_delete from '@/assets/image/ic_delete.svg';
 import EmptyComponent from '@/components/EmptyComponent';
 import ModalLoading from '@/components/ModalLoading';
 import {
@@ -19,7 +18,7 @@ import React from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import ic_cancel from '@/assets/image/ic_cancel.png';
-
+import ic_call from '@/assets/image/ic_call.png';
 const { confirm } = Modal;
 
 function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
@@ -47,6 +46,32 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                 }
                 const payload = { id, reason };
                 dispatch({ type: 'INTERNAL_TRANSFER/denyTransaction', payload });
+            },
+            onCancel: () => {},
+        });
+    };
+
+    const handleAppConfirm = item => {
+        if (devices.length === 0) {
+            message.info(formatMessage({ id: 'PLEASE_WAIT_GET_DEVICE_SUCCESS' }));
+            return;
+        }
+        const deviceKey = devices.find(device => device.id === item.mobileId)?.deviceKey;
+        if (!deviceKey) {
+            message.error('Không có device rút.');
+            return;
+        }
+        confirm({
+            title: formatMessage({ id: 'ARE_YOU_SURE_YOU_WANT_TO_APP_CONFIRM_THIS_TRANSACTION' }),
+            content: <div></div>,
+            onOk: () => {
+                const payload = {
+                    code: item.orderUsername,
+                    currentMoney: item.totalMoney,
+                    type: 1,
+                    deviceKey,
+                };
+                dispatch({ type: 'WITHDRAW/appConfirmMoney', payload });
             },
             onCancel: () => {},
         });
@@ -126,6 +151,17 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                                                     }}
                                                 />
                                             </span>
+                                        )}
+
+                                        {/* app confirm đơn update 09/12/2022 */}
+                                        {(admin?.role === Role.ROLE_ADMIN ||
+                                            admin?.role === Role.ROLE_ACCOUNTANT) && (
+                                            <img
+                                                onClick={() => handleAppConfirm(item)}
+                                                src={ic_call}
+                                                alt="app confirm"
+                                                style={{ width: 17, height: 17 }}
+                                            />
                                         )}
                                     </>
                                 ) : (

@@ -132,29 +132,8 @@ const TransferBalance = props => {
                                                 item.username
                                             }- ${formatVnd(item.totalMoney)}`,
                                         };
-                                        // return (
-                                        //     <Option value={item.id}>
-                                        //         {' '}
-                                        //         {item.bankName} - {item.numberAccount} -{' '}
-                                        //         {item.username}{' '}
-                                        //         <span>- {formatVnd(item.totalMoney)}</span>
-                                        //     </Option>
-                                        // );
                                     })}
-                            >
-                                {/* {devices
-                                    .filter(device => !device.deviceOfUserId)
-                                    .map(item => {
-                                        return (
-                                            <Option value={item.id}>
-                                                {' '}
-                                                {item.bankName} - {item.numberAccount} -{' '}
-                                                {item.username}{' '}
-                                                <span>- {formatVnd(item.totalMoney)}</span>
-                                            </Option>
-                                        );
-                                    })} */}
-                            </Select>
+                            ></Select>
                         </Form.Item>
 
                         {typeTransfer === 1 ? (
@@ -166,20 +145,26 @@ const TransferBalance = props => {
                                 <Select
                                     style={{ minWidth: 300 }}
                                     onChange={value => setMobileIdReceiveMoney(value)}
-                                >
-                                    {devices
+                                    showSearch
+                                    optionFilterProp="children"
+                                    filterOption={(input, option) =>
+                                        (option?.label ?? '')
+                                            .toLowerCase()
+                                            .includes(input.toLowerCase())
+                                    }
+                                    options={devices
                                         .filter(device => !device.deviceOfUserId)
                                         .map(item => {
-                                            return (
-                                                <Option value={item.id}>
-                                                    {' '}
-                                                    {item.bankName} - {item.numberAccount} -{' '}
-                                                    {item.username}{' '}
-                                                    <span>- {formatVnd(item.totalMoney)}</span>
-                                                </Option>
-                                            );
+                                            return {
+                                                value: item.id,
+                                                label: `${item.bankName} - ${
+                                                    item.numberAccount
+                                                } - ${item.username}- ${formatVnd(
+                                                    item.totalMoney,
+                                                )}`,
+                                            };
                                         })}
-                                </Select>
+                                ></Select>
                             </Form.Item>
                         ) : (
                             <>

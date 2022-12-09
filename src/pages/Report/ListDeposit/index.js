@@ -242,16 +242,18 @@ function ListReport(props) {
                         style={{ minWidth: 300 }}
                         defaultValue=""
                         onChange={value => setDeviceId(value)}
-                    >
-                        <Option value={''}>{formatMessage({ id: 'ALL' })}</Option>
-                        {devices.map(item => {
-                            return (
-                                <Option value={item.id}>
-                                    {item.bankName} - {item.numberAccount}{' '}
-                                </Option>
-                            );
+                        showSearch
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                        }
+                        options={devices.map(item => {
+                            return {
+                                value: item.id,
+                                label: `${item.bankName} - ${item.numberAccount} - ${item.username}`,
+                            };
                         })}
-                    </Select>
+                    ></Select>
                 </div>
 
                 <div className={styles.select}>

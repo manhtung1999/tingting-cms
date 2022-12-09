@@ -75,4 +75,8 @@ export default {
     getUserCard: payload => {
         return request.get('api/v1/card-bank/user-get', payload);
     },
+
+    appConfirmMoney: payload => {
+        return request.post('api/v1/public/confirm-money', payload);
+    },
 };

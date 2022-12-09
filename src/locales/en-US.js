@@ -1,4 +1,8 @@
 export default {
+    ARE_YOU_SURE_YOU_WANT_TO_APP_CONFIRM_THIS_TRANSACTION:
+        'Are you sure want to app confirm this transaction?',
+    PLEASE_WAIT_GET_DEVICE_SUCCESS: 'Please wait get devices success',
+    USDT_TO_DEPOSIT: 'USDT to deposit',
     REMARK: 'Remark',
     ALL_TRANSACTION: 'All transaction',
     TYPE: 'Type',

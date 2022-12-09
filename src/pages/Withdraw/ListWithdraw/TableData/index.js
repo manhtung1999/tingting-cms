@@ -1,5 +1,5 @@
 import ic_check from '@/assets/image/ic_check.svg';
-import ic_delete from '@/assets/image/ic_delete.svg';
+import ic_call from '@/assets/image/ic_call.png';
 import ic_uncheck from '@/assets/image/ic_uncheck.svg';
 import ic_cancel from '@/assets/image/ic_cancel.png';
 import EmptyComponent from '@/components/EmptyComponent';
@@ -22,6 +22,7 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import ModalApprove from '../ModalApprove';
 import styles from './styles.scss';
 import { TIEN_KHONG_RO_NGUON } from '@/config/constant';
+
 const { confirm } = Modal;
 
 function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
@@ -33,17 +34,6 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
         bankName: undefined,
     });
     const [admin] = useLocalStorage(ADMIN_KEY);
-
-    const handleDelete = id => {
-        confirm({
-            title: formatMessage({ id: 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_TRANSACTION' }),
-            onOk: () => {
-                const payload = { id };
-                dispatch({ type: 'WITHDRAW/deleteDeposit', payload });
-            },
-            onCancel: () => {},
-        });
-    };
 
     const handleDeny = id => {
         let reason;
@@ -77,6 +67,32 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
             isShow: true,
             amount,
             bankName,
+        });
+    };
+
+    const handleAppConfirm = item => {
+        if (devices.length === 0) {
+            message.info(formatMessage({ id: 'PLEASE_WAIT_GET_DEVICE_SUCCESS' }));
+            return;
+        }
+        const deviceKey = devices.find(device => device.id === item.mobileId)?.deviceKey;
+        if (!deviceKey) {
+            message.error('Không có device rút.');
+            return;
+        }
+        confirm({
+            title: formatMessage({ id: 'ARE_YOU_SURE_YOU_WANT_TO_APP_CONFIRM_THIS_TRANSACTION' }),
+            content: <div></div>,
+            onOk: () => {
+                const payload = {
+                    code: item.orderUsername,
+                    currentMoney: item.totalMoney,
+                    type: 1,
+                    deviceKey,
+                };
+                dispatch({ type: 'WITHDRAW/appConfirmMoney', payload });
+            },
+            onCancel: () => {},
         });
     };
 
@@ -128,6 +144,11 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                     : formatVnd(item.totalMoney)}
                             </td>
                             <td className="col-1">
+                                {/* 
+                                    Đơn đang xử lý: 
+                                    + nếu nhân viên duyệt rồi thì trạng thái processing kèm nút hủy giao dịch.
+                                    + nếu chưa duyệt thì thêm nút duyệt hoặc từ chối ( đối với đại lý và ko đại lý)
+                                */}
                                 {item.transactionStatus === TransactionStatus.IN_PROGRESS_STAFF ? (
                                     item.staffApproveId ? (
                                         <>
@@ -152,6 +173,16 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                                         }}
                                                     />
                                                 </span>
+                                            )}
+                                            {/* app confirm đơn update 09/12/2022 */}
+                                            {(admin?.role === Role.ROLE_ADMIN ||
+                                                admin?.role === Role.ROLE_ACCOUNTANT) && (
+                                                <img
+                                                    onClick={() => handleAppConfirm(item)}
+                                                    src={ic_call}
+                                                    alt="app confirm"
+                                                    style={{ width: 19, height: 19 }}
+                                                />
                                             )}
                                         </>
                                     ) : (
@@ -195,6 +226,8 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                                         />
                                                     </>
                                                 )}
+
+                                            {/* confirm đơn của đại lý */}
                                             {(admin?.role === Role.ROLE_ADMIN ||
                                                 admin?.role === Role.ROLE_ACCOUNTANT) &&
                                                 listAgent.find(
@@ -226,9 +259,21 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                                         />
                                                     </>
                                                 )}
+
+                                            {/* app confirm đơn update 09/12/2022 */}
+                                            {(admin?.role === Role.ROLE_ADMIN ||
+                                                admin?.role === Role.ROLE_ACCOUNTANT) && (
+                                                <img
+                                                    onClick={() => handleAppConfirm(item)}
+                                                    src={ic_call}
+                                                    alt="app confirm"
+                                                    style={{ width: 17, height: 17, marginLeft: 5 }}
+                                                />
+                                            )}
                                         </>
                                     )
                                 ) : (
+                                    // trạng thái khác
                                     <div className="mb-2">
                                         {formatMessage({
                                             id: TransactionStatusValue[item.transactionStatus],

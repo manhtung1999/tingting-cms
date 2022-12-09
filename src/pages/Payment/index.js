@@ -1,7 +1,7 @@
 import { formatVnd } from '@/util/function';
 import { Button, Typography } from 'antd';
 import { connect } from 'dva';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { withRouter } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
 import ModalLoading from '../../components/ModalLoading';
@@ -10,15 +10,7 @@ import styles from './styles.scss';
 const { Paragraph } = Typography;
 
 function Payment({ location }) {
-    const [timeLeft, setTimeLeft] = useState();
     const { query } = location;
-    useEffect(() => {
-        if (query) {
-            const current = new Date();
-            current.setMinutes(current.getMinutes() + 300 / 60);
-            setTimeLeft(current);
-        }
-    }, [query]);
 
     if (!query) {
         return <ModalLoading />;
@@ -35,15 +27,27 @@ function Payment({ location }) {
                 {query.bankName === 'USDT' ? (
                     <>
                         <h3>
-                            <Paragraph copyable={{ text: query.walletAddress }}>
-                                {formatMessage({ id: 'WALLET_ADDRESS' })}: {query.walletAddress}
-                            </Paragraph>
+                            {formatMessage({ id: 'AMOUNT' })}: {query.amount}{' '}
+                            <h3 className="ms-2 d-inline-block" style={{ color: '#000' }}>
+                                VND
+                            </h3>
                         </h3>
                         <h3>
-                            {formatMessage({ id: 'AMOUNT' })}: {query.amount}{' '}
+                            {formatMessage({ id: 'EXCHANGE_RATE' })}: {query.exchangeRate}{' '}
+                            <h3 className="ms-2 d-inline-block" style={{ color: '#000' }}>
+                                VND (= 1$) ( {formatMessage({ id: 'DA_BAO_GOM_CAC_KHOAN_PHI' })})
+                            </h3>
+                        </h3>
+                        <h3>
+                            {formatMessage({ id: 'USDT_TO_DEPOSIT' })}: {query.moneyUsdt}{' '}
                             <h3 className="ms-2 d-inline-block" style={{ color: '#000' }}>
                                 USDT
                             </h3>
+                        </h3>
+                        <h3>
+                            <Paragraph copyable={{ text: query.walletAddress }}>
+                                {formatMessage({ id: 'WALLET_ADDRESS' })}: {query.walletAddress}
+                            </Paragraph>
                         </h3>
                     </>
                 ) : (
