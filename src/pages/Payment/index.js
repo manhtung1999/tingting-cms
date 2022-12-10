@@ -27,23 +27,18 @@ function Payment({ location }) {
                     <>
                         <h3>
                             {formatMessage({ id: 'AMOUNT' })}: {formatVnd(Number(query.amount))}{' '}
-                            <h3 className="ms-2 d-inline-block" style={{ color: '#000' }}>
-                                VND
-                            </h3>
                         </h3>
                         <h3>
-                            {formatMessage({ id: 'EXCHANGE_RATE' })}: {query.exchangeRate}{' '}
+                            {formatMessage({ id: 'EXCHANGE_RATE' })}:{' '}
+                            {formatVnd(Number(query.exchangeRate))}{' '}
                             <h3 className="ms-2 d-inline-block" style={{ color: '#000' }}>
                                 VND (= 1$)
                             </h3>
                         </h3>
                         <h3>
                             <Paragraph copyable={{ text: query.moneyUsdt }}>
-                                {formatMessage({ id: 'USDT_TO_DEPOSIT' })}: {query.moneyUsdt}{' '}
+                                $ {formatMessage({ id: 'USDT_TO_DEPOSIT' })}: {query.moneyUsdt}{' '}
                             </Paragraph>
-                            <h3 className="ms-2 d-inline-block" style={{ color: '#000' }}>
-                                USDT
-                            </h3>
                         </h3>
                         <h3>
                             <Paragraph copyable={{ text: query.walletAddress }}>
