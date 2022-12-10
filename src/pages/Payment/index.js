@@ -6,7 +6,6 @@ import { withRouter } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
 import ModalLoading from '../../components/ModalLoading';
 import styles from './styles.scss';
-
 const { Paragraph } = Typography;
 
 function Payment({ location }) {
@@ -27,7 +26,7 @@ function Payment({ location }) {
                 {query.bankName === 'USDT' ? (
                     <>
                         <h3>
-                            {formatMessage({ id: 'AMOUNT' })}: {query.amount}{' '}
+                            {formatMessage({ id: 'AMOUNT' })}: {formatVnd(Number(query.amount))}{' '}
                             <h3 className="ms-2 d-inline-block" style={{ color: '#000' }}>
                                 VND
                             </h3>
@@ -35,11 +34,13 @@ function Payment({ location }) {
                         <h3>
                             {formatMessage({ id: 'EXCHANGE_RATE' })}: {query.exchangeRate}{' '}
                             <h3 className="ms-2 d-inline-block" style={{ color: '#000' }}>
-                                VND (= 1$) ( {formatMessage({ id: 'DA_BAO_GOM_CAC_KHOAN_PHI' })})
+                                VND (= 1$)
                             </h3>
                         </h3>
                         <h3>
-                            {formatMessage({ id: 'USDT_TO_DEPOSIT' })}: {query.moneyUsdt}{' '}
+                            <Paragraph copyable={{ text: query.moneyUsdt }}>
+                                {formatMessage({ id: 'USDT_TO_DEPOSIT' })}: {query.moneyUsdt}{' '}
+                            </Paragraph>
                             <h3 className="ms-2 d-inline-block" style={{ color: '#000' }}>
                                 USDT
                             </h3>
@@ -74,7 +75,7 @@ function Payment({ location }) {
 
                         <h3>
                             <Paragraph copyable={{ text: query.amount }}>
-                                {formatMessage({ id: 'AMOUNT' })}: {formatVnd(query.amount)}
+                                {formatMessage({ id: 'AMOUNT' })}: {formatVnd(Number(query.amount))}
                             </Paragraph>
                         </h3>
                         {query.bankName !== 'USDT' && (

@@ -69,8 +69,6 @@ function AddWithdraw({ dispatch, adminStore }) {
         <div className={styles.addWithdraw}>
             <h5 className="mb-3">{formatMessage({ id: 'ADD_WITHDRAW_REQUEST' })}</h5>
 
-            {/* <AddRecipient /> */}
-
             <div className={styles.form}>
                 <Form
                     labelCol={{ span: 5 }}
