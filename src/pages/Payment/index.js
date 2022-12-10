@@ -32,12 +32,12 @@ function Payment({ location }) {
                             {formatMessage({ id: 'EXCHANGE_RATE' })}:{' '}
                             {formatVnd(Number(query.exchangeRate))}{' '}
                             <h3 className="ms-2 d-inline-block" style={{ color: '#000' }}>
-                                VND (= 1$)
+                                (= 1$)
                             </h3>
                         </h3>
                         <h3>
                             <Paragraph copyable={{ text: query.moneyUsdt }}>
-                                $ {formatMessage({ id: 'USDT_TO_DEPOSIT' })}: {query.moneyUsdt}{' '}
+                                {formatMessage({ id: 'USDT_TO_DEPOSIT' })}: $ {query.moneyUsdt}{' '}
                             </Paragraph>
                         </h3>
                         <h3>
