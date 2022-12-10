@@ -92,18 +92,23 @@ function TopUp({ dispatch, adminStore }) {
                                 label={formatMessage({ id: 'ACCOUNT_RECEIPT' })}
                                 name="mobileId"
                                 rules={[{ required: true }]}
+                                
                             >
                                 <Select
-                                    showSearch
                                     style={{ minWidth: 180 }}
-                                    optionFilterProp="children"
-                                    filterOption={(input, option) =>
-                                        option.children.props.children[0]
-                                            .toLowerCase()
-                                            .includes(input.toLowerCase())
-                                    }
+                                    showSearch
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                        }
+                        options={devices.map(item => {
+                            return {
+                                value: item.id,
+                                label: `${item.bankName} - ${item.numberAccount} - ${item.username}`,
+                            };
+                        })}
                                 >
-                                    {renderOptions}
+                                    {/* {renderOptions} */}
                                 </Select>
                             </Form.Item>
                         )}

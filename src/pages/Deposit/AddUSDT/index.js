@@ -69,7 +69,7 @@ function AddUSDT({ dispatch, depositStore }) {
                         onFinish={handleSubmit}
                     >
                         <Form.Item
-                            label={`${formatMessage({ id: 'AMOUNT' })}(USDT):`}
+                            label={`${formatMessage({ id: 'AMOUNT' })}(VND):`}
                             name="totalMoney"
                             rules={[{ required: true }]}
                         >

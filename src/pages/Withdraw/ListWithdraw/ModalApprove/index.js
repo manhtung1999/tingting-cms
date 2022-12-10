@@ -22,12 +22,14 @@ function ModalApprove({ dispatch, currentTrans, setCurrentTrans, withdrawStore }
 
     const [maxBalanceDevice, setMaxBalanceDevice] = useState();
 
-    useEffect(() => {
-        if (devices.length) {
-            const maxBalanceDevice = devices.sort(compare)[0];
-            maxBalanceDevice && setMaxBalanceDevice(maxBalanceDevice.id);
-        }
-    }, [devices]);
+    console.log('devices', devices);
+
+    // useEffect(() => {
+    //     if (devices.length) {
+    //         const maxBalanceDevice = devices.sort(compare)[0];
+    //         maxBalanceDevice && setMaxBalanceDevice(maxBalanceDevice.id);
+    //     }
+    // }, [devices]);
 
     const handleClose = () => {
         setCurrentTrans({
@@ -37,6 +39,10 @@ function ModalApprove({ dispatch, currentTrans, setCurrentTrans, withdrawStore }
     };
 
     const handleSubmit = () => {
+        if (!maxBalanceDevice) {
+            message.error(formatMessage({ id: 'REQUIRE_VALUE' }));
+            return;
+        }
         const chooseDevice = devices.find(i => i.id === maxBalanceDevice);
         if (currentTrans.bankName === 'Momo' && chooseDevice.bankName !== 'Momo') {
             message.error(formatMessage({ id: 'CHOOSE_MOMO' }));
@@ -44,11 +50,6 @@ function ModalApprove({ dispatch, currentTrans, setCurrentTrans, withdrawStore }
         }
         if (currentTrans.bankName === 'ZaloPay' && chooseDevice.bankName !== 'ZaloPay') {
             message.error(formatMessage({ id: 'CHOOSE_ZALOPAY' }));
-            return;
-        }
-
-        if (currentTrans.bankName === 'VNPay' && chooseDevice.bankName !== 'VNPay') {
-            message.error(formatMessage({ id: 'CHOOSE_VNPAY' }));
             return;
         }
 
@@ -64,7 +65,7 @@ function ModalApprove({ dispatch, currentTrans, setCurrentTrans, withdrawStore }
         handleClose();
     };
 
-    if (!devices.length || !maxBalanceDevice) {
+    if (devices.length === 0) {
         return <ModalLoading />;
     }
 
@@ -81,10 +82,26 @@ function ModalApprove({ dispatch, currentTrans, setCurrentTrans, withdrawStore }
             <div className={styles.form}>
                 <div>{formatMessage({ id: 'SELECT_PAYMENT_ACCOUNT' })}:</div>
                 <Select
-                    defaultValue={maxBalanceDevice}
+                    style={{ minWidth: 350 }}
+                    defaultValue={''}
                     onChange={value => setMaxBalanceDevice(value)}
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
+                    options={devices
+                        .filter(device => device.status === DeviceStatusValue.on)
+                        .map(item => {
+                            return {
+                                value: item.id,
+                                label: `${item.bankName} - ${item.numberAccount} - ${
+                                    item.username
+                                } - ${formatVnd(item.totalMoney)}`,
+                            };
+                        })}
                 >
-                    {devices
+                    {/* {devices
                         .filter(device => device.status === DeviceStatusValue.on)
                         .map((item, index) => {
                             return (
@@ -96,7 +113,7 @@ function ModalApprove({ dispatch, currentTrans, setCurrentTrans, withdrawStore }
                                     <span>{formatVnd(item.totalMoney)}</span>
                                 </Select.Option>
                             );
-                        })}
+                        })} */}
                 </Select>
             </div>
         </Modal>
