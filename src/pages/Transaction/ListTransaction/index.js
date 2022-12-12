@@ -26,9 +26,14 @@ const { RangePicker } = DatePicker;
 
 function ListTransaction(props) {
     const { transactionStore, dispatch } = props;
-    const { listMerchant, deleteResponse, updateResponse, devices } = transactionStore;
+    const {
+        listMerchant,
+        deleteResponse,
+        updateResponse,
+        devices,
+        addNoteResponse,
+    } = transactionStore;
     const [rangeTime, setRangeTime] = useState([]);
-    const [transactionStatus, setTransactionStatus] = useState();
     const [paymentType, setPaymentType] = useState();
     const [deviceId, setDeviceId] = useState();
     const [userId, setUserId] = useState();
@@ -48,7 +53,6 @@ function ListTransaction(props) {
 
     useEffect(() => {
         const payload = {
-            // page: 0,
             role: RoleName[Role.ROLE_USER],
         };
         if (admin?.role === Role.ROLE_AGENT) {
@@ -60,7 +64,6 @@ function ListTransaction(props) {
     useEffect(() => {
         let payload = {
             page: pageIndex - 1,
-            // transactionType: 'send_money',
             transactionStatus: 'SUCCESS',
             userId,
             paymentType,
@@ -86,7 +89,6 @@ function ListTransaction(props) {
         pageIndex,
         userId,
         deleteResponse,
-        transactionStatus,
         orderCode,
         paymentType,
         updateResponse,
@@ -96,6 +98,7 @@ function ListTransaction(props) {
         deviceId,
         username,
         amount,
+        addNoteResponse,
     ]);
 
     function disabledDate(current) {

@@ -1,15 +1,44 @@
 import ModalLoading from '@/components/ModalLoading';
 import { ADMIN_ID, DATE_TRANSACTION, PAGE_SIZE, PaymentTypeValue } from '@/config/constant';
 import { formatVnd } from '@/util/function';
-import { Pagination } from 'antd';
+import { Pagination, Modal, Input, message } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import React from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
+import ic_edit from '@/assets/image/ic_edit.svg';
+const { confirm } = Modal;
 
 function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
     const { listDeposit, totalRow, loading, listMerchant } = transactionStore;
+
+    const handleAddNote = transactionCode => {
+        let note;
+        confirm({
+            title: formatMessage({ id: 'ADD_NOTE' }),
+            content: (
+                <div>
+                    <span style={{ color: '#000' }}>{formatMessage({ id: 'NOTE' })}:</span>
+                    <Input
+                        onChange={e => {
+                            note = e.target.value;
+                        }}
+                    />
+                </div>
+            ),
+            onOk: () => {
+                if (!note) {
+                    message.error(formatMessage({ id: 'REQUIRE_VALUE' }));
+                    return;
+                }
+                const payload = { code: transactionCode, note };
+                dispatch({ type: 'TRANSACTION/addNoteTransaction', payload });
+            },
+            onCancel: () => {},
+        });
+    };
+
     const renderData = listDeposit.map((item, index) => {
         return (
             <tr className="text-center" key={index}>
@@ -19,6 +48,24 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
                         <span>{formatMessage({ id: 'INTERNAL_MONEY_TRANSFER' })}</span>
                     ) : (
                         <span>{item.transactionName}</span>
+                    )}
+
+                    {/* nhân viên trực thêm note cho BDSD để note là đã đối chiếu với giao dịch nào */}
+                    {item.note ? (
+                        <div style={{ color: 'yellow' }}>Note: {item.note}</div>
+                    ) : (
+                        <div>
+                            <img
+                                style={{
+                                    width: 20,
+                                    height: 20,
+                                    marginTop: 5,
+                                }}
+                                src={ic_edit}
+                                onClick={() => handleAddNote(item.orderCode)}
+                                alt="Add Note"
+                            />
+                        </div>
                     )}
                 </td>
                 <td className="col-2">

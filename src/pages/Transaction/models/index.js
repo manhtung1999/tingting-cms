@@ -4,6 +4,8 @@ import depositService from '@/services/deposit';
 import accountService from '@/services/account';
 import secretService from '@/services/secret';
 import deviceService from '@/services/device';
+import { formatMessage } from 'umi-plugin-react/locale';
+
 export default {
     namespace: 'TRANSACTION',
     state: {
@@ -15,6 +17,7 @@ export default {
         listSecret: [],
         deleteResponse: undefined,
         devices: [],
+        addNoteResponse: undefined,
     },
     reducers: {
         loading(state, action) {
@@ -68,15 +71,16 @@ export default {
             };
         },
         getDevicesSuccess(state, action) {
-            const prevDevice = [...state.devices];
-            action.payload.body.map(i => {
-                if (!prevDevice.find(item => item.id === i.id)) {
-                    prevDevice.push(i);
-                }
-            });
             return {
                 ...state,
-                devices: prevDevice,
+                devices: action.payload.body,
+            };
+        },
+
+        addNoteTransactionSuccess(state, action) {
+            return {
+                ...state,
+                addNoteResponse: action.payload.body,
             };
         },
     },
@@ -192,6 +196,22 @@ export default {
                 const res = yield call(deviceService.getDevices, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'getDevicesSuccess', payload: res.body });
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *addNoteTransaction(action, { call, put }) {
+            try {
+                const res = yield call(depositService.addNoteTransaction, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'addNoteTransactionSuccess', payload: res.body });
+                    message.success(formatMessage({ id: 'SUCCESS' }));
                 } else {
                     message.error(res.body.message);
                     yield put({ type: 'error' });

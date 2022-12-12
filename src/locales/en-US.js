@@ -1,4 +1,6 @@
 export default {
+    ADD_NOTE: 'Add note',
+    NOTE: 'Note',
     ARE_YOU_SURE_YOU_WANT_TO_APP_CONFIRM_THIS_TRANSACTION:
         'Are you sure want to app confirm this transaction?',
     PLEASE_WAIT_GET_DEVICE_SUCCESS: 'Please wait get devices success',

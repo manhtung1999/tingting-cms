@@ -79,4 +79,8 @@ export default {
     appConfirmMoney: payload => {
         return request.post('api/v1/public/confirm-money', payload);
     },
+
+    addNoteTransaction: payload => {
+        return request.post('api/v1/user/update-note', payload);
+    },
 };

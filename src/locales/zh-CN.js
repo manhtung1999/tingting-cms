@@ -1,4 +1,6 @@
 export default {
+    ADD_NOTE: 'Thêm ghi chú',
+    NOTE: 'Ghi chú',
     ARE_YOU_SURE_YOU_WANT_TO_APP_CONFIRM_THIS_TRANSACTION:
         'Bạn có chắn chắn app confirm giao dịch này?',
     PLEASE_WAIT_GET_DEVICE_SUCCESS: 'Vui lòng chờ lấy xong danh sách thiết bị rồi thử lại.',

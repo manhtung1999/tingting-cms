@@ -33,9 +33,6 @@ function ModalUpdateBalance({ dispatch, id, currentMoney }) {
     return (
         <>
             <div>
-                {/* <button className={styles.primaryBtn} onClick={() => setIsShow(true)}>
-                    {formatMessage({ id: 'UPDATE_BALANCE' })}
-                </button> */}
                 <button className={styles.smallPrimaryBtn} onClick={() => setIsShow(true)}>
                     {formatMessage({ id: 'UPDATE_BALANCE' })}
                 </button>
