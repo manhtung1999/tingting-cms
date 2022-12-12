@@ -13,7 +13,7 @@ const { confirm } = Modal;
 function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
     const { listDeposit, totalRow, loading, listMerchant } = transactionStore;
 
-    const handleAddNote = transactionCode => {
+    const handleAddNote = transactionId => {
         let note;
         confirm({
             title: formatMessage({ id: 'ADD_NOTE' }),
@@ -32,7 +32,7 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
                     message.error(formatMessage({ id: 'REQUIRE_VALUE' }));
                     return;
                 }
-                const payload = { code: transactionCode, note };
+                const payload = { id: transactionId, note };
                 dispatch({ type: 'TRANSACTION/addNoteTransaction', payload });
             },
             onCancel: () => {},
@@ -62,7 +62,7 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
                                     marginTop: 5,
                                 }}
                                 src={ic_edit}
-                                onClick={() => handleAddNote(item.orderCode)}
+                                onClick={() => handleAddNote(item.id)}
                                 alt="Add Note"
                             />
                         </div>
