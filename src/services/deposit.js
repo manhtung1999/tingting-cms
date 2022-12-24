@@ -83,4 +83,8 @@ export default {
     addNoteTransaction: payload => {
         return request.post('api/v1/user/update-note', payload);
     },
+
+    deleteCardBank: payload => {
+        return request.post('api/v1/card-bank/delete', payload);
+    },
 };

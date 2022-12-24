@@ -1,4 +1,4 @@
-import { Form, message, Select } from 'antd';
+import { Form, message, Select, Modal } from 'antd';
 import Cleave from 'cleave.js/react';
 import { connect } from 'dva';
 import React, { useEffect } from 'react';
@@ -9,14 +9,13 @@ import { RoleName, Role } from '@/config/constant';
 
 const { Option } = Select;
 function AddWithdraw({ dispatch, adminStore }) {
-    const { listCardBank, listMerchant, listPaymentType } = adminStore;
+    const { listCardBank, listMerchant, listPaymentType, deleteCardResponse } = adminStore;
     const [form] = Form.useForm();
     const [amountDeposit, setAmountDeposit] = React.useState();
     const [userId, setUserId] = React.useState();
 
     useEffect(() => {
         const payload = {
-            // page: 0,
             role: RoleName[Role.ROLE_USER],
         };
         dispatch({ type: 'ADMIN/getMerchants', payload });
@@ -29,7 +28,7 @@ function AddWithdraw({ dispatch, adminStore }) {
             };
             dispatch({ type: 'ADMIN/getUserCard', payload });
         }
-    }, [userId, dispatch]);
+    }, [userId, dispatch, deleteCardResponse]);
 
     useEffect(() => {
         dispatch({ type: 'ADMIN/getPaymentType' });
@@ -64,6 +63,22 @@ function AddWithdraw({ dispatch, adminStore }) {
     const arrayUniqueByBankName = [
         ...new Map(listPaymentType.map(item => [item[key], item])).values(),
     ];
+
+    const handleDelete = (e, cardId) => {
+        e.stopPropagation();
+        const payload = {
+            id: cardId,
+        };
+        Modal.confirm({
+            title: formatMessage({ id: 'CONFIRM' }),
+            content: formatMessage({ id: 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_DEVICE' }),
+            okText: formatMessage({ id: 'OK' }),
+            cancelText: formatMessage({ id: 'CANCEL' }),
+            onOk: () => {
+                dispatch({ type: 'ADMIN/deleteCardBank', payload });
+            },
+        });
+    };
 
     return (
         <div className={styles.addWithdraw}>
@@ -102,11 +117,22 @@ function AddWithdraw({ dispatch, adminStore }) {
                             {listCardBank.map((item, index) => {
                                 return (
                                     <Option key={index} value={item.id}>
-                                        <span>{item.bankName}</span>
-                                        <span className="mx-2">-</span>
-                                        <span>{item.numberAccount}</span>
-                                        <span className="mx-2">-</span>
-                                        <span>{item.username}</span>
+                                        <div className="d-inline-flex justify-content-between">
+                                            <div>
+                                                <span>{item.bankName}</span>
+                                                <span className="mx-2">-</span>
+                                                <span>{item.numberAccount}</span>
+                                                <span className="mx-2">-</span>
+                                                <span>{item.username}</span>
+                                            </div>
+                                            <button
+                                                className={styles.smallPrimaryBtn}
+                                                style={{ marginLeft: 100 }}
+                                                onClick={e => handleDelete(e, item.id)}
+                                            >
+                                                {formatMessage({ id: 'DELETE' })}
+                                            </button>
+                                        </div>
                                     </Option>
                                 );
                             })}

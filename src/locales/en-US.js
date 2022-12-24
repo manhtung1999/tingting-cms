@@ -10,6 +10,7 @@ export default {
     TYPE: 'Type',
     DEVICE: 'Device',
     REFRESH: 'Refresh',
+    DELETE: 'Delete',
 
     HISTORY_TRANSACTION: 'Balance Fluctuations',
     MIN_WITHDRAW_10000: 'Minimum withdrawal amount is 10,000đ',

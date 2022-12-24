@@ -12,6 +12,7 @@ export default {
         listMerchant: [],
         devices: [],
         listCardBank: [],
+        deleteCardResponse: undefined,
     },
     reducers: {
         loading(state, action) {
@@ -58,6 +59,13 @@ export default {
             return {
                 ...state,
                 listCardBank: action.payload.body,
+            };
+        },
+
+        deleteCardBankSuccess(state, action) {
+            return {
+                ...state,
+                deleteCardResponse: action.payload,
             };
         },
     },
@@ -163,6 +171,22 @@ export default {
                 const res = yield call(depositService.getUserCard, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'getCardBankSuccess', payload: res.body });
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *deleteCardBank(action, { call, put }) {
+            try {
+                const res = yield call(depositService.deleteCardBank, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'deleteCardBankSuccess', payload: res.body });
+                    message.success(formatMessage({ id: 'SUCCESS' }));
                 } else {
                     message.error(res.body.message);
                     yield put({ type: 'error' });

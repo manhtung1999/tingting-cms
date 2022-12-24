@@ -1,4 +1,4 @@
-import { Form, message, Select } from 'antd';
+import { Form, message, Select, Modal } from 'antd';
 import Cleave from 'cleave.js/react';
 import { connect } from 'dva';
 import React, { useEffect } from 'react';
@@ -9,13 +9,13 @@ import styles from './styles.scss';
 
 const { Option } = Select;
 function AddWithdraw({ dispatch, withdrawStore }) {
-    const { listCardBank, addCardResponse, listPaymentType } = withdrawStore;
+    const { listCardBank, addCardResponse, listPaymentType, deleteCardResponse } = withdrawStore;
     const [form] = Form.useForm();
     const [amountDeposit, setAmountDeposit] = React.useState();
 
     useEffect(() => {
         dispatch({ type: 'WITHDRAW/getCardBank' });
-    }, [dispatch, addCardResponse]);
+    }, [dispatch, addCardResponse, deleteCardResponse]);
 
     useEffect(() => {
         dispatch({ type: 'WITHDRAW/getPaymentType' });
@@ -50,6 +50,22 @@ function AddWithdraw({ dispatch, withdrawStore }) {
         paymentType.fullNameBank.includes('System-'),
     );
 
+    const handleDelete = (e, cardId) => {
+        e.stopPropagation();
+        const payload = {
+            id: cardId,
+        };
+        Modal.confirm({
+            title: formatMessage({ id: 'CONFIRM' }),
+            content: formatMessage({ id: 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_DEVICE' }),
+            okText: formatMessage({ id: 'OK' }),
+            cancelText: formatMessage({ id: 'CANCEL' }),
+            onOk: () => {
+                dispatch({ type: 'WITHDRAW/deleteCardBank', payload });
+            },
+        });
+    };
+
     return (
         <div className={styles.addWithdraw}>
             <h5 className="mb-3">{formatMessage({ id: 'ADD_WITHDRAW_REQUEST' })}</h5>
@@ -77,11 +93,22 @@ function AddWithdraw({ dispatch, withdrawStore }) {
                             {listCardBank.map((item, index) => {
                                 return (
                                     <Option key={index} value={item.id}>
-                                        <span>{item.bankName}</span>
-                                        <span className="mx-2">-</span>
-                                        <span>{item.numberAccount}</span>
-                                        <span className="mx-2">-</span>
-                                        <span>{item.username}</span>
+                                        <div className="d-inline-flex justify-content-between">
+                                            <div>
+                                                <span>{item.bankName}</span>
+                                                <span className="mx-2">-</span>
+                                                <span>{item.numberAccount}</span>
+                                                <span className="mx-2">-</span>
+                                                <span>{item.username}</span>
+                                            </div>
+                                            <button
+                                                className={styles.smallPrimaryBtn}
+                                                style={{ marginLeft: 100 }}
+                                                onClick={e => handleDelete(e, item.id)}
+                                            >
+                                                {formatMessage({ id: 'DELETE' })}
+                                            </button>
+                                        </div>
                                     </Option>
                                 );
                             })}

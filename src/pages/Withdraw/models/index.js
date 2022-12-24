@@ -21,6 +21,7 @@ export default {
         denyResponse: undefined,
         approveResponse: undefined,
         appConfirmResponse: undefined,
+        deleteCardResponse: undefined,
     },
     reducers: {
         loading(state, action) {
@@ -116,6 +117,13 @@ export default {
                 ...state,
                 loading: false,
                 appConfirmResponse: action.payload,
+            };
+        },
+
+        deleteCardBankSuccess(state, action) {
+            return {
+                ...state,
+                deleteCardResponse: action.payload,
             };
         },
     },
@@ -303,6 +311,22 @@ export default {
                 const res = yield call(depositService.appConfirmMoney, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'appConfirmMoneySuccess', payload: res.body });
+                    message.success(formatMessage({ id: 'SUCCESS' }));
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *deleteCardBank(action, { call, put }) {
+            try {
+                const res = yield call(depositService.deleteCardBank, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'deleteCardBankSuccess', payload: res.body });
                     message.success(formatMessage({ id: 'SUCCESS' }));
                 } else {
                     message.error(res.body.message);

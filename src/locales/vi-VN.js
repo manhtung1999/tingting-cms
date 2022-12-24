@@ -1,4 +1,6 @@
 export default {
+    DELETE: 'Xóa',
+
     ADD_NOTE: 'Thêm ghi chú',
     NOTE: 'Ghi chú',
     ARE_YOU_SURE_YOU_WANT_TO_APP_CONFIRM_THIS_TRANSACTION:
