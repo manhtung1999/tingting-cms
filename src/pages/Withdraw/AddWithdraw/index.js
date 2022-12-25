@@ -103,10 +103,10 @@ function AddWithdraw({ dispatch, withdrawStore }) {
                                             </div>
                                             <button
                                                 className={styles.smallPrimaryBtn}
-                                                style={{ marginLeft: 100 }}
+                                                style={{ marginLeft: 50 }}
                                                 onClick={e => handleDelete(e, item.id)}
                                             >
-                                                {formatMessage({ id: 'DELETE' })}
+                                                X{/* {formatMessage({ id: 'DELETE' })} */}
                                             </button>
                                         </div>
                                     </Option>
