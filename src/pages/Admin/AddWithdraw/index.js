@@ -6,6 +6,7 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import { MIN_WITHDRAW } from '@/config/constant';
 import styles from './styles.scss';
 import { RoleName, Role } from '@/config/constant';
+import ic_delete from '@/assets/image/ic_delete.svg';
 
 const { Option } = Select;
 function AddWithdraw({ dispatch, adminStore }) {
@@ -125,13 +126,13 @@ function AddWithdraw({ dispatch, adminStore }) {
                                                 <span className="mx-2">-</span>
                                                 <span>{item.username}</span>
                                             </div>
-                                            <button
-                                                className={styles.smallPrimaryBtn}
-                                                style={{ marginLeft: 50 }}
+
+                                            <img
+                                                src={ic_delete}
+                                                style={{ width: 20, height: 20, marginLeft: 50 }}
+                                                alt=""
                                                 onClick={e => handleDelete(e, item.id)}
-                                            >
-                                                X{/* {formatMessage({ id: 'DELETE' })} */}
-                                            </button>
+                                            />
                                         </div>
                                     </Option>
                                 );
