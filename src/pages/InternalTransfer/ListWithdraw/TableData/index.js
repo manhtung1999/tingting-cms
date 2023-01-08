@@ -40,7 +40,7 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                 </div>
             ),
             onOk: () => {
-                if (!reason) {
+                if (!reason || reason?.trim() === '') {
                     message.error(formatMessage({ id: 'REQUIRE_VALUE' }));
                     return;
                 }

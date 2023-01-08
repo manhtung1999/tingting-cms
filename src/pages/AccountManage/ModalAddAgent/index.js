@@ -32,6 +32,7 @@ function ModalAddAgent({ accountStore, dispatch, currentAddAgent, setCurrentAddA
         const payload = {
             id: currentAddAgent.id,
             parentId: parentId,
+            totalMoney: -1,
         };
         dispatch({ type: 'ACCOUNT/updateUser', payload });
         handleClose();
