@@ -17,7 +17,7 @@ function ModalConfirm({ dispatch, modalConfirm, setModalConfirm }) {
     };
 
     const handleSubmit = () => {
-        if (!currentMoney || !reason) {
+        if (!currentMoney || !reason || reason?.trim() === '') {
             message.error(formatMessage({ id: 'REQUIRE_VALUE' }));
             return;
         }

@@ -12,7 +12,7 @@ function ModalUpdateBalance({ dispatch, id, currentMoney }) {
     const [reason, setReason] = useState();
 
     const handleUpdate = () => {
-        if (totalMoney === undefined || totalMoney < 0 || !reason) {
+        if (totalMoney === undefined || totalMoney < 0 || !reason || reason?.trim() === '') {
             message.warn(formatMessage({ id: 'REQUIRE_VALUE' }));
             return;
         }
