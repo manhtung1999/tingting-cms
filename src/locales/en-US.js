@@ -1,4 +1,9 @@
 export default {
+    MONEY_IN_SYSTEM: 'Money in system',
+    MONEY_OUT_SYSTEM: 'Money out system',
+    MONEY_SEND_INTERNAL: 'Money send internal',
+    MONEY_IN_AND_OUT_SYSTEM: 'Money in and out system',
+    USER_EDIT_MONEY: 'User edit money',
     ADD_NOTE: 'Add note',
     NOTE: 'Note',
     ARE_YOU_SURE_YOU_WANT_TO_APP_CONFIRM_THIS_TRANSACTION:

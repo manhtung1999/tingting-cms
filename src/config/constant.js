@@ -1,6 +1,5 @@
 const PAGE_SIZE = 20;
 const DATE_TRANSACTION = 'YYYY-MM-DD HH:mm:ss.S';
-// const DATE_TRANSACTION = 'YYYY-MM-DDHH:mm:ss';
 const DATE_FORMAT_TRANSACTION = 'YYYY-MM-DD HH:mm:ss';
 const DATE_FILTER = 'YYYY/MM/DD';
 const DATE_FILTER_1 = 'YYYY/MM/DD';
@@ -97,6 +96,44 @@ const SystemTransactionType = {
     USER_EDIT_MONEY: 'USER_EDIT_MONEY',
 };
 
+const SerialCardType = [
+    {
+        name: 'Viettel',
+        code: 'VTT',
+    },
+    {
+        name: 'Mobifone',
+        code: 'VMS',
+    },
+    {
+        name: 'Vinaphone',
+        code: 'VNP',
+    },
+    {
+        name: 'Giftcode',
+        code: 'GIFTCODE',
+    },
+];
+
+const ErrorTelecom = [
+    {
+        errorNumber: 1,
+        errorName: 'Thành Công',
+    },
+    {
+        errorNumber: -1,
+        errorName: 'Lỗi Hệ Thống',
+    },
+    {
+        errorNumber: 1,
+        errorName: 'Hết thẻ',
+    },
+    {
+        errorNumber: 1,
+        errorName: 'Sai username, mật khẩu',
+    },
+];
+
 export {
     DATE_TRANSACTION,
     PAGE_SIZE,
@@ -131,4 +168,6 @@ export {
     SystemTransactionType,
     EXPORT_KEY,
     TIME_DELAY_EXPORT,
+    SerialCardType,
+    ErrorTelecom,
 };

@@ -1,4 +1,9 @@
 export default {
+    MONEY_IN_SYSTEM: 'Nạp tiền vào hệ thống',
+    MONEY_OUT_SYSTEM: 'Tiền không rõ nguồn',
+    MONEY_SEND_INTERNAL: 'Chuyển tiền nội bộ',
+    USER_EDIT_MONEY: 'Nhân viên xử lý tiền cho khách',
+
     DELETE: 'Xóa',
 
     ADD_NOTE: 'Thêm ghi chú',

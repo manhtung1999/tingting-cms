@@ -8,6 +8,7 @@ import {
     RoleName,
     TIME_DELAY_EXPORT,
     TOKEN_KEY,
+    SystemTransactionType,
 } from '@/config/constant';
 import config from '@/config/index';
 import { useLocalStorage } from '@/hooks';
@@ -43,6 +44,7 @@ function ListTransaction(props) {
 
     const [username, setUsername] = useState();
     const [amount, setAmount] = useState();
+    const [systemTransactionType, setSystemTransactionType] = useState();
 
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
@@ -73,6 +75,7 @@ function ListTransaction(props) {
             deviceId,
             username,
             amount,
+            systemTransactionType,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             payload.agentId = admin.id;
@@ -99,6 +102,7 @@ function ListTransaction(props) {
         username,
         amount,
         addNoteResponse,
+        systemTransactionType,
     ]);
 
     function disabledDate(current) {
@@ -252,7 +256,6 @@ function ListTransaction(props) {
                     />
                 </div>
 
-                {/* filter by amount money */}
                 <div className={styles.select}>
                     <div className="mb-1">{formatMessage({ id: 'USERNAME' })}</div>
                     <Input
@@ -261,6 +264,7 @@ function ListTransaction(props) {
                     />
                 </div>
 
+                {/* filter by amount money */}
                 <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
                     <div className="mb-1">{formatMessage({ id: 'AMOUNT' })}</div>
                     <Cleave
@@ -272,6 +276,20 @@ function ListTransaction(props) {
                             numeralThousandsGroupStyle: 'thousand',
                         }}
                     />
+                </div>
+
+                <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
+                    <div className="mb-1">{formatMessage({ id: 'TYPE' })}:</div>
+                    <Select
+                        style={{ minWidth: 210 }}
+                        defaultValue=""
+                        onChange={value => setSystemTransactionType(value)}
+                    >
+                        <Option value="">{formatMessage({ id: 'ALL' })}</Option>
+                        {Object.keys(SystemTransactionType).map((item, index) => {
+                            return <Option value={item}>{formatMessage({ id: `${item}` })}</Option>;
+                        })}
+                    </Select>
                 </div>
             </div>
 
