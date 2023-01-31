@@ -7,7 +7,7 @@ import AddUSDT from '../AddUSDT';
 import styles from './styles.scss';
 import { useLocalStorage } from '@/hooks/index';
 import { ADMIN_KEY, Role } from '@/config/constant';
-import TopUpByTelecom from '../TopUpByTelecom';
+// import TopUpByTelecom from '../TopUpByTelecom';
 
 function Deposit(props) {
     const { location } = props;
@@ -19,9 +19,10 @@ function Deposit(props) {
             return <ListDeposit />;
         } else if (location.query.tab === 'add-usdt') {
             return <AddUSDT />;
-        } else if (location.query.tab === 'add-telecom') {
-            return <TopUpByTelecom />;
         }
+        // else if (location.query.tab === 'add-telecom') {
+        //     return <TopUpByTelecom />;
+        // }
     };
 
     const [admin] = useLocalStorage(ADMIN_KEY);
@@ -55,14 +56,14 @@ function Deposit(props) {
                     >
                         {formatMessage({ id: 'ADD_USDT_DEPOSIT' })}
                     </button>
-                    <button
+                    {/* <button
                         className={
                             location.query.tab === 'add-telecom' ? `${styles.active}` : undefined
                         }
                         onClick={() => router.push('/home/deposit?tab=add-telecom')}
                     >
                         {formatMessage({ id: 'TOPUP_BY_TELECOM' })}
-                    </button>
+                    </button> */}
                 </div>
             )}
 
