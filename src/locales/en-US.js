@@ -1,10 +1,9 @@
 export default {
-    MONEY_IN_SYSTEM_DEPOSIT: 'Deposit to system',
-    MONEY_IN_SYSTEM_WITHDRAW: 'Withdraw from system',
-    MONEY_OUT_SYSTEM: 'Money out system',
-    MONEY_SEND_INTERNAL: 'Money send internal',
-    MONEY_IN_AND_OUT_SYSTEM: 'Money in and out system',
-    USER_EDIT_MONEY: 'User edit money',
+    MONEY_IN_SYSTEM_DEPOSIT: 'Nạp tiền vào hệ thống',
+    MONEY_IN_SYSTEM_WITHDRAW: 'Rút tiền về tài khoản',
+    MONEY_OUT_SYSTEM: 'Tiền không rõ nguồn',
+    MONEY_SEND_INTERNAL: 'Internal money transfer',
+    USER_EDIT_MONEY: 'Nhân viên xử lý tiền cho khách',
     ADD_NOTE: 'Add note',
     NOTE: 'Note',
     ARE_YOU_SURE_YOU_WANT_TO_APP_CONFIRM_THIS_TRANSACTION:
