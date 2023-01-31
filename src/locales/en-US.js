@@ -1,5 +1,6 @@
 export default {
-    MONEY_IN_SYSTEM: 'Money in system',
+    MONEY_IN_SYSTEM_DEPOSIT: 'Deposit to system',
+    MONEY_IN_SYSTEM_WITHDRAW: 'Withdraw from system',
     MONEY_OUT_SYSTEM: 'Money out system',
     MONEY_SEND_INTERNAL: 'Money send internal',
     MONEY_IN_AND_OUT_SYSTEM: 'Money in and out system',

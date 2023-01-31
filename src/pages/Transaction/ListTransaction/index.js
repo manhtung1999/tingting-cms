@@ -8,6 +8,7 @@ import {
     RoleName,
     TIME_DELAY_EXPORT,
     TOKEN_KEY,
+    SystemTransactionTypeName,
     SystemTransactionType,
 } from '@/config/constant';
 import config from '@/config/index';
@@ -75,7 +76,17 @@ function ListTransaction(props) {
             deviceId,
             username,
             amount,
-            systemTransactionType,
+            systemTransactionType:
+                systemTransactionType === SystemTransactionTypeName.MONEY_IN_SYSTEM_DEPOSIT ||
+                systemTransactionType === SystemTransactionTypeName.MONEY_IN_SYSTEM_WITHDRAW
+                    ? SystemTransactionType.MONEY_IN_SYSTEM
+                    : systemTransactionType,
+            transactionType:
+                systemTransactionType === SystemTransactionTypeName.MONEY_IN_SYSTEM_DEPOSIT
+                    ? 'send_money'
+                    : systemTransactionType === SystemTransactionTypeName.MONEY_IN_SYSTEM_WITHDRAW
+                    ? 'withdraw_money'
+                    : '',
         };
         if (admin?.role === Role.ROLE_AGENT) {
             payload.agentId = admin.id;
@@ -286,7 +297,7 @@ function ListTransaction(props) {
                         onChange={value => setSystemTransactionType(value)}
                     >
                         <Option value="">{formatMessage({ id: 'ALL' })}</Option>
-                        {Object.keys(SystemTransactionType).map((item, index) => {
+                        {Object.keys(SystemTransactionTypeName).map((item, index) => {
                             return <Option value={item}>{formatMessage({ id: `${item}` })}</Option>;
                         })}
                     </Select>

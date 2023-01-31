@@ -96,6 +96,14 @@ const SystemTransactionType = {
     USER_EDIT_MONEY: 'USER_EDIT_MONEY',
 };
 
+const SystemTransactionTypeName = {
+    MONEY_IN_SYSTEM_DEPOSIT: 'MONEY_IN_SYSTEM_DEPOSIT',
+    MONEY_IN_SYSTEM_WITHDRAW: 'MONEY_IN_SYSTEM_WITHDRAW',
+    MONEY_OUT_SYSTEM: 'MONEY_OUT_SYSTEM',
+    MONEY_SEND_INTERNAL: 'MONEY_SEND_INTERNAL',
+    USER_EDIT_MONEY: 'USER_EDIT_MONEY',
+};
+
 const SerialCardType = [
     {
         name: 'Viettel',
@@ -170,4 +178,5 @@ export {
     TIME_DELAY_EXPORT,
     SerialCardType,
     ErrorTelecom,
+    SystemTransactionTypeName,
 };
