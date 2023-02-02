@@ -142,6 +142,15 @@ const ErrorTelecom = [
     },
 ];
 
+const Lock = {
+    YES: 'YES',
+    NO: 'NO',
+};
+const TypeLock = {
+    ONE: 'ONE',
+    ALL: 'ALL',
+};
+
 export {
     DATE_TRANSACTION,
     PAGE_SIZE,
@@ -179,4 +188,6 @@ export {
     SerialCardType,
     ErrorTelecom,
     SystemTransactionTypeName,
+    Lock,
+    TypeLock,
 };

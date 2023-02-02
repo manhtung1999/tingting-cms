@@ -58,15 +58,12 @@
 
     .pageFilter {
         margin-bottom: 20px;
-        justify-content: flex-end;
+        justify-content: space-between;
+        align-items: center;
 
         .select {
             margin-right: 10px;
             margin-left: 10px;
         }
-
-        // .primaryBtn {
-        //     margin-left: auto;
-        // }
     }
 }

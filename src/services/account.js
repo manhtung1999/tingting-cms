@@ -39,4 +39,12 @@ export default {
     updateUser: payload => {
         return request.post('api/admin/v1/user/update-user', payload);
     },
+
+    lockUser: payload => {
+        return request.post('api/admin/v1/user/lock-user', payload);
+    },
+
+    checkLockAll: payload => {
+        return request.get('api/admin/v1/user/check-lock-user', payload);
+    },
 };

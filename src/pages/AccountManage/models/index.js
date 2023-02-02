@@ -13,8 +13,10 @@ export default {
         totalRow: 0,
         deleteResponse: {},
         updateResponse: {},
+        lockResponse: {},
         listSecret: [],
         devices: [],
+        isLockAll: undefined,
     },
     reducers: {
         getAccountsSuccess(state, action) {
@@ -94,6 +96,21 @@ export default {
             return {
                 ...state,
                 devices: action.payload.body,
+            };
+        },
+
+        lockSuccess(state, action) {
+            return {
+                ...state,
+                loading: false,
+                lockResponse: action.payload,
+            };
+        },
+
+        checkLockAllSuccess(state, action) {
+            return {
+                ...state,
+                isLockAll: action.payload.body,
             };
         },
     },
@@ -280,6 +297,38 @@ export default {
                 if (res.status === 200) {
                     yield put({ type: 'updateSuccess', payload: res.body });
                     message.success(res.body.message);
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *lockUser(action, { call, put }) {
+            yield put({ type: 'loading' });
+            try {
+                const res = yield call(accountService.lockUser, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'lockSuccess', payload: res.body });
+                    message.success(res.body.message);
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *checkLockAll(action, { call, put }) {
+            try {
+                const res = yield call(accountService.checkLockAll, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'checkLockAllSuccess', payload: res.body });
                 } else {
                     message.error(res.body.message);
                     yield put({ type: 'error' });

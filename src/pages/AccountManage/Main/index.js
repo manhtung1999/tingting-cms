@@ -4,10 +4,19 @@ import ic_edit from '@/assets/image/ic_edit.svg';
 import ic_eye from '@/assets/image/ic_eye.svg';
 import EmptyComponent from '@/components/EmptyComponent';
 import Loading from '@/components/Loading';
-import { ADMIN_KEY, DATE_FILTER, DATE_TIME, PAGE_SIZE, Role, RoleName } from '@/config/constant';
+import {
+    ADMIN_KEY,
+    DATE_FILTER,
+    DATE_TIME,
+    PAGE_SIZE,
+    Role,
+    RoleName,
+    TypeLock,
+    Lock,
+} from '@/config/constant';
 import { useLocalStorage } from '@/hooks';
 import { formatVnd } from '@/util/function';
-import { DatePicker, Input, Modal, Pagination } from 'antd';
+import { DatePicker, Input, Modal, Pagination, Switch } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -25,7 +34,16 @@ const { confirm } = Modal;
 
 function AccountManage(props) {
     let { dispatch, accountStore } = props;
-    let { accounts, totalRow, loading, deleteResponse, updateResponse, listSecret } = accountStore;
+    let {
+        accounts,
+        totalRow,
+        loading,
+        deleteResponse,
+        updateResponse,
+        listSecret,
+        lockResponse,
+        isLockAll,
+    } = accountStore;
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [pageIndex, setPageIndex] = useState(1);
     const [showSecret, setShowSecret] = useState(false);
@@ -47,12 +65,11 @@ function AccountManage(props) {
         id: undefined,
     });
     const [role, setRole] = useState(RoleName[Role.ROLE_USER]);
-    const deleteAccount = useCallback(
-        payload => {
-            dispatch({ type: 'ACCOUNT/deleteAccount', payload });
-        },
-        [dispatch],
-    );
+
+    // check lock all user status
+    useEffect(() => {
+        dispatch({ type: 'ACCOUNT/checkLockAll' });
+    }, [dispatch, lockResponse]);
 
     useEffect(() => {
         let payload = {
@@ -68,11 +85,28 @@ function AccountManage(props) {
             payload.role = 'ROLE_USER';
         }
         dispatch({ type: 'ACCOUNT/getAccounts', payload });
-    }, [admin, pageIndex, name, role, deleteResponse, updateResponse, rangeTime, dispatch]);
+    }, [
+        admin,
+        pageIndex,
+        name,
+        role,
+        deleteResponse,
+        updateResponse,
+        rangeTime,
+        dispatch,
+        lockResponse,
+    ]);
 
     const goToCreate = () => {
         router.push('/home/create-account');
     };
+
+    const deleteAccount = useCallback(
+        payload => {
+            dispatch({ type: 'ACCOUNT/deleteAccount', payload });
+        },
+        [dispatch],
+    );
 
     const handleDelete = accountId => {
         confirm({
@@ -122,6 +156,28 @@ function AccountManage(props) {
             return accumulator + curValue.totalMoney;
         }, initialValue);
 
+    function disabledDate(current) {
+        // Can not select days after today and today
+        return current && current > moment().endOf('day');
+    }
+
+    const onChangeLockAll = locked => {
+        const payload = {
+            lockUser: locked ? Lock.YES : Lock.NO,
+            typeLock: TypeLock.ALL,
+        };
+        dispatch({ type: 'ACCOUNT/lockUser', payload });
+    };
+
+    const onChangeLockUser = (locked, id) => {
+        const payload = {
+            id,
+            lockUser: locked ? Lock.YES : Lock.NO,
+            typeLock: TypeLock.ONE,
+        };
+        dispatch({ type: 'ACCOUNT/lockUser', payload });
+    };
+
     const renderDataUsers = loading ? (
         <Loading />
     ) : accounts.length === 0 ? (
@@ -157,7 +213,25 @@ function AccountManage(props) {
                 )}
 
                 <td className="col-3">{moment(value.createdAt).format(DATE_TIME)}</td>
-                <td className="col-2 d-flex" style={{ justifyContent: 'space-evenly' }}>
+                <td
+                    className="col-2 d-flex"
+                    style={{ justifyContent: 'space-evenly', alignItems: 'center' }}
+                >
+                    {/* ON-OFF lock user */}
+                    {role === RoleName[Role.ROLE_USER] &&
+                        (admin?.role === Role.ROLE_ADMIN ||
+                            admin?.role === Role.ROLE_ACCOUNTANT) && (
+                            <>
+                                <span>Lock: </span>
+                                <Switch
+                                    size="small"
+                                    title="Lock"
+                                    checked={value.lockUser === 'YES'}
+                                    onChange={checked => onChangeLockUser(checked, value.id)}
+                                />
+                            </>
+                        )}
+
                     {(role === RoleName[Role.ROLE_USER] || role === RoleName[Role.ROLE_ADMIN]) &&
                         admin?.role === Role.ROLE_ADMIN && (
                             <>
@@ -204,10 +278,7 @@ function AccountManage(props) {
             </tr>
         ))
     );
-    function disabledDate(current) {
-        // Can not select days after today and today
-        return current && current > moment().endOf('day');
-    }
+
     return (
         <div className={styles.content}>
             {currentStaff.isShow && (
@@ -299,13 +370,24 @@ function AccountManage(props) {
                     <div className="mb-1">{formatMessage({ id: 'NAME' })}:</div>
                     <Input onChange={e => setName(e.target.value)} className={styles.textInput} />
                 </div>
-                {admin?.role === Role.ROLE_ADMIN && (
-                    <div style={{ height: 40, marginLeft: 'auto' }}>
-                        <button className={styles.primaryBtn} onClick={goToCreate}>
-                            {formatMessage({ id: 'ADD_ACCOUNT' })}
-                        </button>
-                    </div>
-                )}
+                <div className="d-flex align-items-center">
+                    {/* ON-OFF user */}
+                    {(admin?.role === Role.ROLE_ADMIN || admin?.role === Role.ROLE_ACCOUNTANT) &&
+                        role === RoleName[Role.ROLE_USER] && (
+                            <div>
+                                <span>LOCK ALL: </span>
+                                <Switch checked={isLockAll} onChange={onChangeLockAll} />
+                            </div>
+                        )}
+                    {/* END ON-OFF USER */}
+                    {admin?.role === Role.ROLE_ADMIN && (
+                        <div style={{ height: 40, marginLeft: 30 }}>
+                            <button className={styles.primaryBtn} onClick={goToCreate}>
+                                {formatMessage({ id: 'ADD_ACCOUNT' })}
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
 
             <div className={styles.table}>
