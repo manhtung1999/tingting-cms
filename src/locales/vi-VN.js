@@ -1,4 +1,9 @@
 export default {
+    DONT_HAVE_ROLE: 'Bạn không có quyền rút tiền ra khỏi hệ thống',
+    CHOOSE_CARD_VALUE: 'Mệnh giá thẻ',
+    CHOOSE_CARD_TELELE: 'Chọn nhà mạng',
+    ADD_TRANSACTION_DEPOSIT_BY_TELECOM: 'Nạp bằng thẻ ĐT',
+    ADD_TRANSACTION_WITHDRAW_BY_TELECOM: 'Rút bằng thẻ ĐT',
     MONEY_IN_SYSTEM: 'Nạp tiền vào hệ thống',
     MONEY_OUT_SYSTEM: 'Tiền không rõ nguồn',
     MONEY_IN_SYSTEM_DEPOSIT: 'Nạp tiền vào hệ thống',

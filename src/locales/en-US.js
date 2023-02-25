@@ -1,4 +1,9 @@
 export default {
+    DONT_HAVE_ROLE: "You don't have role to withdraw",
+    CHOOSE_CARD_VALUE: 'Card value',
+    CHOOSE_CARD_TELELE: 'Telecom type',
+    ADD_TRANSACTION_DEPOSIT_BY_TELECOM: 'Deposit by telecom',
+    ADD_TRANSACTION_WITHDRAW_BY_TELECOM: 'Withdraw by telecom',
     MONEY_IN_SYSTEM_DEPOSIT: 'Nạp tiền vào hệ thống',
     MONEY_IN_SYSTEM_WITHDRAW: 'Rút tiền về tài khoản',
     MONEY_OUT_SYSTEM: 'Tiền không rõ nguồn',

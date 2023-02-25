@@ -151,6 +151,22 @@ const TypeLock = {
     ALL: 'ALL',
 };
 
+const MenhGia = [10000, 20000, 50000, 100000, 200000, 500000, 1000000];
+
+const TelecomCode = {
+    VIETTEL: 'VIETTEL',
+    VINAPHONE: 'VINAPHONE',
+    VNMOBI: 'VNMOBI',
+    MOBIFONE: 'MOBIFONE',
+};
+
+const TelecomServiceCode = {
+    Viettel: 'Viettel',
+    Vina: 'Vina',
+    Vnmobile: 'Vnmobile',
+    Mobi: 'Mobi',
+};
+
 export {
     DATE_TRANSACTION,
     PAGE_SIZE,
@@ -190,4 +206,7 @@ export {
     SystemTransactionTypeName,
     Lock,
     TypeLock,
+    MenhGia,
+    TelecomCode,
+    TelecomServiceCode,
 };

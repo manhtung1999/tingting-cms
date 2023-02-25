@@ -7,13 +7,15 @@ import styles from './styles.scss';
 import { formatVnd } from '@/util/function';
 import { MIN_WITHDRAW } from '@/config/constant';
 import { Radio, Input } from 'antd';
+import { ADMIN_KEY, Role } from '../../../config/constant';
+import { useLocalStorage } from '@/hooks';
 
 const { Option } = Select;
 
 const TransferBalance = props => {
     const { dispatch, masterDataStore } = props;
 
-    const { devices } = masterDataStore;
+    const { devices, detailAccount } = masterDataStore;
 
     const [totalMoney, setTotalMoney] = useState();
     const [mobileId, setMobileId] = useState();
@@ -21,6 +23,8 @@ const TransferBalance = props => {
     const [typeTransfer, setTypeTransfer] = useState(1);
 
     const [form] = Form.useForm();
+
+    const [admin] = useLocalStorage(ADMIN_KEY);
 
     useEffect(() => {
         const payload = {
@@ -30,6 +34,16 @@ const TransferBalance = props => {
     }, [dispatch]);
 
     const handleSubmit = values => {
+        // ke toan ko co quyen rut tien ra ngoai he thong
+        if (
+            typeTransfer === 2 &&
+            detailAccount?.role === Role.ROLE_ACCOUNTANT &&
+            detailAccount?.userWithdrawMoney === 'NO'
+        ) {
+            message.error(formatMessage({ id: 'DONT_HAVE_ROLE' }));
+            return;
+        }
+
         const bankTransfer = devices.find(device => device.id === mobileId);
         const bankReceive = devices.find(device => device.id === mobileIdReceiveMoney);
         if (bankTransfer.bankName === 'ZaloPay' && bankReceive?.bankName === 'Momo') {

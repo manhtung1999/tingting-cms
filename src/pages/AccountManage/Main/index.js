@@ -178,6 +178,15 @@ function AccountManage(props) {
         dispatch({ type: 'ACCOUNT/lockUser', payload });
     };
 
+    const onChangeWithdrawAccountant = (locked, id) => {
+        const payload = {
+            id,
+            userWithdrawMoney: locked ? Lock.YES : Lock.NO,
+        };
+        dispatch({ type: 'ACCOUNT/updateUser', payload });
+    };
+
+    console.log('accounts', accounts);
     const renderDataUsers = loading ? (
         <Loading />
     ) : accounts.length === 0 ? (
@@ -203,11 +212,23 @@ function AccountManage(props) {
                 >
                     {value.phone}
                 </td>
-                <td className={admin?.role === Role.ROLE_ADMIN ? 'col-2' : 'col-3'}>
+                <td
+                    className={
+                        admin?.role === Role.ROLE_ADMIN || admin?.role === Role.ROLE_ACCOUNTANT
+                            ? 'col-2'
+                            : 'col-3'
+                    }
+                >
                     {value.email}
                 </td>
                 {(role === RoleName[Role.ROLE_USER] || role === RoleName[Role.ROLE_AGENT]) && (
-                    <td className={admin?.role === Role.ROLE_ADMIN ? 'col-2' : 'col-3'}>
+                    <td
+                        className={
+                            admin?.role === Role.ROLE_ADMIN || admin?.role === Role.ROLE_ACCOUNTANT
+                                ? 'col-2'
+                                : 'col-3'
+                        }
+                    >
                         {formatVnd(value.totalMoney)}
                     </td>
                 )}
@@ -217,6 +238,19 @@ function AccountManage(props) {
                     className="col-2 d-flex"
                     style={{ justifyContent: 'space-evenly', alignItems: 'center' }}
                 >
+                    {/* ON-OFF withdraw for accountant */}
+                    {role === RoleName[Role.ROLE_ACCOUNTANT] && admin?.role === Role.ROLE_ADMIN && (
+                        <>
+                            <div>Turn on withdraw: </div>
+                            <Switch
+                                size="small"
+                                title="Lock"
+                                checked={value.userWithdrawMoney === 'YES'}
+                                onChange={checked => onChangeWithdrawAccountant(checked, value.id)}
+                            />
+                        </>
+                    )}
+
                     {/* ON-OFF lock user */}
                     {role === RoleName[Role.ROLE_USER] &&
                         (admin?.role === Role.ROLE_ADMIN ||
@@ -415,12 +449,26 @@ function AccountManage(props) {
                                 {' '}
                                 {formatMessage({ id: 'USERNAME' })}
                             </th>
-                            <th className={admin?.role === Role.ROLE_ADMIN ? 'col-2' : 'col-3'}>
+                            <th
+                                className={
+                                    admin?.role === Role.ROLE_ADMIN ||
+                                    admin?.role === Role.ROLE_ACCOUNTANT
+                                        ? 'col-2'
+                                        : 'col-3'
+                                }
+                            >
                                 {formatMessage({ id: 'EMAIL' })}
                             </th>
 
                             {role === RoleName[Role.ROLE_USER] && (
-                                <th className={admin?.role === Role.ROLE_ADMIN ? 'col-2' : 'col-3'}>
+                                <th
+                                    className={
+                                        admin?.role === Role.ROLE_ADMIN ||
+                                        admin?.role === Role.ROLE_ACCOUNTANT
+                                            ? 'col-2'
+                                            : 'col-3'
+                                    }
+                                >
                                     {formatMessage({ id: 'BALANCE' })}
                                 </th>
                             )}
@@ -428,7 +476,8 @@ function AccountManage(props) {
                                 <th className="col-2">{formatMessage({ id: 'BALANCE' })}</th>
                             )}
                             <th className="col-3">{formatMessage({ id: 'CREATED_AT' })}</th>
-                            {admin?.role === Role.ROLE_ADMIN && (
+                            {(admin?.role === Role.ROLE_ADMIN ||
+                                admin?.role === Role.ROLE_ACCOUNTANT) && (
                                 <th className="col-2">{formatMessage({ id: 'ACTION' })}</th>
                             )}
                         </tr>

@@ -1,4 +1,7 @@
 export default {
+    DONT_HAVE_ROLE: 'Bạn không có quyền rút tiền ra khỏi hệ thống',
+    ADD_TRANSACTION_DEPOSIT_BY_TELECOM: 'Deposit by telecom',
+    ADD_TRANSACTION_WITHDRAW_BY_TELECOM: 'Withdraw by telecom',
     MONEY_IN_SYSTEM: 'Nạp tiền vào hệ thống',
     MONEY_OUT_SYSTEM: 'Tiền không rõ nguồn',
     MONEY_IN_SYSTEM_DEPOSIT: 'Nạp tiền vào hệ thống',
