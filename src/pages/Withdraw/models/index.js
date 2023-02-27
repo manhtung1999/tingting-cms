@@ -198,7 +198,7 @@ export default {
 
         *getDevices(action, { call, put }) {
             try {
-                const res = yield call(deviceService.getDevices, action.payload);
+                const res = yield call(deviceService.getDevicesWithoutMoney, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'getDevicesSuccess', payload: res.body });
                 } else {

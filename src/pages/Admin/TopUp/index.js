@@ -32,7 +32,6 @@ function TopUp({ dispatch, adminStore }) {
 
     useEffect(() => {
         const payload = {
-            // page: 0
             role: RoleName[Role.ROLE_USER],
         };
         dispatch({ type: 'ADMIN/getMerchants', payload });
@@ -51,18 +50,6 @@ function TopUp({ dispatch, adminStore }) {
     const handleChangeAmount = e => {
         setAmount(Number(e.currentTarget.rawValue));
     };
-
-    const renderOptions = devices
-        .filter(i => i.status === 1)
-        .map((item, index) => {
-            return (
-                <Option value={item.id}>
-                    <span>
-                        {item.bankName} - {item.numberAccount} - {item.username}
-                    </span>
-                </Option>
-            );
-        });
 
     return (
         <div className={styles.content}>
@@ -92,24 +79,23 @@ function TopUp({ dispatch, adminStore }) {
                                 label={formatMessage({ id: 'ACCOUNT_RECEIPT' })}
                                 name="mobileId"
                                 rules={[{ required: true }]}
-                                
                             >
                                 <Select
                                     style={{ minWidth: 180 }}
                                     showSearch
-                        optionFilterProp="children"
-                        filterOption={(input, option) =>
-                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        options={devices.map(item => {
-                            return {
-                                value: item.id,
-                                label: `${item.bankName} - ${item.numberAccount} - ${item.username}`,
-                            };
-                        })}
-                                >
-                                    {/* {renderOptions} */}
-                                </Select>
+                                    optionFilterProp="children"
+                                    filterOption={(input, option) =>
+                                        (option?.label ?? '')
+                                            .toLowerCase()
+                                            .includes(input.toLowerCase())
+                                    }
+                                    options={devices.map(item => {
+                                        return {
+                                            value: item.id,
+                                            label: `${item.bankName} - ${item.numberAccount} - ${item.username}`,
+                                        };
+                                    })}
+                                ></Select>
                             </Form.Item>
                         )}
                         <Form.Item

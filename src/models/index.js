@@ -1,13 +1,12 @@
-import authService from '@/services/auth';
-import masterService from '@/services/masterData';
+import { ADMIN_KEY, TOKEN_KEY } from '@/config/constant';
 import accountService from '@/services/account';
-import deviceService from '@/services/device';
+import authService from '@/services/auth';
 import depositService from '@/services/deposit';
+import deviceService from '@/services/device';
+import masterService from '@/services/masterData';
+import { generateOtp, handleErrorModel, handleRemoveLocal } from '@/util/function';
 import { message } from 'antd';
-import { handleRemoveLocal, handleErrorModel, generateOtp } from '@/util/function';
 import { router } from 'umi';
-import _ from 'lodash';
-import { TOKEN_KEY, ADMIN_KEY } from '@/config/constant';
 import { formatMessage } from 'umi-plugin-react/locale';
 
 export default {
@@ -57,7 +56,6 @@ export default {
         },
 
         loginSuccess(state, action) {
-            console.log('state.mailResponse', state.mailResponse);
             const { accessToken } = state.mailResponse;
             localStorage.setItem(TOKEN_KEY, accessToken);
             localStorage.setItem(ADMIN_KEY, JSON.stringify(state.mailResponse));

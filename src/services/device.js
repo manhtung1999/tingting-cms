@@ -1,6 +1,11 @@
 import request from './request';
 
 export default {
+    // chỉ lấy những thuộc tính ngoài tiền
+    getDevicesWithoutMoney: payload => {
+        return request.get('api/v1/mobile-device/get-without-money', payload);
+    },
+
     getDevices: payload => {
         return request.get('api/v1/mobile-device/get', payload);
     },

@@ -83,15 +83,15 @@ export default {
             };
         },
         getDevicesSuccess(state, action) {
-            const prevDevice = [...state.devices];
-            action.payload.body.map(i => {
-                if (!prevDevice.find(item => item.id === i.id)) {
-                    prevDevice.push(i);
-                }
-            });
+            // const prevDevice = [...state.devices];
+            // action.payload.body.map(i => {
+            //     if (!prevDevice.find(item => item.id === i.id)) {
+            //         prevDevice.push(i);
+            //     }
+            // });
             return {
                 ...state,
-                devices: prevDevice,
+                devices: action.payload.body,
             };
         },
     },
@@ -204,7 +204,7 @@ export default {
 
         *getDevices(action, { call, put }) {
             try {
-                const res = yield call(deviceService.getDevices, action.payload);
+                const res = yield call(deviceService.getDevicesWithoutMoney, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'getDevicesSuccess', payload: res.body });
                 } else {

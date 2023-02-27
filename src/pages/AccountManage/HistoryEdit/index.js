@@ -25,7 +25,7 @@ const { RangePicker } = DatePicker;
 
 function ListReport(props) {
     const { reportStore, dispatch } = props;
-    const { listMerchant, deleteResponse, updateResponse, devices, agents } = reportStore;
+    const { listMerchant, deleteResponse, updateResponse, devices } = reportStore;
     const [rangeTime, setRangeTime] = useState([]);
     const [paymentType, setPaymentType] = useState();
     const [deviceId, setDeviceId] = useState();

@@ -1,35 +1,16 @@
 import { message, Modal, Select } from 'antd';
 import { connect } from 'dva';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import ModalLoading from '@/components/ModalLoading';
 import { formatVnd } from '@/util/function';
 import { DeviceStatusValue } from '@/config/constant';
 
-function compare(a, b) {
-    if (a.totalMoney < b.totalMoney) {
-        return 1;
-    }
-    if (a.totalMoney > b.totalMoney) {
-        return -1;
-    }
-    return 0;
-}
-
 function ModalApprove({ dispatch, currentTrans, setCurrentTrans, withdrawStore }) {
     const { devices } = withdrawStore;
 
     const [maxBalanceDevice, setMaxBalanceDevice] = useState();
-
-    console.log('devices', devices);
-
-    // useEffect(() => {
-    //     if (devices.length) {
-    //         const maxBalanceDevice = devices.sort(compare)[0];
-    //         maxBalanceDevice && setMaxBalanceDevice(maxBalanceDevice.id);
-    //     }
-    // }, [devices]);
 
     const handleClose = () => {
         setCurrentTrans({
@@ -100,21 +81,7 @@ function ModalApprove({ dispatch, currentTrans, setCurrentTrans, withdrawStore }
                                 } - ${formatVnd(item.totalMoney)}`,
                             };
                         })}
-                >
-                    {/* {devices
-                        .filter(device => device.status === DeviceStatusValue.on)
-                        .map((item, index) => {
-                            return (
-                                <Select.Option key={index} value={item.id}>
-                                    <span>{item.bankName}</span>
-                                    {' - '}
-                                    <span>{item.numberAccount}</span>
-                                    {' - '}
-                                    <span>{formatVnd(item.totalMoney)}</span>
-                                </Select.Option>
-                            );
-                        })} */}
-                </Select>
+                ></Select>
             </div>
         </Modal>
     );

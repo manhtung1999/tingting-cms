@@ -26,10 +26,7 @@ function TopUp({ dispatch, depositStore }) {
     const [admin] = useLocalStorage(ADMIN_KEY);
 
     useEffect(() => {
-        const payload = {
-            // status: 'on',
-        };
-        dispatch({ type: 'DEPOSIT/getDevices', payload });
+        dispatch({ type: 'DEPOSIT/getDevices' });
     }, [dispatch]);
 
     const handleSubmit = values => {
