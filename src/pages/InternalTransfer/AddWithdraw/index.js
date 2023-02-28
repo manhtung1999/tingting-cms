@@ -1,21 +1,18 @@
-import { Form, message, Select } from 'antd';
+import { MIN_WITHDRAW } from '@/config/constant';
+import { formatVnd } from '@/util/function';
+import { Form, Input, message, Radio, Select } from 'antd';
 import Cleave from 'cleave.js/react';
 import { connect } from 'dva';
 import React, { useEffect, useState } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
+import { Role } from '../../../config/constant';
 import styles from './styles.scss';
-import { formatVnd } from '@/util/function';
-import { MIN_WITHDRAW } from '@/config/constant';
-import { Radio, Input } from 'antd';
-import { ADMIN_KEY, Role } from '../../../config/constant';
-import { useLocalStorage } from '@/hooks';
-
-const { Option } = Select;
 
 const TransferBalance = props => {
-    const { dispatch, masterDataStore } = props;
+    const { dispatch, masterDataStore, internalTransferStore } = props;
 
-    const { devices, detailAccount } = masterDataStore;
+    const { detailAccount } = masterDataStore;
+    const { devices } = internalTransferStore;
 
     const [totalMoney, setTotalMoney] = useState();
     const [mobileId, setMobileId] = useState();
@@ -24,13 +21,11 @@ const TransferBalance = props => {
 
     const [form] = Form.useForm();
 
-    const [admin] = useLocalStorage(ADMIN_KEY);
-
     useEffect(() => {
         const payload = {
             status: 'on',
         };
-        dispatch({ type: 'MASTERDATA/getDevices', payload });
+        dispatch({ type: 'INTERNAL_TRANSFER/getDevices', payload });
     }, [dispatch]);
 
     const handleSubmit = values => {
@@ -234,6 +229,7 @@ const TransferBalance = props => {
     );
 };
 
-export default connect(({ MASTERDATA }) => ({
+export default connect(({ MASTERDATA, INTERNAL_TRANSFER }) => ({
     masterDataStore: MASTERDATA,
+    internalTransferStore: INTERNAL_TRANSFER,
 }))(TransferBalance);
