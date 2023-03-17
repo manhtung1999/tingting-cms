@@ -1,7 +1,12 @@
 export default {
+    QUANTITY: 'Quantity',
+    MAX_QUANTITY_CARD_WITHDRAW_100: 'Max number card is 100',
+    ADD_WITHDRAW_REQUEST_BY_TELECOM: 'Add withdraw by telecom',
     DONT_HAVE_ROLE: "You don't have role to withdraw",
     CHOOSE_CARD_VALUE: 'Card value',
     CHOOSE_CARD_TELELE: 'Telecom type',
+    TELE_NUMBER: 'Card number',
+    SERIAL: 'Serial',
     ADD_TRANSACTION_DEPOSIT_BY_TELECOM: 'Deposit by telecom',
     ADD_TRANSACTION_WITHDRAW_BY_TELECOM: 'Withdraw by telecom',
     MONEY_IN_SYSTEM_DEPOSIT: 'Nạp tiền vào hệ thống',

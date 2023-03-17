@@ -32,6 +32,7 @@ export default {
         success(state, action) {
             return {
                 ...state,
+                loading: false,
             };
         },
 
@@ -133,6 +134,7 @@ export default {
         },
 
         *createDeposit(action, { call, put }) {
+            yield put({ type: 'loading' });
             try {
                 const res = yield call(depositService.adminCreateDeposit, action.payload);
                 if (res.status === 200) {
@@ -151,6 +153,7 @@ export default {
         },
 
         *createWithdraw(action, { call, put }) {
+            yield put({ type: 'loading' });
             try {
                 const res = yield call(depositService.adminCreateWithdraw, action.payload);
                 if (res.status === 200) {

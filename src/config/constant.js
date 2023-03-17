@@ -40,7 +40,6 @@ const RoleName = {
 const DeviceStatusValue = {
     off: 0,
     on: 1,
-    // error: 2,
 };
 
 const DeviceStatus = {
@@ -55,6 +54,16 @@ const PaymentType = {
     electronicWalletQr: 2,
     electronicWallet: 3,
     coin: 4,
+    // card: 5,
+};
+
+const PaymentTypeAll = {
+    bankQr: 0,
+    bank: 1,
+    electronicWalletQr: 2,
+    electronicWallet: 3,
+    coin: 4,
+    card: 5,
 };
 
 const PaymentTypeValue = {
@@ -63,6 +72,16 @@ const PaymentTypeValue = {
     2: 'electronicWalletQr',
     3: 'electronicWallet',
     4: 'coin',
+    // 5: 'card',
+};
+
+const PaymentTypeValueAll = {
+    0: 'bankQr',
+    1: 'bank',
+    2: 'electronicWalletQr',
+    3: 'electronicWallet',
+    4: 'coin',
+    5: 'card',
 };
 
 const TransactionType = {
@@ -209,4 +228,6 @@ export {
     MenhGia,
     TelecomCode,
     TelecomServiceCode,
+    PaymentTypeValueAll,
+    PaymentTypeAll,
 };

@@ -54,7 +54,11 @@ function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStor
             infoFee.agentWithdrawFeeBank === undefined ||
             infoFee.agentWithdrawFeeWallet === undefined ||
             infoFee.systemWithdrawFeeBank === undefined ||
-            infoFee.systemWithdrawFeeWallet === undefined
+            infoFee.systemWithdrawFeeWallet === undefined ||
+            infoFee.systemPayFeeCard === undefined ||
+            infoFee.agentPayFeeCard === undefined ||
+            infoFee.systemWithdrawFeeCard === undefined ||
+            infoFee.agentWithdrawFeeCard === undefined
         ) {
             message.error(formatMessage({ id: 'REQUIRE_VALUE' }));
             return;
@@ -85,6 +89,11 @@ function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStor
             systemWithdrawFeeBank: infoFee.systemWithdrawFeeBank,
             systemWithdrawFeeWalletQr: infoFee.systemWithdrawFeeWallet,
             systemWithdrawFeeWallet: infoFee.systemWithdrawFeeWallet,
+
+            systemPayFeeCard: infoFee.systemPayFeeCard,
+            agentPayFeeCard: infoFee.agentPayFeeCard,
+            systemWithdrawFeeCard: infoFee.systemWithdrawFeeCard,
+            agentWithdrawFeeCard: infoFee.agentWithdrawFeeCard,
         };
         dispatch({ type: 'ACCOUNT/configMoney', payload });
         handleClose();
@@ -294,6 +303,73 @@ function ModalUpdateStaff({ dispatch, currentStaff, setCurrentStaff, accountStor
                         value={detailAccount.userMoneyConfig.systemWithdrawFeeWallet}
                         className={styles.textInputLight}
                         onChange={e => handleChangeDeposit(e, 'systemWithdrawFeeWallet')}
+                        options={{
+                            numeral: true,
+                            numeralThousandsGroupStyle: 'thousand',
+                        }}
+                    />
+                </div>
+
+                {/* ---- config fee for card telecom ----- */}
+                {/* phi nap thẻ cho he thong */}
+                <div className="mt-4">
+                    <span className="mb-2 d-block">
+                        {formatMessage({ id: 'DEPOSIT_FEE_CARD_FOR_SYSTEM' })} ( % ):
+                    </span>
+                    <Cleave
+                        value={detailAccount.userMoneyConfig.systemPayFeeCard}
+                        className={styles.textInputLight}
+                        onChange={e => handleChangeDeposit(e, 'systemPayFeeCard')}
+                        options={{
+                            numeral: true,
+                            numeralThousandsGroupStyle: 'thousand',
+                        }}
+                    />
+                </div>
+
+                {/* phi rut thẻ cho hệ thống*/}
+                <div className="mt-4">
+                    <span className="mb-2 d-block">
+                        {formatMessage({ id: 'WITHDRAWAL_FEE_CARD_FOR_SYSTEM' })} ( % ):
+                    </span>
+
+                    <Cleave
+                        value={detailAccount.userMoneyConfig.systemWithdrawFeeCard}
+                        className={styles.textInputLight}
+                        onChange={e => handleChangeDeposit(e, 'systemWithdrawFeeCard')}
+                        options={{
+                            numeral: true,
+                            numeralThousandsGroupStyle: 'thousand',
+                        }}
+                    />
+                </div>
+
+                {/* phi nạp thẻ cho đại lý*/}
+                <div className="mt-4">
+                    <span className="mb-2 d-block">
+                        {formatMessage({ id: 'DEPOSIT_FEE_CARD_FOR_AGENT' })} ( % ):
+                    </span>
+                    <Cleave
+                        value={detailAccount.userMoneyConfig.agentPayFeeCard}
+                        className={styles.textInputLight}
+                        onChange={e => handleChangeDeposit(e, 'agentPayFeeCard')}
+                        options={{
+                            numeral: true,
+                            numeralThousandsGroupStyle: 'thousand',
+                        }}
+                    />
+                </div>
+
+                {/* phi rut the dien thoai cho đại lý */}
+                <div className="mt-4">
+                    <span className="mb-2 d-block">
+                        {formatMessage({ id: 'WITHDRAWAL_FEE_CARD_FOR_AGENT' })} ( % ):
+                    </span>
+
+                    <Cleave
+                        value={detailAccount.userMoneyConfig.agentWithdrawFeeCard}
+                        className={styles.textInputLight}
+                        onChange={e => handleChangeDeposit(e, 'agentWithdrawFeeCard')}
                         options={{
                             numeral: true,
                             numeralThousandsGroupStyle: 'thousand',

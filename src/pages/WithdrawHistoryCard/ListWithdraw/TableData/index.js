@@ -22,7 +22,6 @@ import { connect } from 'dva';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
-import ModalApprove from '../ModalApprove';
 import styles from './styles.scss';
 
 const { confirm } = Modal;
@@ -351,9 +350,6 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
 
     return (
         <div className={styles.table}>
-            {currentTrans.isShow && (
-                <ModalApprove currentTrans={currentTrans} setCurrentTrans={setCurrentTrans} />
-            )}
             <table>
                 <thead>
                     <tr className="text-center">

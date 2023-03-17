@@ -17,6 +17,7 @@ export default {
         listSecret: [],
         devices: [],
         isLockAll: undefined,
+        updateCardSecretResponse: {},
     },
     reducers: {
         getAccountsSuccess(state, action) {
@@ -111,6 +112,13 @@ export default {
             return {
                 ...state,
                 isLockAll: action.payload.body,
+            };
+        },
+
+        updateCardSecretSuccess(state, action) {
+            return {
+                ...state,
+                updateCardSecretResponse: action.payload.body,
             };
         },
     },
@@ -329,6 +337,21 @@ export default {
                 const res = yield call(accountService.checkLockAll, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'checkLockAllSuccess', payload: res.body });
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *updateCardSecret(action, { call, put }) {
+            try {
+                const res = yield call(accountService.updateCardSecret, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'updateCardSecretSuccess', payload: res.body });
                 } else {
                     message.error(res.body.message);
                     yield put({ type: 'error' });

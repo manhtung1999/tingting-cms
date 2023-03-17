@@ -43,10 +43,10 @@ function AccountManage(props) {
         listSecret,
         lockResponse,
         isLockAll,
+        updateCardSecretResponse,
     } = accountStore;
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [pageIndex, setPageIndex] = useState(1);
-    const [showSecret, setShowSecret] = useState(false);
     const [name, setName] = useState();
     const [rangeTime, setRangeTime] = useState([]);
     const [currentStaff, setCurrentStaff] = useState({
@@ -56,6 +56,11 @@ function AccountManage(props) {
     });
 
     const [currentAddAgent, setCurrentAddAgent] = useState({
+        isShow: false,
+        id: undefined,
+    });
+
+    const [currentUserSecret, setCurrentUserSecret] = useState({
         isShow: false,
         id: undefined,
     });
@@ -96,6 +101,16 @@ function AccountManage(props) {
         dispatch,
         lockResponse,
     ]);
+
+    useEffect(() => {
+        if (updateCardSecretResponse.ownerId) {
+            const payload = {
+                userId: updateCardSecretResponse.ownerId,
+            };
+            console.log('payload');
+            dispatch({ type: 'ACCOUNT/getSercret', payload });
+        }
+    }, [updateCardSecretResponse]);
 
     const goToCreate = () => {
         router.push('/home/create-account');
@@ -146,7 +161,10 @@ function AccountManage(props) {
         };
 
         dispatch({ type: 'ACCOUNT/getSercret', payload });
-        setShowSecret(true);
+        setCurrentUserSecret({
+            isShow: true,
+            id: userId,
+        });
     };
 
     let initialValue = 0;
@@ -186,7 +204,6 @@ function AccountManage(props) {
         dispatch({ type: 'ACCOUNT/updateUser', payload });
     };
 
-    console.log('accounts', accounts);
     const renderDataUsers = loading ? (
         <Loading />
     ) : accounts.length === 0 ? (
@@ -330,11 +347,11 @@ function AccountManage(props) {
                 <ModalUpdateBalance id={currentAgent.id} currentMoney={currentAgent.currentMoney} />
             )}
 
-            {showSecret && (
+            {currentUserSecret.isShow && (
                 <ModalSecret
                     listSecret={listSecret}
-                    showSecret={showSecret}
-                    setShowSecret={setShowSecret}
+                    currentUserSecret={currentUserSecret}
+                    setCurrentUserSecret={setCurrentUserSecret}
                 />
             )}
 

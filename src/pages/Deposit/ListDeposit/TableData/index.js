@@ -5,6 +5,7 @@ import {
     ADMIN_KEY,
     DATE_TRANSACTION,
     PAGE_SIZE,
+    PaymentTypeAll,
     PaymentTypeValue,
     Role,
     TIEN_KHONG_RO_NGUON,
@@ -21,7 +22,7 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import ModalConfirm from '../ModalConfirm';
 import styles from './styles.scss';
 
-function TableData({ depositStore, pageIndex, setPageIndex }) {
+function TableData({ depositStore, pageIndex, setPageIndex, dispatch }) {
     const { listDeposit, totalRow, loading, listMerchant } = depositStore;
     const [admin] = useLocalStorage(ADMIN_KEY);
 
@@ -29,7 +30,6 @@ function TableData({ depositStore, pageIndex, setPageIndex }) {
         isShow: false,
         id: undefined,
     });
-
     const handleAdminConfirm = id => {
         setModalConfirm({
             isShow: true,
@@ -40,14 +40,20 @@ function TableData({ depositStore, pageIndex, setPageIndex }) {
     const renderData = listDeposit
         .filter(i => i.transactionName !== TIEN_KHONG_RO_NGUON)
         .map((item, index) => {
+            const serialOrBankAccount = item.serial || item.bankAccount;
             return (
                 <tr className="text-center" key={index}>
                     <td className="col-2">{item.orderCode}</td>
                     <td className="col-1">{item.code}</td>
                     <td className="col-1">{item.orderUsername}</td>
                     <td className="col-2">
-                        {item.paymentType === 4 ? 'USDT' : `${item.bankName} - ${item.bankAccount}`}
+                        {item.paymentType === 4
+                            ? 'USDT'
+                            : `${item.bankName} ${serialOrBankAccount || ''}`}
+                        {item.serial && <div>({formatMessage({ id: 'SERIAL' })})</div>}
                     </td>
+
+                    {/* receipient acc  */}
                     <td className="col-2">
                         {item.ownerId === ADMIN_ID && item.paymentType === 4 ? (
                             <>
@@ -73,16 +79,31 @@ function TableData({ depositStore, pageIndex, setPageIndex }) {
                                             formatMessage({
                                                 id: PaymentTypeValue[item.paymentType],
                                             })}
+                                        <span>{item.cardCode}</span>
+                                        {item.cardCode && (
+                                            <div>({formatMessage({ id: 'CARD_NUMBER' })})</div>
+                                        )}
                                     </>
                                 )}
                             </div>
                         )}
                     </td>
+
+                    {/* total money column */}
                     <td className="col-1">
-                        {item.totalCurrentMoney > 0
-                            ? formatVnd(item.totalCurrentMoney)
-                            : formatVnd(item.totalMoney)}
+                        {item.paymentType === PaymentTypeAll.card ? (
+                            <>
+                                {formatVnd(item.totalMoneyChange)} <br />
+                                <span>Card value: {formatVnd(item.totalMoney)}</span>
+                            </>
+                        ) : item.totalCurrentMoney > 0 ? (
+                            formatVnd(item.totalCurrentMoney)
+                        ) : (
+                            formatVnd(item.totalMoney)
+                        )}
                     </td>
+
+                    {/* status column */}
                     <td className="col-1">
                         {TransactionStatusValue[item.transactionStatus] &&
                             formatMessage({ id: TransactionStatusValue[item.transactionStatus] })}
@@ -95,7 +116,7 @@ function TableData({ depositStore, pageIndex, setPageIndex }) {
                                         src={ic_check}
                                         alt="check"
                                         title="confirm"
-                                        style={{ width: 17, height: 17 }}
+                                        style={{ width: 17, height: 17, marginRight: 5 }}
                                     />
                                 </div>
                             )}

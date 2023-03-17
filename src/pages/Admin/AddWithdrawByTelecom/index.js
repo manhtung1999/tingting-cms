@@ -1,16 +1,21 @@
 import { Role, RoleName } from '@/config/constant';
 import { formatVnd } from '@/util/function';
-import { Form, Select } from 'antd';
+import { Form, Select, message } from 'antd';
 import { connect } from 'dva';
 import React, { useEffect } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
-import { MenhGia, TelecomCode } from '../../../config/constant';
+import { MenhGia } from '../../../config/constant';
 import styles from './styles.scss';
+import Cleave from 'cleave.js/react';
 
 const { Option } = Select;
 function AddWithdrawByTelecom({ dispatch, adminStore }) {
-    const { listMerchant } = adminStore;
+    const { listMerchant, listPaymentType, loading } = adminStore;
     const [form] = Form.useForm();
+
+    useEffect(() => {
+        dispatch({ type: 'ADMIN/getPaymentType' });
+    }, [dispatch]);
 
     // get merchant list
     useEffect(() => {
@@ -21,8 +26,21 @@ function AddWithdrawByTelecom({ dispatch, adminStore }) {
     }, [dispatch]);
 
     const handleSubmit = values => {
-        dispatch({ type: 'ADMIN/createWithdrawByTelecom', values });
+        if (Number(values.qty) > 100) {
+            message.warn(formatMessage({ id: 'MAX_QUANTITY_CARD_WITHDRAW_100' }));
+            return;
+        }
+        const TypeCard = 5;
+        const payload = {
+            ...values,
+            totalMoney: values.cardValue,
+            paymentType: TypeCard,
+            qty: Number(values.qty),
+        };
+        dispatch({ type: 'ADMIN/createWithdraw', payload });
     };
+
+    const listPaymentTypeByCard = listPaymentType.slice(0, 4);
 
     return (
         <div className={styles.addWithdraw}>
@@ -52,30 +70,51 @@ function AddWithdrawByTelecom({ dispatch, adminStore }) {
                     {/* Chon nha mang */}
                     <Form.Item
                         label={formatMessage({ id: 'CHOOSE_CARD_TELELE' })}
-                        name="telco"
+                        name="bankId"
                         rules={[{ required: true }]}
                     >
                         <Select style={{ minWidth: 180 }}>
-                            {Object.keys(TelecomCode).map(item => (
-                                <Option value={item}>{item}</Option>
-                            ))}
+                            {listPaymentTypeByCard.map((item, index) => {
+                                return (
+                                    <Option key={index} value={item.id}>
+                                        {item.sortNameBank}
+                                    </Option>
+                                );
+                            })}
                         </Select>
                     </Form.Item>
 
                     {/* Chon menh gia */}
                     <Form.Item
                         label={formatMessage({ id: 'CHOOSE_CARD_VALUE' })}
-                        name="amount"
+                        name="cardValue"
                         rules={[{ required: true }]}
                     >
                         <Select style={{ minWidth: 180 }}>
                             {MenhGia.map(item => (
-                                <Option value={item}>{formatVnd(item)}</Option>
+                                <Option key={item} value={item}>
+                                    {formatVnd(item)}
+                                </Option>
                             ))}
                         </Select>
                     </Form.Item>
+
+                    {/* Chon so luong the */}
+                    <Form.Item
+                        label={formatMessage({ id: 'QUANTITY' })}
+                        name="qty"
+                        rules={[{ required: true }]}
+                    >
+                        <Cleave
+                            className={styles.textInput}
+                            options={{
+                                numeral: true,
+                                numeralThousandsGroupStyle: 'thousand',
+                            }}
+                        />
+                    </Form.Item>
                     <div className="p-3 col-5 d-flex justify-content-end">
-                        <button htmlType="submit" className={styles.primaryBtn}>
+                        <button disabled={loading} htmlType="submit" className={styles.primaryBtn}>
                             {formatMessage({ id: 'SUBMIT' })}
                         </button>
                     </div>

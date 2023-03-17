@@ -1,0 +1,14 @@
+@import "@/base.scss";
+
+.addWithdraw {
+    .form {
+        label {
+            color: var(--text-color);
+        }
+
+        .textInput {
+            width: 100%;
+        }
+    }
+
+}

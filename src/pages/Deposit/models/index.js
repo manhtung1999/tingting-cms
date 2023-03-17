@@ -83,12 +83,6 @@ export default {
             };
         },
         getDevicesSuccess(state, action) {
-            // const prevDevice = [...state.devices];
-            // action.payload.body.map(i => {
-            //     if (!prevDevice.find(item => item.id === i.id)) {
-            //         prevDevice.push(i);
-            //     }
-            // });
             return {
                 ...state,
                 devices: action.payload.body,
@@ -98,7 +92,6 @@ export default {
 
     effects: {
         *getDeposits(action, { call, put }) {
-            // yield put({ type: 'loading' });
             try {
                 const res = yield call(depositService.getDeposits, action.payload);
                 if (res.status === 200) {
@@ -165,14 +158,19 @@ export default {
         },
 
         *createDeposit(action, { call, put }) {
+            yield put({ type: 'loading' });
             try {
                 const res = yield call(depositService.createDeposit, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'success', payload: res.body });
-                    window.open(
-                        `http://tingtingvn.info/payment?bankName=${res.body.body.bankName}&bankAccount=${res.body.body.bankAccount}&bankUsername=${res.body.body.bankUsername}&amount=${action.payload.totalMoney}&linkImage=${res.body.body.linkImage}&content=${res.body.body.content}&walletAddress=${res.body.body.walletAddress}&moneyUsdt=${res.body.body.moneyUsdt}&exchangeRate=${res.body.body.exchangeRate}`,
-                        // `http://localhost:8000/payment?bankName=${res.body.body.bankName}&bankAccount=${res.body.body.bankAccount}&bankUsername=${res.body.body.bankUsername}&amount=${action.payload.totalMoney}&linkImage=${res.body.body.linkImage}&content=${res.body.body.content}&walletAddress=${res.body.body.walletAddress}&moneyUsdt=${res.body.body.moneyUsdt}&exchangeRate=${res.body.body.exchangeRate}`,
-                    );
+                    if (res.body.body.bankName) {
+                        window.open(
+                            `http://tingtingvn.info/payment?bankName=${res.body.body.bankName}&bankAccount=${res.body.body.bankAccount}&bankUsername=${res.body.body.bankUsername}&amount=${action.payload.totalMoney}&linkImage=${res.body.body.linkImage}&content=${res.body.body.content}&walletAddress=${res.body.body.walletAddress}&moneyUsdt=${res.body.body.moneyUsdt}&exchangeRate=${res.body.body.exchangeRate}`,
+                            // `http://localhost:4000/payment?bankName=${res.body.body.bankName}&bankAccount=${res.body.body.bankAccount}&bankUsername=${res.body.body.bankUsername}&amount=${action.payload.totalMoney}&linkImage=${res.body.body.linkImage}&content=${res.body.body.content}&walletAddress=${res.body.body.walletAddress}&moneyUsdt=${res.body.body.moneyUsdt}&exchangeRate=${res.body.body.exchangeRate}`,
+                        );
+                    } else {
+                        message.success(formatMessage({ id: 'SUCCESS' }));
+                    }
                 } else {
                     message.error(res.body.message);
                     yield put({ type: 'error' });

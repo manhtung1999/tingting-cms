@@ -47,4 +47,8 @@ export default {
     checkLockAll: payload => {
         return request.get('api/admin/v1/user/check-lock-user', payload);
     },
+
+    updateCardSecret: payload => {
+        return request.post('api/v1/secret-key/update', payload);
+    },
 };

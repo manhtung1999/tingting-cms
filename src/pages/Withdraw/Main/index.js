@@ -8,6 +8,7 @@ import AddWithdraw from '../AddWithdraw';
 import styles from './styles.scss';
 import { useLocalStorage } from '@/hooks/index';
 import { ADMIN_KEY, Role } from '@/config/constant';
+import AddWithdrawByTelecom from '../AddWithdrawByTelecom';
 
 function Withdraw(props) {
     const { location } = props;
@@ -19,6 +20,8 @@ function Withdraw(props) {
             return <ListWithdraw />;
         } else if (location.query.tab === 'settlement') {
             return <Settlement />;
+        } else if (location.query.tab === 'add-withdraw-by-telecom') {
+            return <AddWithdrawByTelecom />;
         }
     };
 
@@ -40,6 +43,7 @@ function Withdraw(props) {
                         {formatMessage({ id: 'WITHDRAW_LIST' })}
                     </button>
 
+                    {/* rút bằng bank */}
                     <button
                         className={
                             location.query.tab === 'add-withdraw' ? `${styles.active}` : undefined
@@ -47,6 +51,18 @@ function Withdraw(props) {
                         onClick={() => router.push('/home/withdraw?tab=add-withdraw')}
                     >
                         {formatMessage({ id: 'ADD_WITHDRAW_REQUEST' })}
+                    </button>
+
+                    {/* rút bằng thẻ */}
+                    <button
+                        className={
+                            location.query.tab === 'add-withdraw-by-telecom'
+                                ? `${styles.active}`
+                                : undefined
+                        }
+                        onClick={() => router.push('/home/withdraw?tab=add-withdraw-by-telecom')}
+                    >
+                        {formatMessage({ id: 'ADD_WITHDRAW_REQUEST_BY_TELECOM' })}
                     </button>
                 </div>
             )}

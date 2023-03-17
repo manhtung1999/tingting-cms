@@ -49,6 +49,9 @@ function ListDeposit(props) {
     const [username, setUsername] = useState();
     const [amount, setAmount] = useState();
     const [currentExchange, setCurrentExchange] = useState();
+    const [paymentTypeId, setPaymentTypeId] = useState();
+    const [cardCode, setCardCode] = useState();
+    const [serial, setSerial] = useState();
 
     const [pageIndex, setPageIndex] = useState(1);
 
@@ -101,6 +104,9 @@ function ListDeposit(props) {
             amount,
             orderCode: orderCode,
             systemTransactionType: 'MONEY_IN_SYSTEM',
+            paymentTypeId,
+            cardCode,
+            serial,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             payload.agentId = admin.id;
@@ -131,6 +137,9 @@ function ListDeposit(props) {
         deviceId,
         username,
         amount,
+        paymentTypeId,
+        cardCode,
+        serial,
     ]);
 
     function disabledDate(current) {
@@ -216,6 +225,8 @@ function ListDeposit(props) {
         setAmount(Number(e.currentTarget.rawValue));
     };
 
+    const listPaymentTypeByCard = listPaymentType.slice(0, 4);
+
     return (
         <div className={styles.content}>
             <div className={styles.header}>
@@ -265,8 +276,11 @@ function ListDeposit(props) {
                         {Object.keys(PaymentType).map((item, index) => {
                             return <Option value={item}>{formatMessage({ id: `${item}` })}</Option>;
                         })}
+                        <Option value={'card'}>{formatMessage({ id: `CARD` })}</Option>
                     </Select>
                 </div>
+
+                {/* Filter by status */}
                 <div className={styles.select}>
                     <div className="mb-1">{formatMessage({ id: 'STATUS' })}:</div>
                     <Select
@@ -280,6 +294,8 @@ function ListDeposit(props) {
                         })}
                     </Select>
                 </div>
+
+                {/* Filter by bank name */}
                 <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
                     <div className="mb-1">{formatMessage({ id: 'BANK_NAME' })}:</div>
                     <Select
@@ -299,6 +315,7 @@ function ListDeposit(props) {
                         })}
                     ></Select>
                 </div>
+
                 {/* filter by amount money */}
                 <div className={styles.select}>
                     <div className="mb-1">{formatMessage({ id: 'AMOUNT' })}</div>
@@ -335,6 +352,37 @@ function ListDeposit(props) {
                         <Input
                             className={styles.textInput}
                             onChange={e => setUsername(e.target.value)}
+                        />
+                    </div>
+
+                    {/* Filter by telecom card */}
+                    <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
+                        <div className="mb-1">{formatMessage({ id: 'CARD' })}:</div>
+                        <Select
+                            style={{ minWidth: 180 }}
+                            defaultValue=""
+                            onChange={value => setPaymentTypeId(value)}
+                        >
+                            <Option value="">{formatMessage({ id: 'ALL' })}</Option>
+                            {listPaymentTypeByCard.map((item, index) => {
+                                return <Option value={item.id}>{item.sortNameBank}</Option>;
+                            })}
+                        </Select>
+                    </div>
+
+                    <div className={styles.select}>
+                        <div className="mb-1">{formatMessage({ id: 'CARD_NUMBER' })}</div>
+                        <Input
+                            className={styles.textInput}
+                            onChange={e => setCardCode(e.target.value)}
+                        />
+                    </div>
+
+                    <div className={styles.select}>
+                        <div className="mb-1">{formatMessage({ id: 'SERIAL' })}</div>
+                        <Input
+                            className={styles.textInput}
+                            onChange={e => setSerial(e.target.value)}
                         />
                     </div>
 

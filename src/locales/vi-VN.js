@@ -1,7 +1,12 @@
 export default {
+    QUANTITY: 'Số lượng',
+    MAX_QUANTITY_CARD_WITHDRAW_100: 'Số lượng thẻ rút tối đa là 100 thẻ.',
+    ADD_WITHDRAW_REQUEST_BY_TELECOM: 'Tạo yêu cầu rút bằng thẻ ĐT',
     DONT_HAVE_ROLE: 'Bạn không có quyền rút tiền ra khỏi hệ thống',
     CHOOSE_CARD_VALUE: 'Mệnh giá thẻ',
     CHOOSE_CARD_TELELE: 'Chọn nhà mạng',
+    TELE_NUMBER: 'Số thẻ',
+    SERIAL: 'Số seri',
     ADD_TRANSACTION_DEPOSIT_BY_TELECOM: 'Nạp bằng thẻ ĐT',
     ADD_TRANSACTION_WITHDRAW_BY_TELECOM: 'Rút bằng thẻ ĐT',
     MONEY_IN_SYSTEM: 'Nạp tiền vào hệ thống',

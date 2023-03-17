@@ -105,6 +105,12 @@ export default {
                     component: '../pages/HistoryEdit',
                     Routes: ['./src/components/AdminAuthentication'],
                 },
+
+                {
+                    path: '/home/history-withdraw-card',
+                    component: '../pages/WithdrawHistoryCard',
+                    Routes: ['./src/components/AdminAuthentication'],
+                },
             ],
         },
     ],

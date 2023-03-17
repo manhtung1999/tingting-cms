@@ -1,4 +1,7 @@
 export default {
+    QUANTITY: 'Số lượng',
+    MAX_QUANTITY_CARD_WITHDRAW_100: 'Số lượng thẻ rút tối đa là 100 thẻ.',
+    ADD_WITHDRAW_REQUEST_BY_TELECOM: 'Tạo yêu cầu rút bằng thẻ ĐT',
     DONT_HAVE_ROLE: 'Bạn không có quyền rút tiền ra khỏi hệ thống',
     ADD_TRANSACTION_DEPOSIT_BY_TELECOM: 'Deposit by telecom',
     ADD_TRANSACTION_WITHDRAW_BY_TELECOM: 'Withdraw by telecom',

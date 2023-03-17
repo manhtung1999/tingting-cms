@@ -44,7 +44,7 @@ function AddUSDT({ dispatch, depositStore }) {
             return;
         }
         values.totalMoney = amount;
-        values.paymentType = 4;
+        values.paymentType = 4; // type USDT
         const payload = { ...values };
         dispatch({ type: 'DEPOSIT/createDeposit', payload });
     };

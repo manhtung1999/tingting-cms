@@ -1,10 +1,10 @@
-import { SerialCardType } from '@/config/constant';
-import { Form, Input, message, Select } from 'antd';
-import Cleave from 'cleave.js/react';
+import { Form, Input, Select } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
+import { MenhGia } from '../../../config/constant';
 import styles from './styles.scss';
+import { formatVnd } from '@/util/function';
 
 const { Option } = Select;
 const formItemLayout = {
@@ -19,34 +19,28 @@ const formItemLayout = {
 };
 function TopUpByTelecom({ dispatch, depositStore }) {
     const [form] = Form.useForm();
-    const [amount, setAmount] = React.useState();
+
+    const { listPaymentType, loading } = depositStore;
+
+    React.useEffect(() => {
+        dispatch({ type: 'DEPOSIT/getPaymentType' });
+    }, [dispatch]);
 
     const handleSubmit = values => {
-        if (amount <= 0) {
-            message.error(formatMessage({ id: 'REQUIRE_VALUE' }));
-            return;
-        }
-        values.amount = amount;
+        const paymentTypeByCard = 5;
+        values.paymentType = paymentTypeByCard;
         const payload = { ...values };
-        dispatch({ type: 'DEPOSIT/createDepositByTelecom', payload });
+        dispatch({ type: 'DEPOSIT/createDeposit', payload });
     };
 
-    const handleChangeAmount = e => {
-        setAmount(Number(e.currentTarget.rawValue));
-    };
-
-    const renderCardType = SerialCardType.map(item => {
-        return (
-            <Option value={item.code}>
-                <span>{item.name}</span>
-            </Option>
-        );
-    });
+    const listPaymentTypeByCard = listPaymentType.slice(0, 4);
 
     return (
         <div className={styles.content}>
             <div className={styles.topup}>
-                <h5 className="mb-3">{formatMessage({ id: 'TOPUP_BY_TELECOM' })}</h5>
+                <h5 className="mb-3">
+                    {formatMessage({ id: 'ADD_TRANSACTION_DEPOSIT_BY_TELECOM' })}
+                </h5>
                 <div className={styles.form}>
                     <Form
                         {...formItemLayout}
@@ -56,48 +50,52 @@ function TopUpByTelecom({ dispatch, depositStore }) {
                         onFinish={handleSubmit}
                     >
                         <Form.Item
-                            label={formatMessage({ id: 'SELECT_TELECOM' })}
-                            name="telco"
+                            label={formatMessage({ id: 'CHOOSE_CARD_TELELE' })}
+                            name="bankId"
                             rules={[{ required: true }]}
                         >
-                            <Select style={{ minWidth: 180 }}>{renderCardType}</Select>
+                            <Select style={{ minWidth: 180 }}>
+                                {listPaymentTypeByCard.map((item, index) => {
+                                    return <Option value={item.id}>{item.sortNameBank}</Option>;
+                                })}
+                            </Select>
                         </Form.Item>
 
                         <Form.Item
-                            label={formatMessage({ id: 'SERIAL_NUMBER' })}
+                            label={formatMessage({ id: 'SERIAL' })}
                             rules={[{ required: true }]}
-                            name="serial "
+                            name="serial"
                             whitespace
                         >
                             <Input className={styles.textInput} />
                         </Form.Item>
                         <Form.Item
-                            label={formatMessage({ id: 'PIN_CODE' })}
+                            label={formatMessage({ id: 'TELE_NUMBER' })}
                             rules={[{ required: true }]}
-                            name="pincode "
+                            name="cardCode"
                             whitespace
                         >
                             <Input className={styles.textInput} />
                         </Form.Item>
 
                         <Form.Item
-                            label={formatMessage({ id: 'AMOUNT' })}
-                            name="amount"
+                            label={formatMessage({ id: 'CHOOSE_CARD_VALUE' })}
+                            name="totalMoney"
                             rules={[{ required: true }]}
                         >
-                            <Cleave
-                                className={styles.textInput}
-                                placeholder="0"
-                                onChange={handleChangeAmount}
-                                options={{
-                                    numeral: true,
-                                    numeralThousandsGroupStyle: 'thousand',
-                                }}
-                            />
+                            <Select style={{ minWidth: 180 }}>
+                                {MenhGia.map(i => (
+                                    <Option value={i}>{formatVnd(i)}</Option>
+                                ))}
+                            </Select>
                         </Form.Item>
 
                         <div className="p-3 col-6 d-flex justify-content-end">
-                            <button htmlType="submit" className={styles.primaryBtn}>
+                            <button
+                                disabled={loading}
+                                htmlType="submit"
+                                className={styles.primaryBtn}
+                            >
                                 {formatMessage({ id: 'SUBMIT' })}
                             </button>
                         </div>

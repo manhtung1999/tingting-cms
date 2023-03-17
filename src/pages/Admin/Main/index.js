@@ -19,12 +19,11 @@ function Admin(props) {
             return <TopUp />;
         } else if (location.query.tab === 'add-trans-withdraw') {
             return <AddWithdraw />;
+        } else if (location.query.tab === 'add-trans-deposit-by-telecom') {
+            return <TopUpByTelecom />;
+        } else if (location.query.tab === 'add-trans-withdraw-by-telecom') {
+            return <AddWithdrawByTelecom />;
         }
-        // else if (location.query.tab === 'add-trans-deposit-by-telecom') {
-        //     return <TopUpByTelecom />;
-        // } else if (location.query.tab === 'add-trans-withdraw-by-telecom') {
-        //     return <AddWithdrawByTelecom />;
-        // }
     };
 
     return (
@@ -55,7 +54,7 @@ function Admin(props) {
                 >
                     {formatMessage({ id: 'USDT_PAYMENT_RATE' })}
                 </button>
-                {/* <button
+                <button
                     className={
                         location.query.tab === 'add-trans-deposit-by-telecom'
                             ? `${styles.active}`
@@ -74,7 +73,7 @@ function Admin(props) {
                     onClick={() => router.push('/home/admin?tab=add-trans-withdraw-by-telecom')}
                 >
                     {formatMessage({ id: 'ADD_TRANSACTION_WITHDRAW_BY_TELECOM' })}
-                </button> */}
+                </button>
             </div>
             <div className={styles.content}>{renderComponent()}</div>
         </>
