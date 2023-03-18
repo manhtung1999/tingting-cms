@@ -25,15 +25,17 @@ const { RangePicker } = DatePicker;
 
 function ListReport(props) {
     const { reportStore, dispatch } = props;
-    const { listMerchant, deleteResponse, updateResponse, devices } = reportStore;
+    const { listPaymentType, listMerchant, deleteResponse, updateResponse, devices } = reportStore;
     const [rangeTime, setRangeTime] = useState([]);
     const [paymentType, setPaymentType] = useState();
     const [deviceId, setDeviceId] = useState();
     const [userId, setUserId] = useState();
     const [orderCode, setOrderCode] = useState();
     const [transactionType, setTransactionType] = useState();
-
     const [pageIndex, setPageIndex] = useState(1);
+    const [paymentTypeId, setPaymentTypeId] = useState();
+    const [cardCode, setCardCode] = useState();
+    const [serial, setSerial] = useState();
 
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
@@ -43,8 +45,11 @@ function ListReport(props) {
     }, [dispatch]);
 
     useEffect(() => {
+        dispatch({ type: 'REPORT/getPaymentType' });
+    }, [dispatch]);
+
+    useEffect(() => {
         const payload = {
-            // page: 0,
             role: RoleName[Role.ROLE_USER],
         };
         if (admin?.role === Role.ROLE_AGENT) {
@@ -65,6 +70,9 @@ function ListReport(props) {
             deviceId,
             systemTransactionType: 'MONEY_IN_SYSTEM',
             transactionType,
+            cardCode,
+            serial,
+            paymentTypeId,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             payload.agentId = admin.id;
@@ -89,6 +97,9 @@ function ListReport(props) {
         admin,
         deviceId,
         transactionType,
+        cardCode,
+        serial,
+        paymentTypeId,
     ]);
 
     function disabledDate(current) {
@@ -135,6 +146,9 @@ function ListReport(props) {
             deviceId,
             systemTransactionType: 'MONEY_IN_SYSTEM',
             transactionType,
+            cardCode,
+            serial,
+            paymentTypeId,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             queryObj.agentId = admin.id;
@@ -169,6 +183,7 @@ function ListReport(props) {
             });
         setExportTime(new Date().valueOf());
     };
+    const listPaymentTypeByCard = listPaymentType.slice(0, 4);
 
     return (
         <div className={styles.content}>
@@ -193,7 +208,7 @@ function ListReport(props) {
                 {(admin?.role === Role.ROLE_ACCOUNTANT ||
                     admin?.role === Role.ROLE_ADMIN ||
                     admin?.role === Role.ROLE_STAFF) && (
-                    <div className={styles.select}>
+                    <div className={styles.select} style={{ marginRight: 8 }}>
                         <div className="mb-1">{formatMessage({ id: 'MERCHANT' })}:</div>
                         <Select
                             style={{ minWidth: 180 }}
@@ -207,7 +222,7 @@ function ListReport(props) {
                         </Select>
                     </div>
                 )}
-                <div className={styles.select}>
+                <div className={styles.select} style={{ marginRight: 8 }}>
                     <div className="mb-1">{formatMessage({ id: 'CHANNEL' })}:</div>
                     <Select
                         style={{ minWidth: 180 }}
@@ -218,6 +233,7 @@ function ListReport(props) {
                         {Object.keys(PaymentType).map((item, index) => {
                             return <Option value={item}>{formatMessage({ id: `${item}` })}</Option>;
                         })}
+                        <Option value={'card'}>{formatMessage({ id: `CARD` })}</Option>
                     </Select>
                 </div>
 
@@ -236,7 +252,7 @@ function ListReport(props) {
                     </Select>
                 </div>
 
-                <div className={styles.select}>
+                <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
                     <div className="mb-1">{formatMessage({ id: 'BANK_NAME' })}:</div>
                     <Select
                         style={{ minWidth: 300 }}
@@ -262,6 +278,34 @@ function ListReport(props) {
                         className={styles.textInput}
                         onChange={e => setOrderCode(e.target.value)}
                     />
+                </div>
+
+                {/* Filter by telecom card */}
+                <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
+                    <div className="mb-1">{formatMessage({ id: 'CARD' })}:</div>
+                    <Select
+                        style={{ minWidth: 180 }}
+                        defaultValue=""
+                        onChange={value => setPaymentTypeId(value)}
+                    >
+                        <Option value="">{formatMessage({ id: 'ALL' })}</Option>
+                        {listPaymentTypeByCard.map((item, index) => {
+                            return <Option value={item.id}>{item.sortNameBank}</Option>;
+                        })}
+                    </Select>
+                </div>
+
+                <div className={styles.select} style={{ marginRight: 8 }}>
+                    <div className="mb-1">{formatMessage({ id: 'CARD_NUMBER' })}</div>
+                    <Input
+                        className={styles.textInput}
+                        onChange={e => setCardCode(e.target.value)}
+                    />
+                </div>
+
+                <div className={styles.select}>
+                    <div className="mb-1">{formatMessage({ id: 'SERIAL' })}</div>
+                    <Input className={styles.textInput} onChange={e => setSerial(e.target.value)} />
                 </div>
             </div>
             <TableData pageIndex={pageIndex} setPageIndex={setPageIndex} />

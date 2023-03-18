@@ -1,4 +1,7 @@
 export default {
+    DETAIL_TRANSACTION: 'Chi tiết giao dịch',
+    UPDATE_CARD_SECRET_KEY: 'Cập nhập secret key thẻ cào',
+    HISTORY_WITHDRAW_CARD: 'Lịch sử rút thẻ cào',
     QUANTITY: 'Số lượng',
     MAX_QUANTITY_CARD_WITHDRAW_100: 'Số lượng thẻ rút tối đa là 100 thẻ.',
     ADD_WITHDRAW_REQUEST_BY_TELECOM: 'Tạo yêu cầu rút bằng thẻ ĐT',

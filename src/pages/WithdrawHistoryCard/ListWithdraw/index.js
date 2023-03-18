@@ -4,10 +4,10 @@ import {
     DATE_TRANSACTION,
     EXPORT_KEY,
     Role,
-    RoleName,
     TIME_DELAY_EXPORT,
     TOKEN_KEY,
     TransactionStatus,
+    RoleName,
 } from '@/config/constant';
 import config from '@/config/index';
 import { useLocalStorage } from '@/hooks';
@@ -26,53 +26,18 @@ const { RangePicker } = DatePicker;
 
 function ListWithdraw(props) {
     const { withdrawStore, dispatch } = props;
-    const {
-        listMerchant,
-        listAgent,
-        deleteResponse,
-        updateResponse,
-        denyResponse,
-        approveResponse,
-        appConfirmResponse,
-        devices,
-    } = withdrawStore;
+    const { updateResponse } = withdrawStore;
     const [rangeTime, setRangeTime] = useState([]);
     const [transactionStatus, setTransactionStatus] = useState();
-    const [paymentType, setPaymentType] = useState();
     const [userId, setUserId] = useState();
     const [username, setUsername] = useState();
-    const [deviceId, setDeviceId] = useState();
     const [orderCode, setOrderCode] = useState();
     const [code, setCode] = useState();
-
     const [pageIndex, setPageIndex] = useState(1);
-
     const [amount, setAmount] = useState();
 
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
-
-    useEffect(() => {
-        dispatch({ type: 'WITHDRAW/getDevices' });
-    }, [dispatch]);
-
-    // get merchant
-    useEffect(() => {
-        const payload = {
-            role: RoleName[Role.ROLE_USER],
-            deleted: false,
-        };
-        admin?.role !== Role.ROLE_USER && dispatch({ type: 'WITHDRAW/getMerchants', payload });
-    }, [dispatch]);
-
-    // get agent
-    useEffect(() => {
-        const payload = {
-            role: RoleName[Role.ROLE_AGENT],
-            deleted: false,
-        };
-        admin?.role !== Role.ROLE_USER && dispatch({ type: 'WITHDRAW/getAgents', payload });
-    }, [dispatch]);
 
     useEffect(() => {
         let payload = {
@@ -80,12 +45,11 @@ function ListWithdraw(props) {
             transactionType: 'withdraw_money',
             transactionStatus,
             userId,
-            paymentType,
+            paymentType: 'card',
             orderCode,
             code,
             startDate: rangeTime?.[0],
             endDate: rangeTime?.[1],
-            deviceId,
             username,
             systemTransactionType: 'MONEY_IN_SYSTEM',
             amount,
@@ -96,10 +60,10 @@ function ListWithdraw(props) {
         if (admin?.role === Role.ROLE_USER) {
             payload.userId = admin.id;
         }
-        dispatch({ type: 'WITHDRAW/getWithdraws', payload });
+        dispatch({ type: 'WITHDRAW_CARD/getWithdraws', payload });
 
         const interval = setInterval(
-            () => dispatch({ type: 'WITHDRAW/getWithdraws', payload }),
+            () => dispatch({ type: 'WITHDRAW_CARD/getWithdraws', payload }),
             5000,
         );
         return () => {
@@ -108,19 +72,13 @@ function ListWithdraw(props) {
     }, [
         pageIndex,
         username,
-        deleteResponse,
         transactionStatus,
         orderCode,
-        paymentType,
         updateResponse,
         rangeTime,
         dispatch,
-        denyResponse,
-        approveResponse,
-        appConfirmResponse,
         admin,
         userId,
-        deviceId,
         code,
         amount,
     ]);
@@ -170,7 +128,7 @@ function ListWithdraw(props) {
             transactionType: 'withdraw_money',
             transactionStatus,
             username,
-            paymentType,
+            paymentType: 5,
             orderCode,
             startDate: rangeTime[0],
             endDate: rangeTime[1],
@@ -205,7 +163,7 @@ function ListWithdraw(props) {
         setExportTime(new Date().valueOf());
     };
 
-    const handleChangeMin = e => {
+    const handleChangeAmount = e => {
         setAmount(Number(e.currentTarget.rawValue));
     };
 
@@ -213,7 +171,7 @@ function ListWithdraw(props) {
         <div className={styles.content}>
             <div className={styles.header}>
                 <div>
-                    <h3>{formatMessage({ id: 'WITHDRAW_LIST' })}</h3>
+                    <h3>{formatMessage({ id: 'HISTORY_WITHDRAW_CARD' })}</h3>
                 </div>
                 <div className={styles.datePicker}>
                     <label className="me-2">{formatMessage({ id: 'TIME' })}: </label>
@@ -229,42 +187,6 @@ function ListWithdraw(props) {
                 </button>
             </div>
             <div className={styles.pageFilter}>
-                {(admin?.role === Role.ROLE_ACCOUNTANT ||
-                    admin?.role === Role.ROLE_ADMIN ||
-                    admin?.role === Role.ROLE_STAFF) && (
-                    <div className={styles.select}>
-                        <div className="mb-1">{formatMessage({ id: 'MERCHANT' })}:</div>
-                        <Select
-                            style={{ minWidth: 180 }}
-                            defaultValue=""
-                            onChange={value => setUserId(value)}
-                        >
-                            <Option value={''}>{formatMessage({ id: 'ALL' })}</Option>
-                            {listMerchant.map(item => {
-                                return <Option value={item.id}>{item.phone}</Option>;
-                            })}
-                        </Select>
-                    </div>
-                )}
-
-                {(admin?.role === Role.ROLE_ACCOUNTANT ||
-                    admin?.role === Role.ROLE_ADMIN ||
-                    admin?.role === Role.ROLE_STAFF) && (
-                    <div className={styles.select}>
-                        <div className="mb-1">{formatMessage({ id: 'AGENT' })}:</div>
-                        <Select
-                            style={{ minWidth: 180 }}
-                            defaultValue=""
-                            onChange={value => setUserId(value)}
-                        >
-                            <Option value={''}>{formatMessage({ id: 'ALL' })}</Option>
-                            {listAgent.map(item => {
-                                return <Option value={item.id}>{item.phone}</Option>;
-                            })}
-                        </Select>
-                    </div>
-                )}
-
                 <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
                     <div className="mb-1">{formatMessage({ id: 'STATUS' })}:</div>
                     <Select
@@ -277,25 +199,6 @@ function ListWithdraw(props) {
                             return <Option value={item}>{formatMessage({ id: `${item}` })}</Option>;
                         })}
                     </Select>
-                </div>
-                <div className={styles.select}>
-                    <div className="mb-1">{formatMessage({ id: 'DEVICE' })}:</div>
-                    <Select
-                        style={{ minWidth: 300 }}
-                        defaultValue=""
-                        onChange={value => setDeviceId(value)}
-                        showSearch
-                        optionFilterProp="children"
-                        filterOption={(input, option) =>
-                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        options={devices.map(item => {
-                            return {
-                                value: item.id,
-                                label: `${item.bankName} - ${item.numberAccount} - ${item.username}`,
-                            };
-                        })}
-                    ></Select>
                 </div>
 
                 {/* filter by order KH */}
@@ -324,7 +227,7 @@ function ListWithdraw(props) {
                     <Cleave
                         value={amount}
                         className={styles.textInput}
-                        onChange={handleChangeMin}
+                        onChange={handleChangeAmount}
                         options={{
                             numeral: true,
                             numeralThousandsGroupStyle: 'thousand',

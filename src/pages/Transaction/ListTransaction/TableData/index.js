@@ -1,5 +1,11 @@
 import ModalLoading from '@/components/ModalLoading';
-import { ADMIN_ID, DATE_TRANSACTION, PAGE_SIZE, PaymentTypeValue } from '@/config/constant';
+import {
+    ADMIN_ID,
+    DATE_TRANSACTION,
+    PAGE_SIZE,
+    PaymentTypeValue,
+    PaymentTypeAll,
+} from '@/config/constant';
 import { formatVnd } from '@/util/function';
 import { Pagination, Modal, Input, message } from 'antd';
 import { connect } from 'dva';
@@ -95,10 +101,22 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
                         </>
                     )}
                 </td>
-                <td className={'col-1'}>
+                {/* <td className={'col-1'}>
                     {item.totalCurrentMoney > 0
                         ? formatVnd(item.totalCurrentMoney)
                         : formatVnd(item.totalMoney)}
+                </td> */}
+                <td className="col-1">
+                    {item.paymentType === PaymentTypeAll.card ? (
+                        <>
+                            {formatVnd(item.totalMoneyChange)} <br />
+                            <span>Card value: {formatVnd(item.totalMoney)}</span>
+                        </>
+                    ) : item.totalCurrentMoney > 0 ? (
+                        formatVnd(item.totalCurrentMoney)
+                    ) : (
+                        formatVnd(item.totalMoney)
+                    )}
                 </td>
                 <td className="col-1">{moment(item.createdAt).format(DATE_TRANSACTION)}</td>
                 <td className="col-1">{moment(item.updatedAt).format(DATE_TRANSACTION)}</td>

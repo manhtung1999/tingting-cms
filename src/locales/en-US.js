@@ -1,4 +1,7 @@
 export default {
+    DETAIL_TRANSACTION: 'Detail transaction',
+    UPDATE_CARD_SECRET_KEY: 'Update card secret key',
+    HISTORY_WITHDRAW_CARD: 'History card withdraw',
     QUANTITY: 'Quantity',
     MAX_QUANTITY_CARD_WITHDRAW_100: 'Max number card is 100',
     ADD_WITHDRAW_REQUEST_BY_TELECOM: 'Add withdraw by telecom',

@@ -6,7 +6,7 @@ import accountService from '@/services/account';
 import { formatMessage } from 'umi-plugin-react/locale';
 
 export default {
-    namespace: 'WITHDRAW',
+    namespace: 'WITHDRAW_CARD',
     state: {
         loading: false,
         listWithdraw: [],
@@ -14,14 +14,8 @@ export default {
         devices: [],
         listMerchant: [],
         listAgent: [],
-        deleteResponse: undefined,
-        listCardBank: [],
         listPaymentType: [],
-        addCardResponse: undefined,
-        denyResponse: undefined,
-        approveResponse: undefined,
-        appConfirmResponse: undefined,
-        deleteCardResponse: undefined,
+        detailTrans: undefined,
     },
     reducers: {
         loading(state, action) {
@@ -53,40 +47,11 @@ export default {
                 totalRow: action.payload.totalRecord,
             };
         },
-        getDevicesSuccess(state, action) {
-            return {
-                ...state,
-                devices: action.payload.body,
-            };
-        },
         getMerchantSuccess(state, action) {
             return {
                 ...state,
 
                 listMerchant: action.payload.body,
-            };
-        },
-
-        getAgentSuccess(state, action) {
-            return {
-                ...state,
-                listAgent: action.payload.body,
-            };
-        },
-
-        getCardBankSuccess(state, action) {
-            console.log('action', action.payload);
-            return {
-                ...state,
-                listCardBank: action.payload.body,
-            };
-        },
-
-        deleteTransactionSuccess(state, action) {
-            return {
-                ...state,
-                loading: false,
-                deleteResponse: action.payload.body,
             };
         },
 
@@ -96,41 +61,11 @@ export default {
                 listPaymentType: action.payload.body,
             };
         },
-        createCardBankSuccess(state, action) {
-            return {
-                ...state,
-                addCardResponse: action.payload.body,
-            };
-        },
 
-        denyTransactionSuccess(state, action) {
+        getDetailTransSuccess(state, action) {
             return {
                 ...state,
-                loading: false,
-                denyResponse: action.payload,
-            };
-        },
-
-        approveTransactionSuccess(state, action) {
-            return {
-                ...state,
-                loading: false,
-                approveResponse: action.payload,
-            };
-        },
-
-        appConfirmMoneySuccess(state, action) {
-            return {
-                ...state,
-                loading: false,
-                appConfirmResponse: action.payload,
-            };
-        },
-
-        deleteCardBankSuccess(state, action) {
-            return {
-                ...state,
-                deleteCardResponse: action.payload,
+                detailTrans: action.payload.body,
             };
         },
     },
@@ -142,25 +77,6 @@ export default {
                 if (res.status === 200) {
                     yield put({
                         type: 'getWithdrawSuccess',
-                        payload: res.body,
-                    });
-                } else {
-                    message.error(res.body.message);
-                    yield put({ type: 'error' });
-                }
-            } catch (error) {
-                handleErrorModel(error);
-                yield put({ type: 'error' });
-            }
-        },
-
-        *deleteTransaction(action, { call, put }) {
-            yield put({ type: 'loading' });
-            try {
-                const res = yield call(depositService.deleteTransaction, action.payload);
-                if (res.status === 200) {
-                    yield put({
-                        type: 'deleteTransactionSuccess',
                         payload: res.body,
                     });
                 } else {
@@ -203,21 +119,6 @@ export default {
             }
         },
 
-        *getDevices(action, { call, put }) {
-            try {
-                const res = yield call(deviceService.getDevicesWithoutMoney, action.payload);
-                if (res.status === 200) {
-                    yield put({ type: 'getDevicesSuccess', payload: res.body });
-                } else {
-                    message.error(res.body.message);
-                    yield put({ type: 'error' });
-                }
-            } catch (error) {
-                handleErrorModel(error);
-                yield put({ type: 'error' });
-            }
-        },
-
         *createWithdraw(action, { call, put }) {
             yield put({ type: 'loading' });
             try {
@@ -225,36 +126,6 @@ export default {
                 if (res.status === 200) {
                     yield put({ type: 'success', payload: res.body });
                     message.success(formatMessage({ id: 'CREATE_WITHDRAW_SUCCESS' }));
-                } else {
-                    message.error(res.body.message);
-                    yield put({ type: 'error' });
-                }
-            } catch (error) {
-                handleErrorModel(error);
-                yield put({ type: 'error' });
-            }
-        },
-        *getCardBank(action, { call, put }) {
-            try {
-                const res = yield call(depositService.getCardBank, action.payload);
-                if (res.status === 200) {
-                    yield put({ type: 'getCardBankSuccess', payload: res.body });
-                } else {
-                    message.error(res.body.message);
-                    yield put({ type: 'error' });
-                }
-            } catch (error) {
-                handleErrorModel(error);
-                yield put({ type: 'error' });
-            }
-        },
-
-        *createCardBank(action, { call, put }) {
-            try {
-                const res = yield call(depositService.createCardBank, action.payload);
-                if (res.status === 200) {
-                    yield put({ type: 'createCardBankSuccess', payload: res.body });
-                    message.success(formatMessage({ id: 'SUCCESS' }));
                 } else {
                     message.error(res.body.message);
                     yield put({ type: 'error' });
@@ -278,79 +149,26 @@ export default {
                 yield put({ type: 'error' });
             }
         },
-
-        *denyTransaction(action, { call, put }) {
-            yield put({ type: 'loading' });
-            try {
-                const res = yield call(depositService.denyTransaction, action.payload);
-                if (res.status === 200) {
-                    yield put({ type: 'denyTransactionSuccess', payload: res.body });
-                    message.success(formatMessage({ id: 'SUCCESS' }));
-                } else {
-                    message.error(res.body.message);
-                    yield put({ type: 'error' });
-                }
-            } catch (error) {
-                handleErrorModel(error);
-                yield put({ type: 'error' });
-            }
-        },
-
-        *approveTransaction(action, { call, put }) {
-            yield put({ type: 'loading' });
-            try {
-                const res = yield call(depositService.approveTransaction, action.payload);
-                if (res.status === 200) {
-                    yield put({ type: 'approveTransactionSuccess', payload: res.body });
-                    message.success(formatMessage({ id: 'SUCCESS' }));
-                } else {
-                    message.error(res.body.message);
-                    yield put({ type: 'error' });
-                }
-            } catch (error) {
-                handleErrorModel(error);
-                yield put({ type: 'error' });
-            }
-        },
-
-        *appConfirmMoney(action, { call, put }) {
-            yield put({ type: 'loading' });
-            try {
-                const res = yield call(depositService.appConfirmMoney, action.payload);
-                if (res.status === 200) {
-                    yield put({ type: 'appConfirmMoneySuccess', payload: res.body });
-                    message.success(formatMessage({ id: 'SUCCESS' }));
-                } else {
-                    message.error(res.body.message);
-                    yield put({ type: 'error' });
-                }
-            } catch (error) {
-                handleErrorModel(error);
-                yield put({ type: 'error' });
-            }
-        },
-
-        *deleteCardBank(action, { call, put }) {
-            try {
-                const res = yield call(depositService.deleteCardBank, action.payload);
-                if (res.status === 200) {
-                    yield put({ type: 'deleteCardBankSuccess', payload: res.body });
-                    message.success(formatMessage({ id: 'SUCCESS' }));
-                } else {
-                    message.error(res.body.message);
-                    yield put({ type: 'error' });
-                }
-            } catch (error) {
-                handleErrorModel(error);
-                yield put({ type: 'error' });
-            }
-        },
-
         *refreshCard(action, { call, put }) {
             try {
                 const res = yield call(depositService.refreshCard, action.payload);
                 if (res.status === 200) {
                     message.success(formatMessage({ id: 'SUCCESS' }));
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *getDetailTrans(action, { call, put }) {
+            try {
+                const res = yield call(depositService.getDetailTrans, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'getDetailTransSuccess', payload: res.body });
                 } else {
                     message.error(res.body.message);
                     yield put({ type: 'error' });

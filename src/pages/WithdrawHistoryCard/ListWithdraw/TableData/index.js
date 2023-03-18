@@ -1,8 +1,5 @@
-import ic_call from '@/assets/image/ic_call.png';
-import ic_cancel from '@/assets/image/ic_cancel.png';
-import ic_check from '@/assets/image/ic_check.svg';
 import ic_refresh from '@/assets/image/ic_refresh.png';
-import ic_uncheck from '@/assets/image/ic_uncheck.svg';
+import ic_detail from '@/assets/image/ic_detail.png';
 import EmptyComponent from '@/components/EmptyComponent';
 import ModalLoading from '@/components/ModalLoading';
 import {
@@ -17,108 +14,37 @@ import {
 } from '@/config/constant';
 import { useLocalStorage } from '@/hooks';
 import { formatVnd } from '@/util/function';
-import { Input, message, Modal, Pagination } from 'antd';
+import { Pagination } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
-
-const { confirm } = Modal;
-
+import ModalDetal from '../ModalDetal';
 function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
-    const { listWithdraw, totalRow, loading, listMerchant, devices, listAgent } = withdrawStore;
-    const [currentTrans, setCurrentTrans] = useState({
-        id: undefined,
-        isShow: false,
-        amout: undefined,
-        bankName: undefined,
-    });
+    const { listWithdraw, totalRow, loading, listAgent } = withdrawStore;
+
     const [admin] = useLocalStorage(ADMIN_KEY);
 
-    const handleDeny = id => {
-        let reason;
-        confirm({
-            title: formatMessage({ id: 'ARE_YOU_SURE_YOU_WANT_TO_DENY_THIS_TRANSACTION' }),
-            content: (
-                <div>
-                    <span style={{ color: '#000' }}>{formatMessage({ id: 'REASON' })}:</span>
-                    <Input
-                        onChange={e => {
-                            reason = e.target.value;
-                        }}
-                    />
-                </div>
-            ),
-            onOk: () => {
-                if (!reason || reason?.trim() === '') {
-                    message.error(formatMessage({ id: 'REQUIRE_VALUE' }));
-                    return;
-                }
-                const payload = { id, reason };
-                dispatch({ type: 'WITHDRAW/denyTransaction', payload });
-            },
-            onCancel: () => {},
-        });
-    };
-
-    const handleApprove = (id, amount, bankName) => {
-        setCurrentTrans({
-            id,
-            isShow: true,
-            amount,
-            bankName,
-        });
-    };
-
-    const handleAppConfirm = item => {
-        if (devices.length === 0) {
-            message.info(formatMessage({ id: 'PLEASE_WAIT_GET_DEVICE_SUCCESS' }));
-            return;
-        }
-        const deviceKey = devices.find(device => device.id === item.mobileId)?.deviceKey;
-        if (!deviceKey) {
-            message.error('Không có device rút.');
-            return;
-        }
-        confirm({
-            title: formatMessage({ id: 'ARE_YOU_SURE_YOU_WANT_TO_APP_CONFIRM_THIS_TRANSACTION' }),
-            content: <div></div>,
-            onOk: () => {
-                const payload = {
-                    code: item.orderUsername,
-                    currentMoney: item.totalMoney,
-                    type: 1,
-                    deviceKey,
-                };
-                dispatch({ type: 'WITHDRAW/appConfirmMoney', payload });
-            },
-            onCancel: () => {},
-        });
-    };
+    const [currentTrans, setCurrentTrans] = useState({
+        isShow: false,
+        id: undefined,
+    });
 
     const handleRefreshCard = orderCode => {
         const payload = {
             orderCode,
         };
-        dispatch({ type: 'WITHDRAW/refreshCard', payload });
+        dispatch({ type: 'WITHDRAW_CARD/refreshCard', payload });
     };
 
-    const renderTransferAcc = item => {
-        if (item.mobileId) {
-            const mobile = devices.find(device => device.id === item.mobileId);
-            if (mobile) {
-                return (
-                    <>
-                        <div>{mobile.bankName}-</div>
-                        <span>{mobile.numberAccount}</span>
-                    </>
-                );
-            }
-            return <div>---</div>;
-        }
-        return <div>---</div>;
+    const showDetal = id => {
+        setCurrentTrans({
+            isShow: true,
+            id,
+        });
     };
+
     const renderData =
         listWithdraw.length === 0 ? (
             <EmptyComponent />
@@ -130,69 +56,21 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                 .map((item, index) => {
                     return (
                         <tr className="text-center" key={index}>
-                            <td className="col-1">{item.orderCode}</td>
-                            <td className="col-2">
-                                {listMerchant.find(i => i.id === item.ownerId)?.phone}
-                                {listAgent.find(i => i.id === item.ownerId)?.phone}
-                                {' - '}
-                                <span>{item.orderUsername}</span>
-                            </td>
+                            <td className="col-2">{item.orderCode}</td>
                             <td className="col-1">{item.code}</td>
-                            <td className="col-2">
-                                <span>{item.bankName}</span>
-                                {' - '}
-                                <span>{item.bankAccount}</span>
-                                {' - '}
-                                <span>{item.bankUsername}</span>
-                            </td>
-                            <td className="col-1">{renderTransferAcc(item)}</td>
                             <td className={'col-1'}>
                                 {item.totalCurrentMoney > 0
                                     ? formatVnd(item.totalCurrentMoney)
                                     : formatVnd(item.totalMoney)}
                             </td>
                             <td className="col-1">
-                                {/* 
-                                    Đơn đang xử lý: 
-                                    + nếu nhân viên duyệt rồi thì trạng thái processing kèm nút hủy giao dịch.
-                                    + nếu chưa duyệt thì thêm nút duyệt hoặc từ chối ( đối với đại lý và ko đại lý)
-                                */}
                                 {item.transactionStatus === TransactionStatus.IN_PROGRESS_STAFF ? (
                                     item.staffApproveId ? (
-                                        <>
-                                            <div className="mb-2">
-                                                {formatMessage({
-                                                    id: 'PROCESSING',
-                                                })}
-                                            </div>
-                                            {(admin?.role === Role.ROLE_ADMIN ||
-                                                admin?.role === Role.ROLE_STAFF) && (
-                                                <span>
-                                                    <img
-                                                        onClick={() => handleDeny(item.id)}
-                                                        className={styles.sizeIcon}
-                                                        src={ic_cancel}
-                                                        alt="unchecked"
-                                                        title="cancel"
-                                                        style={{
-                                                            marginRight: 5,
-                                                            width: 17,
-                                                            height: 17,
-                                                        }}
-                                                    />
-                                                </span>
-                                            )}
-                                            {/* app confirm đơn update 09/12/2022 */}
-                                            {(admin?.role === Role.ROLE_ADMIN ||
-                                                admin?.role === Role.ROLE_ACCOUNTANT) && (
-                                                <img
-                                                    onClick={() => handleAppConfirm(item)}
-                                                    src={ic_call}
-                                                    alt="app confirm"
-                                                    style={{ width: 19, height: 19 }}
-                                                />
-                                            )}
-                                        </>
+                                        <div className="mb-2">
+                                            {formatMessage({
+                                                id: 'PROCESSING',
+                                            })}
+                                        </div>
                                     ) : (
                                         <>
                                             <div className="mb-2">
@@ -203,87 +81,6 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                                         ],
                                                 })}
                                             </div>
-                                            {(admin?.role === Role.ROLE_ADMIN ||
-                                                admin?.role === Role.ROLE_STAFF) &&
-                                                !listAgent.find(
-                                                    agent => agent.id === item.ownerId,
-                                                ) && (
-                                                    <>
-                                                        <img
-                                                            onClick={() => handleDeny(item.id)}
-                                                            className={styles.sizeIcon}
-                                                            src={ic_uncheck}
-                                                            alt="unchecked"
-                                                            style={{
-                                                                marginRight: 5,
-                                                                width: 17,
-                                                                height: 17,
-                                                            }}
-                                                        />
-                                                        <img
-                                                            onClick={() =>
-                                                                handleApprove(
-                                                                    item.id,
-                                                                    item.totalMoney,
-                                                                    item.bankName,
-                                                                )
-                                                            }
-                                                            src={ic_check}
-                                                            alt="checked"
-                                                            style={{ width: 17, height: 17 }}
-                                                        />
-                                                    </>
-                                                )}
-
-                                            {/* confirm đơn của đại lý */}
-                                            {(admin?.role === Role.ROLE_ADMIN ||
-                                                admin?.role === Role.ROLE_ACCOUNTANT) &&
-                                                listAgent.find(
-                                                    agent => agent.id === item.ownerId,
-                                                ) && (
-                                                    <>
-                                                        <img
-                                                            onClick={() => handleDeny(item.id)}
-                                                            className={styles.sizeIcon}
-                                                            src={ic_uncheck}
-                                                            alt="unchecked"
-                                                            style={{
-                                                                marginRight: 5,
-                                                                width: 17,
-                                                                height: 17,
-                                                            }}
-                                                        />
-                                                        <img
-                                                            onClick={() =>
-                                                                handleApprove(
-                                                                    item.id,
-                                                                    item.totalMoney,
-                                                                    item.bankName,
-                                                                )
-                                                            }
-                                                            src={ic_check}
-                                                            alt="checked"
-                                                            style={{ width: 17, height: 17 }}
-                                                        />
-                                                    </>
-                                                )}
-
-                                            {/* app confirm đơn update 09/12/2022 */}
-                                            {(admin?.role === Role.ROLE_ADMIN ||
-                                                admin?.role === Role.ROLE_ACCOUNTANT) &&
-                                                item.paymentType !== PaymentTypeAll.card && (
-                                                    <img
-                                                        onClick={() => handleAppConfirm(item)}
-                                                        src={ic_call}
-                                                        alt="app confirm"
-                                                        style={{
-                                                            width: 17,
-                                                            height: 17,
-                                                            marginLeft: 5,
-                                                        }}
-                                                    />
-                                                )}
-
                                             {item.paymentType === PaymentTypeAll.card && (
                                                 <img
                                                     onClick={() =>
@@ -321,10 +118,10 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                     </strong>
                                 )}{' '}
                             </td>
-                            <td className="col-1">
+                            <td className="col-2">
                                 {moment(item.createdAt).format(DATE_FORMAT_TRANSACTION)}
                             </td>
-                            <td className="col-1">
+                            <td className="col-2">
                                 {moment(item.updatedAt).format(DATE_FORMAT_TRANSACTION)}
                             </td>
                             <td className="col-1">
@@ -339,6 +136,17 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                     '---'
                                 )}
                             </td>
+
+                            <td className="col-2">
+                                <img
+                                    onClick={() => showDetal(item.id)}
+                                    width={25}
+                                    height={25}
+                                    title="Detail"
+                                    src={ic_detail}
+                                    alt="view detail"
+                                />
+                            </td>
                         </tr>
                     );
                 })
@@ -350,20 +158,20 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
 
     return (
         <div className={styles.table}>
+            {currentTrans.isShow && (
+                <ModalDetal currentTrans={currentTrans} setCurrentTrans={setCurrentTrans} />
+            )}
             <table>
                 <thead>
                     <tr className="text-center">
-                        <th className="col-1">{formatMessage({ id: 'MERCHANT_ORDER' })}</th>
-                        <th className="col-2">{formatMessage({ id: 'MERCHANT_USERNAME' })}</th>
+                        <th className="col-2">{formatMessage({ id: 'MERCHANT_ORDER' })}</th>
                         <th className="col-1">{formatMessage({ id: 'ORDER_ID' })}</th>
-                        <th className="col-2">{formatMessage({ id: 'RECIPIENT_ACC' })}</th>
-                        <th className="col-1">{formatMessage({ id: 'TRANSFER_ACC' })}</th>
-
                         <th className={'col-1'}>{formatMessage({ id: 'AMOUNT' })}</th>
                         <th className="col-1">{formatMessage({ id: 'STATUS' })}</th>
-                        <th className="col-1">{formatMessage({ id: 'CREATED_AT' })}</th>
-                        <th className="col-1">{formatMessage({ id: 'UPDATED_AT' })}</th>
+                        <th className="col-2">{formatMessage({ id: 'CREATED_AT' })}</th>
+                        <th className="col-2">{formatMessage({ id: 'UPDATED_AT' })}</th>
                         <th className="col-1">{formatMessage({ id: 'HANDING_AT' })}</th>
+                        <th className="col-2">{formatMessage({ id: 'ACTION' })}</th>
                     </tr>
                 </thead>
                 <tbody>{renderData}</tbody>
@@ -382,6 +190,6 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
         </div>
     );
 }
-export default connect(({ WITHDRAW }) => ({
-    withdrawStore: WITHDRAW,
+export default connect(({ WITHDRAW_CARD }) => ({
+    withdrawStore: WITHDRAW_CARD,
 }))(TableData);

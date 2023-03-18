@@ -163,12 +163,12 @@ function PageHeader(props) {
                 url: '/home/report',
                 text: formatMessage({ id: 'REPORT' }),
             },
-            // {
-            //     page: 'history-withdraw-card',
-            //     icon: <img src={ic_business} />,
-            //     url: '/home/history-withdraw-card',
-            //     text: formatMessage({ id: 'HISTORY_WITHDRAW_CARD' }),
-            // },
+            {
+                page: 'history-withdraw-card',
+                icon: <img src={ic_business} />,
+                url: '/home/history-withdraw-card',
+                text: formatMessage({ id: 'HISTORY_WITHDRAW_CARD' }),
+            },
         ];
         listMenu = [...listMenu, ...merchantMenu];
     }

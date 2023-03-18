@@ -192,6 +192,9 @@ function ListDeposit(props) {
             startDate: rangeTime[0],
             endDate: rangeTime[1],
             agentId,
+            cardCode,
+            serial,
+            paymentTypeId,
         });
 
         fetch(config.API_DOMAIN + url + '?' + params, {
@@ -370,7 +373,7 @@ function ListDeposit(props) {
                         </Select>
                     </div>
 
-                    <div className={styles.select}>
+                    <div className={styles.select} style={{ marginRight: 8 }}>
                         <div className="mb-1">{formatMessage({ id: 'CARD_NUMBER' })}</div>
                         <Input
                             className={styles.textInput}

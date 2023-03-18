@@ -34,24 +34,30 @@ function ListTransaction(props) {
         updateResponse,
         devices,
         addNoteResponse,
+        listPaymentType,
     } = transactionStore;
     const [rangeTime, setRangeTime] = useState([]);
     const [paymentType, setPaymentType] = useState();
     const [deviceId, setDeviceId] = useState();
     const [userId, setUserId] = useState();
     const [orderCode, setOrderCode] = useState();
-
     const [pageIndex, setPageIndex] = useState(1);
-
     const [username, setUsername] = useState();
     const [amount, setAmount] = useState();
     const [systemTransactionType, setSystemTransactionType] = useState();
+    const [paymentTypeId, setPaymentTypeId] = useState();
+    const [cardCode, setCardCode] = useState();
+    const [serial, setSerial] = useState();
 
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
 
     useEffect(() => {
         dispatch({ type: 'TRANSACTION/getDevices' });
+    }, [dispatch]);
+
+    useEffect(() => {
+        dispatch({ type: 'TRANSACTION/getPaymentType' });
     }, [dispatch]);
 
     useEffect(() => {
@@ -76,6 +82,9 @@ function ListTransaction(props) {
             deviceId,
             username,
             amount,
+            paymentTypeId,
+            cardCode,
+            serial,
             systemTransactionType:
                 systemTransactionType === SystemTransactionTypeName.MONEY_IN_SYSTEM_DEPOSIT ||
                 systemTransactionType === SystemTransactionTypeName.MONEY_IN_SYSTEM_WITHDRAW
@@ -114,6 +123,9 @@ function ListTransaction(props) {
         amount,
         addNoteResponse,
         systemTransactionType,
+        paymentTypeId,
+        cardCode,
+        serial,
     ]);
 
     function disabledDate(current) {
@@ -159,6 +171,9 @@ function ListTransaction(props) {
             endDate: rangeTime[1],
             username,
             amount,
+            cardCode,
+            serial,
+            paymentTypeId,
         });
         fetch(config.API_DOMAIN + url + '?' + params, {
             method: 'GET',
@@ -188,8 +203,10 @@ function ListTransaction(props) {
     };
 
     const handleChangeMin = e => {
-        setAmount(Number(e.currentTarget.rawValue));
+        setAmount(Number(e.currentTarget.rawValue) || '');
     };
+
+    const listPaymentTypeByCard = listPaymentType.slice(0, 4);
 
     return (
         <div className={styles.content}>
@@ -236,6 +253,7 @@ function ListTransaction(props) {
                         {Object.keys(PaymentType).map((item, index) => {
                             return <Option value={item}>{formatMessage({ id: `${item}` })}</Option>;
                         })}
+                        <Option value={'card'}>{formatMessage({ id: `CARD` })}</Option>
                     </Select>
                 </div>
 
@@ -301,6 +319,34 @@ function ListTransaction(props) {
                             return <Option value={item}>{formatMessage({ id: `${item}` })}</Option>;
                         })}
                     </Select>
+                </div>
+
+                {/* Filter by telecom card */}
+                <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
+                    <div className="mb-1">{formatMessage({ id: 'CARD' })}:</div>
+                    <Select
+                        style={{ minWidth: 180 }}
+                        defaultValue=""
+                        onChange={value => setPaymentTypeId(value)}
+                    >
+                        <Option value="">{formatMessage({ id: 'ALL' })}</Option>
+                        {listPaymentTypeByCard.map((item, index) => {
+                            return <Option value={item.id}>{item.sortNameBank}</Option>;
+                        })}
+                    </Select>
+                </div>
+
+                <div className={styles.select} style={{ marginRight: 8 }}>
+                    <div className="mb-1">{formatMessage({ id: 'CARD_NUMBER' })}</div>
+                    <Input
+                        className={styles.textInput}
+                        onChange={e => setCardCode(e.target.value)}
+                    />
+                </div>
+
+                <div className={styles.select}>
+                    <div className="mb-1">{formatMessage({ id: 'SERIAL' })}</div>
+                    <Input className={styles.textInput} onChange={e => setSerial(e.target.value)} />
                 </div>
             </div>
 

@@ -35,6 +35,7 @@ function ListWithdraw(props) {
         approveResponse,
         appConfirmResponse,
         devices,
+        listPaymentType,
     } = withdrawStore;
     const [rangeTime, setRangeTime] = useState([]);
     const [transactionStatus, setTransactionStatus] = useState();
@@ -48,12 +49,19 @@ function ListWithdraw(props) {
     const [pageIndex, setPageIndex] = useState(1);
 
     const [amount, setAmount] = useState();
+    const [cardCode, setCardCode] = useState();
+    const [serial, setSerial] = useState();
+    const [paymentTypeId, setPaymentTypeId] = useState();
 
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
 
     useEffect(() => {
         dispatch({ type: 'WITHDRAW/getDevices' });
+    }, [dispatch]);
+
+    useEffect(() => {
+        dispatch({ type: 'WITHDRAW/getPaymentType' });
     }, [dispatch]);
 
     // get merchant
@@ -89,6 +97,9 @@ function ListWithdraw(props) {
             username,
             systemTransactionType: 'MONEY_IN_SYSTEM',
             amount,
+            cardCode,
+            serial,
+            paymentTypeId,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             payload.agentId = admin.id;
@@ -123,6 +134,9 @@ function ListWithdraw(props) {
         deviceId,
         code,
         amount,
+        cardCode,
+        serial,
+        paymentTypeId,
     ]);
 
     function disabledDate(current) {
@@ -177,6 +191,9 @@ function ListWithdraw(props) {
             systemTransactionType: 'MONEY_IN_SYSTEM',
             userId: userIdExport,
             agentId,
+            cardCode,
+            serial,
+            paymentTypeId,
         });
         fetch(config.API_DOMAIN + url + '?' + params, {
             method: 'GET',
@@ -208,6 +225,8 @@ function ListWithdraw(props) {
     const handleChangeMin = e => {
         setAmount(Number(e.currentTarget.rawValue));
     };
+
+    const listPaymentTypeByCard = listPaymentType.slice(0, 4);
 
     return (
         <div className={styles.content}>
@@ -306,7 +325,7 @@ function ListWithdraw(props) {
                         onChange={e => setOrderCode(e.target.value)}
                     />
                 </div>
-                <div className={styles.select}>
+                <div className={styles.select} style={{ marginRight: 8 }}>
                     <div className="mb-1">{formatMessage({ id: 'ORDER_ID' })}</div>
                     <Input className={styles.textInput} onChange={e => setCode(e.target.value)} />
                 </div>
@@ -330,6 +349,33 @@ function ListWithdraw(props) {
                             numeralThousandsGroupStyle: 'thousand',
                         }}
                     />
+                </div>
+
+                <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
+                    <div className="mb-1">{formatMessage({ id: 'CARD' })}:</div>
+                    <Select
+                        style={{ minWidth: 180 }}
+                        defaultValue=""
+                        onChange={value => setPaymentTypeId(value)}
+                    >
+                        <Option value="">{formatMessage({ id: 'ALL' })}</Option>
+                        {listPaymentTypeByCard.map((item, index) => {
+                            return <Option value={item.id}>{item.sortNameBank}</Option>;
+                        })}
+                    </Select>
+                </div>
+
+                <div className={styles.select} style={{ marginRight: 8 }}>
+                    <div className="mb-1">{formatMessage({ id: 'CARD_NUMBER' })}</div>
+                    <Input
+                        className={styles.textInput}
+                        onChange={e => setCardCode(e.target.value)}
+                    />
+                </div>
+
+                <div className={styles.select}>
+                    <div className="mb-1">{formatMessage({ id: 'SERIAL' })}</div>
+                    <Input className={styles.textInput} onChange={e => setSerial(e.target.value)} />
                 </div>
             </div>
             <TableData pageIndex={pageIndex} setPageIndex={setPageIndex} />

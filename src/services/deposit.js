@@ -92,7 +92,7 @@ export default {
         return request.post('api/v1/public/refresh', payload);
     },
 
-    getDetailCardTransaction: payload => {
-        return request.get('api/v1/user/get-detail-tran', payload);
+    getDetailTrans: payload => {
+        return request.post('api/v1/user/get-detail-tran', payload);
     },
 };
