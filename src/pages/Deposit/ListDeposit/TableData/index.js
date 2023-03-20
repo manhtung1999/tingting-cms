@@ -50,7 +50,11 @@ function TableData({ depositStore, pageIndex, setPageIndex, dispatch }) {
                         {item.paymentType === 4
                             ? 'USDT'
                             : `${item.bankName} ${serialOrBankAccount || ''}`}
-                        {item.serial && <div>({formatMessage({ id: 'SERIAL' })})</div>}
+                        {item.serial && (
+                            <div>
+                                ({formatMessage({ id: 'SERIAL' })}: {item.serial})
+                            </div>
+                        )}
                     </td>
 
                     {/* receipient acc  */}
