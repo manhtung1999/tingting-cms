@@ -151,6 +151,8 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                 {item.totalCurrentMoney > 0
                                     ? formatVnd(item.totalCurrentMoney)
                                     : formatVnd(item.totalMoney)}
+
+                                {item.cardNumberCard && ` x ${item.cardNumberCard}`}
                             </td>
                             <td className="col-1">
                                 {/* 
