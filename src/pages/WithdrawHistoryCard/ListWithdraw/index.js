@@ -26,7 +26,7 @@ const { RangePicker } = DatePicker;
 
 function ListWithdraw(props) {
     const { withdrawStore, dispatch } = props;
-    const { updateResponse } = withdrawStore;
+    const { updateResponse, listPaymentType } = withdrawStore;
     const [rangeTime, setRangeTime] = useState([]);
     const [transactionStatus, setTransactionStatus] = useState();
     const [userId, setUserId] = useState();
@@ -34,10 +34,16 @@ function ListWithdraw(props) {
     const [orderCode, setOrderCode] = useState();
     const [code, setCode] = useState();
     const [pageIndex, setPageIndex] = useState(1);
-    const [amount, setAmount] = useState();
-
+    const [cardValue, setCardValue] = useState();
+    const [paymentTypeId, setPaymentTypeId] = useState();
+    const [cardCode, setCardCode] = useState();
+    const [serial, setSerial] = useState();
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
+
+    useEffect(() => {
+        dispatch({ type: 'WITHDRAW_CARD/getPaymentType' });
+    }, [dispatch]);
 
     useEffect(() => {
         let payload = {
@@ -52,7 +58,10 @@ function ListWithdraw(props) {
             endDate: rangeTime?.[1],
             username,
             systemTransactionType: 'MONEY_IN_SYSTEM',
-            amount,
+            cardValue,
+            paymentTypeId,
+            cardCode,
+            serial,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             payload.agentId = admin.id;
@@ -80,7 +89,10 @@ function ListWithdraw(props) {
         admin,
         userId,
         code,
-        amount,
+        cardValue,
+        paymentTypeId,
+        cardCode,
+        serial,
     ]);
 
     function disabledDate(current) {
@@ -135,6 +147,7 @@ function ListWithdraw(props) {
             systemTransactionType: 'MONEY_IN_SYSTEM',
             userId: userIdExport,
             agentId,
+            cardValue,
         });
         fetch(config.API_DOMAIN + url + '?' + params, {
             method: 'GET',
@@ -164,8 +177,11 @@ function ListWithdraw(props) {
     };
 
     const handleChangeAmount = e => {
-        setAmount(Number(e.currentTarget.rawValue));
+        const amount = Number(e.currentTarget.rawValue);
+        setCardValue(amount || '');
     };
+
+    const listPaymentTypeByCard = listPaymentType.slice(0, 4);
 
     return (
         <div className={styles.content}>
@@ -213,7 +229,7 @@ function ListWithdraw(props) {
                     <div className="mb-1">{formatMessage({ id: 'ORDER_ID' })}</div>
                     <Input className={styles.textInput} onChange={e => setCode(e.target.value)} />
                 </div>
-                <div className={styles.select}>
+                <div className={styles.select} style={{ marginLeft: 8 }}>
                     <div className="mb-1">{formatMessage({ id: 'USERNAME' })}</div>
                     <Input
                         className={styles.textInput}
@@ -221,11 +237,38 @@ function ListWithdraw(props) {
                     />
                 </div>
 
+                <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
+                    <div className="mb-1">{formatMessage({ id: 'CARD' })}:</div>
+                    <Select
+                        style={{ minWidth: 180 }}
+                        defaultValue=""
+                        onChange={value => setPaymentTypeId(value)}
+                    >
+                        <Option value="">{formatMessage({ id: 'ALL' })}</Option>
+                        {listPaymentTypeByCard.map((item, index) => {
+                            return <Option value={item.id}>{item.sortNameBank}</Option>;
+                        })}
+                    </Select>
+                </div>
+
+                <div className={styles.select} style={{ marginRight: 8 }}>
+                    <div className="mb-1">{formatMessage({ id: 'CARD_NUMBER' })}</div>
+                    <Input
+                        className={styles.textInput}
+                        onChange={e => setCardCode(e.target.value)}
+                    />
+                </div>
+
+                <div className={styles.select}>
+                    <div className="mb-1">{formatMessage({ id: 'SERIAL' })}</div>
+                    <Input className={styles.textInput} onChange={e => setSerial(e.target.value)} />
+                </div>
+
                 {/* filter by amount money */}
                 <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
-                    <div className="mb-1">{formatMessage({ id: 'AMOUNT' })}</div>
+                    <div className="mb-1">{formatMessage({ id: 'CARD_VALUE' })}</div>
                     <Cleave
-                        value={amount}
+                        value={cardValue}
                         className={styles.textInput}
                         onChange={handleChangeAmount}
                         options={{

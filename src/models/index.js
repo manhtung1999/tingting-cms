@@ -23,6 +23,7 @@ export default {
         detailAccount: {},
         devices: [],
         listPaymentType: [],
+        balanceTelecom: undefined,
     },
 
     reducers: {
@@ -135,6 +136,13 @@ export default {
             return {
                 ...state,
                 listPaymentType: action.payload.body,
+            };
+        },
+
+        getBalanceTelecomSuccess(state, action) {
+            return {
+                ...state,
+                balanceTelecom: action.payload.body,
             };
         },
     },
@@ -292,6 +300,22 @@ export default {
                 const res = yield call(depositService.getPaymentType, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'getPaymentTypeSuccess', payload: res.body });
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *getBalanceTelecom(action, { call, put }) {
+            try {
+                const res = yield call(depositService.getBalanceTelecom, action.payload);
+                if (res.status === 200) {
+                    console.log('res.body', res.body);
+                    yield put({ type: 'getBalanceTelecomSuccess', payload: res.body });
                 } else {
                     message.error(res.body.message);
                     yield put({ type: 'error' });

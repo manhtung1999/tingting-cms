@@ -83,6 +83,7 @@ function TableData({ depositStore, pageIndex, setPageIndex, dispatch }) {
                                         {item.cardCode && (
                                             <div>({formatMessage({ id: 'CARD_NUMBER' })})</div>
                                         )}
+                                        <span>Request ID: {item.cardRequestId}</span>
                                     </>
                                 )}
                             </div>

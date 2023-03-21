@@ -95,4 +95,8 @@ export default {
     getDetailTrans: payload => {
         return request.post('api/v1/user/get-detail-tran', payload);
     },
+
+    getBalanceTelecom: payload => {
+        return request.get('api/v1/user/get-money-system-card', payload);
+    },
 };

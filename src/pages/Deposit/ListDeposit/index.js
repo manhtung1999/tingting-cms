@@ -225,7 +225,8 @@ function ListDeposit(props) {
     };
 
     const handleChangeMin = e => {
-        setAmount(Number(e.currentTarget.rawValue));
+        const amount = Number(e.currentTarget.rawValue);
+        setAmount(amount || '');
     };
 
     const listPaymentTypeByCard = listPaymentType.slice(0, 4);

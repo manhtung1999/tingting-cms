@@ -56,12 +56,14 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                 .map((item, index) => {
                     return (
                         <tr className="text-center" key={index}>
-                            <td className="col-2">{item.orderCode}</td>
+                            <td className="col-2">
+                                {item.orderCode}
+                                <div>Request ID: {item.cardRequestId}</div>
+                            </td>
                             <td className="col-1">{item.code}</td>
                             <td className={'col-1'}>
-                                {item.totalCurrentMoney > 0
-                                    ? formatVnd(item.totalCurrentMoney)
-                                    : formatVnd(item.totalMoney)}
+                                {formatVnd(item.totalMoney)} x {item.cardNumberCard}
+                                <div>{item.bankName}</div>
                             </td>
                             <td className="col-1">
                                 {item.transactionStatus === TransactionStatus.IN_PROGRESS_STAFF ? (

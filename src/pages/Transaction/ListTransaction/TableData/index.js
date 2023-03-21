@@ -76,6 +76,8 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
                 </td>
                 <td className="col-2">
                     {item.bankName} - {item.bankAccount} - {item.bankUsername}
+                    <span>{item.cardCode}</span>
+                    {item.cardCode && <div>({formatMessage({ id: 'CARD_NUMBER' })})</div>}
                 </td>
                 <td className="col-2">
                     {//  chuyển tiền nội bộ
@@ -100,17 +102,17 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
                             )}
                         </>
                     )}
+                    {item.cardSerial}
+                    {item.cardSerial && <div>({formatMessage({ id: 'SERIAL' })})</div>}
                 </td>
-                {/* <td className={'col-1'}>
-                    {item.totalCurrentMoney > 0
-                        ? formatVnd(item.totalCurrentMoney)
-                        : formatVnd(item.totalMoney)}
-                </td> */}
+
                 <td className="col-1">
                     {item.paymentType === PaymentTypeAll.card ? (
                         <>
                             {formatVnd(item.totalMoneyChange)} <br />
-                            <span>Card value: {formatVnd(item.totalMoney)}</span>
+                            <span>
+                                Card value: {formatVnd(item.totalMoney)} x {item.cardNumberCard}
+                            </span>
                         </>
                     ) : item.totalCurrentMoney > 0 ? (
                         formatVnd(item.totalCurrentMoney)

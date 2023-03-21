@@ -1,4 +1,6 @@
 export default {
+    CARD_VALUE: 'Mệnh giá thẻ',
+    BALANCE_TELECOM: 'Số dư cổng thẻ',
     DETAIL_TRANSACTION: 'Chi tiết giao dịch',
     UPDATE_CARD_SECRET_KEY: 'Cập nhập secret key thẻ cào',
     HISTORY_WITHDRAW_CARD: 'Lịch sử rút thẻ cào',

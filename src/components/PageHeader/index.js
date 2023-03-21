@@ -21,7 +21,7 @@ const { SubMenu } = Menu;
 
 function PageHeader(props) {
     const { location, masterDataStore, dispatch } = props;
-    const { detailAccount, listPaymentType } = masterDataStore;
+    const { detailAccount, listPaymentType, balanceTelecom } = masterDataStore;
     const [collapsed, setCollapsed] = useState(false);
     const [page, setPage] = useState(location.pathname);
     const [currentExchange, setCurrentExchange] = React.useState();
@@ -30,6 +30,10 @@ function PageHeader(props) {
 
     useEffect(() => {
         dispatch({ type: 'MASTERDATA/getPaymentType' });
+    }, [dispatch]);
+
+    useEffect(() => {
+        dispatch({ type: 'MASTERDATA/getBalanceTelecom' });
     }, [dispatch]);
 
     useEffect(() => {
@@ -173,6 +177,18 @@ function PageHeader(props) {
         listMenu = [...listMenu, ...merchantMenu];
     }
 
+    if (admin?.role === Role.ROLE_AGENT) {
+        const agentMenu = [
+            {
+                page: 'history-withdraw-card',
+                icon: <img src={ic_business} />,
+                url: '/home/history-withdraw-card',
+                text: formatMessage({ id: 'HISTORY_WITHDRAW_CARD' }),
+            },
+        ];
+        listMenu = [...listMenu, ...agentMenu];
+    }
+
     useEffect(() => {
         setPage(location.pathname);
     }, [location.pathname]);
@@ -219,6 +235,16 @@ function PageHeader(props) {
                         </span>
                     </div>
                 )}
+
+                {(admin?.role === Role.ROLE_ADMIN ||
+                    admin?.role === Role.ROLE_ACCOUNTANT ||
+                    admin?.role === Role.ROLE_STAFF) && (
+                    <div className={styles.balance}>
+                        <span>{formatMessage({ id: 'BALANCE_TELECOM' })}: </span>
+                        <span>{balanceTelecom && formatVnd(balanceTelecom)}</span>
+                    </div>
+                )}
+
                 {admin?.role === Role.ROLE_AGENT && detailAccount.userMoneyConfig && (
                     <div className={styles.balance}>
                         <div>

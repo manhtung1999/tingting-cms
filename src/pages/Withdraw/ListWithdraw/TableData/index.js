@@ -145,6 +145,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                 <span>{item.bankAccount}</span>
                                 {' - '}
                                 <span>{item.bankUsername}</span>
+                                <div> Request ID: {item.cardRequestId}</div>
                             </td>
                             <td className="col-1">{renderTransferAcc(item)}</td>
                             <td className={'col-1'}>

@@ -1,4 +1,6 @@
 export default {
+    CARD_VALUE: 'Card value',
+    BALANCE_TELECOM: 'Balance telecom',
     DETAIL_TRANSACTION: 'Detail transaction',
     UPDATE_CARD_SECRET_KEY: 'Update card secret key',
     HISTORY_WITHDRAW_CARD: 'History card withdraw',
