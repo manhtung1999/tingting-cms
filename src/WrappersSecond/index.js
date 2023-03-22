@@ -11,7 +11,7 @@ function AppWrappers(props) {
         if (locale) {
             setLocale(locale);
         } else {
-            setLocale('en-US');
+            setLocale('vi-VN');
         }
     }, []);
 

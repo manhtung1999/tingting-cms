@@ -43,6 +43,7 @@ function TableData({ reportStore, pageIndex, setPageIndex }) {
                     ) : (
                         <span>{item.transactionName}</span>
                     )}
+                    {item.cardRequestId && <div>Request id: {item.cardRequestId}</div>}
                 </td>
                 <td className="col-1">
                     {item.transactionType === TransactionType['send_money']
