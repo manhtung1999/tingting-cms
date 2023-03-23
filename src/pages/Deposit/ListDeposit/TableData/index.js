@@ -40,7 +40,7 @@ function TableData({ depositStore, pageIndex, setPageIndex, dispatch }) {
     const renderData = listDeposit
         .filter(i => i.transactionName !== TIEN_KHONG_RO_NGUON)
         .map((item, index) => {
-            const serialOrBankAccount = item.cardSerial || item.bankAccount;
+            const serialOrBankAccount = item.cardSerialEncode || item.bankAccount;
             return (
                 <tr className="text-center" key={index}>
                     <td className="col-2">{item.orderCode}</td>
@@ -50,7 +50,7 @@ function TableData({ depositStore, pageIndex, setPageIndex, dispatch }) {
                         {item.paymentType === 4
                             ? 'USDT'
                             : `${item.bankName} - ${serialOrBankAccount || ''}`}
-                        {item.cardSerial && <div>({formatMessage({ id: 'SERIAL' })})</div>}
+                        {item.cardSerialEncode && <div>({formatMessage({ id: 'SERIAL' })})</div>}
                     </td>
 
                     {/* receipient acc  */}
@@ -79,8 +79,8 @@ function TableData({ depositStore, pageIndex, setPageIndex, dispatch }) {
                                             formatMessage({
                                                 id: PaymentTypeValue[item.paymentType],
                                             })}
-                                        <span>{item.cardCode}</span>
-                                        {item.cardCode && (
+                                        <span>{item.cardCodeEncode}</span>
+                                        {item.cardCodeEncode && (
                                             <div>({formatMessage({ id: 'CARD_NUMBER' })})</div>
                                         )}
                                         <span>Request ID: {item.cardRequestId}</span>

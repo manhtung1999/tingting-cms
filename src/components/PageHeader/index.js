@@ -245,7 +245,7 @@ function PageHeader(props) {
                     </div>
                 )}
 
-                {admin?.role === Role.ROLE_AGENT && detailAccount.userMoneyConfig && (
+                {/* {admin?.role === Role.ROLE_AGENT && detailAccount.userMoneyConfig && (
                     <div className={styles.balance}>
                         <div>
                             <span>{formatMessage({ id: 'DEPOSIT_COMMISSION' })}:</span>
@@ -256,8 +256,8 @@ function PageHeader(props) {
                             <span>{detailAccount.userMoneyConfig.agentWithdrawFeeBank}%</span>
                         </div>
                     </div>
-                )}
-                {admin?.role === Role.ROLE_USER && detailAccount.userMoneyConfig && (
+                )} */}
+                {/* {admin?.role === Role.ROLE_USER && detailAccount.userMoneyConfig && (
                     <div className={styles.balance}>
                         <div>
                             <span>{formatMessage({ id: 'DEPOSIT_FEE' })}:</span>
@@ -280,7 +280,7 @@ function PageHeader(props) {
                             </span>
                         </div>
                     </div>
-                )}
+                )} */}
             </div>
 
             <Sider
