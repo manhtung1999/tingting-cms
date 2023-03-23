@@ -52,6 +52,7 @@ function ListDeposit(props) {
     const [paymentTypeId, setPaymentTypeId] = useState();
     const [cardCode, setCardCode] = useState();
     const [serial, setSerial] = useState();
+    const [cardRequestId, setCardRequestId] = useState();
 
     const [pageIndex, setPageIndex] = useState(1);
 
@@ -107,6 +108,7 @@ function ListDeposit(props) {
             paymentTypeId,
             cardCode,
             serial,
+            requestId: cardRequestId,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             payload.agentId = admin.id;
@@ -140,6 +142,7 @@ function ListDeposit(props) {
         paymentTypeId,
         cardCode,
         serial,
+        cardRequestId,
     ]);
 
     function disabledDate(current) {
@@ -195,6 +198,7 @@ function ListDeposit(props) {
             cardCode,
             serial,
             paymentTypeId,
+            cardRequestId,
         });
 
         fetch(config.API_DOMAIN + url + '?' + params, {
@@ -387,6 +391,13 @@ function ListDeposit(props) {
                         <Input
                             className={styles.textInput}
                             onChange={e => setSerial(e.target.value)}
+                        />
+                    </div>
+                    <div className={styles.select}>
+                        <div className="mb-1">Card request id: </div>
+                        <Input
+                            className={styles.textInput}
+                            onChange={e => setCardRequestId(e.target.value)}
                         />
                     </div>
 

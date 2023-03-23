@@ -36,6 +36,7 @@ function ListReport(props) {
     const [paymentTypeId, setPaymentTypeId] = useState();
     const [cardCode, setCardCode] = useState();
     const [serial, setSerial] = useState();
+    const [cardRequestId, setCardRequestId] = useState();
 
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
@@ -73,6 +74,7 @@ function ListReport(props) {
             cardCode,
             serial,
             paymentTypeId,
+            requestId: cardRequestId,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             payload.agentId = admin.id;
@@ -100,6 +102,7 @@ function ListReport(props) {
         cardCode,
         serial,
         paymentTypeId,
+        cardRequestId,
     ]);
 
     function disabledDate(current) {
@@ -149,6 +152,7 @@ function ListReport(props) {
             cardCode,
             serial,
             paymentTypeId,
+            requestId: cardRequestId,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             queryObj.agentId = admin.id;
@@ -306,6 +310,14 @@ function ListReport(props) {
                 <div className={styles.select}>
                     <div className="mb-1">{formatMessage({ id: 'SERIAL' })}</div>
                     <Input className={styles.textInput} onChange={e => setSerial(e.target.value)} />
+                </div>
+
+                <div className={styles.select}>
+                    <div className="mb-1">Card request id: </div>
+                    <Input
+                        className={styles.textInput}
+                        onChange={e => setCardRequestId(e.target.value)}
+                    />
                 </div>
             </div>
             <TableData pageIndex={pageIndex} setPageIndex={setPageIndex} />
