@@ -149,7 +149,9 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                             </td>
                             <td className="col-1">{renderTransferAcc(item)}</td>
                             <td className={'col-1'}>
-                                {item.totalCurrentMoney > 0
+                                {item.paymentType === 5
+                                    ? formatVnd(item.cardCardValue)
+                                    : item.totalCurrentMoney > 0
                                     ? formatVnd(item.totalCurrentMoney)
                                     : formatVnd(item.totalMoney)}
 

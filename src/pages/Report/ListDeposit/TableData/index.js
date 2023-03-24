@@ -45,6 +45,8 @@ function TableData({ reportStore, pageIndex, setPageIndex }) {
                     )}
                     {item.cardRequestId && <div>Request id: {item.cardRequestId}</div>}
                 </td>
+
+                {/* amount */}
                 <td className="col-1">
                     {item.transactionType === TransactionType['send_money']
                         ? formatVnd(item.totalMoneyChange)

@@ -111,7 +111,7 @@ function TableData({ dispatch, transactionStore, pageIndex, setPageIndex }) {
                         <>
                             {formatVnd(item.totalMoneyChange)} <br />
                             <span>
-                                Card value: {formatVnd(item.totalMoney)} x {item.cardNumberCard}
+                                Card value: {formatVnd(item.cardCardValue)} x {item.cardNumberCard}
                             </span>
                         </>
                     ) : item.totalCurrentMoney > 0 ? (

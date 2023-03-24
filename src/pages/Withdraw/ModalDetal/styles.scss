@@ -1,0 +1,31 @@
+@import "@/base.scss";
+
+.modal {
+    :global {
+        .ant-modal-footer {
+            .ant-btn-default {
+                span {
+                    color: var(--dark-color);
+                }
+            }
+        }
+    }
+}
+
+.textInputLight {
+    width: 100%;
+}
+
+.form {
+    :global {
+        .ant-typography {
+            font-size: 20px;
+            font-weight: bolder;
+
+            svg {
+                margin-left: 5px;
+                font-size: 20px;
+            }
+        }
+    }
+}

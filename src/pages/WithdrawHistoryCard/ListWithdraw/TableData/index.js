@@ -62,7 +62,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                             </td>
                             <td className="col-1">{item.code}</td>
                             <td className={'col-1'}>
-                                {formatVnd(item.totalMoney)} x {item.cardNumberCard}
+                                {formatVnd(item.cardCardValue)} x {item.cardNumberCard}
                                 <div>{item.bankName}</div>
                             </td>
                             <td className="col-1">

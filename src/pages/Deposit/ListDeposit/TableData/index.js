@@ -108,6 +108,7 @@ function TableData({ depositStore, pageIndex, setPageIndex, dispatch }) {
                     <td className="col-1">
                         {TransactionStatusValue[item.transactionStatus] &&
                             formatMessage({ id: TransactionStatusValue[item.transactionStatus] })}
+
                         {item.transactionStatus === TransactionStatus.IN_PROGRESS_STAFF &&
                             item.paymentType !== PaymentTypeAll.card &&
                             (admin?.role === Role.ROLE_STAFF ||

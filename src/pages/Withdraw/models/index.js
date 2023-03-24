@@ -22,6 +22,7 @@ export default {
         approveResponse: undefined,
         appConfirmResponse: undefined,
         deleteCardResponse: undefined,
+        withdrawTelecom: undefined,
     },
     reducers: {
         loading(state, action) {
@@ -133,6 +134,21 @@ export default {
                 deleteCardResponse: action.payload,
             };
         },
+
+        createWithdrawTelecomSuccess(state, action) {
+            return {
+                ...state,
+                withdrawTelecom: action.payload,
+                loading: false,
+            };
+        },
+
+        closeModalDetailSuccess(state, action) {
+            return {
+                ...state,
+                withdrawTelecom: undefined,
+            };
+        },
     },
 
     effects: {
@@ -223,7 +239,8 @@ export default {
             try {
                 const res = yield call(depositService.createWithdraw, action.payload);
                 if (res.status === 200) {
-                    yield put({ type: 'success', payload: res.body });
+                    console.log('res.body.body', res.body.body);
+                    yield put({ type: 'createWithdrawTelecomSuccess', payload: res.body.body });
                     message.success(formatMessage({ id: 'CREATE_WITHDRAW_SUCCESS' }));
                 } else {
                     message.error(res.body.message);
@@ -359,6 +376,10 @@ export default {
                 handleErrorModel(error);
                 yield put({ type: 'error' });
             }
+        },
+
+        *closeModalDetail(action, { call, put }) {
+            yield put({ type: 'closeModalDetailSuccess' });
         },
     },
 };

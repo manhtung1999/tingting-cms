@@ -5,6 +5,7 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import { MenhGia } from '../../../config/constant';
 import styles from './styles.scss';
 import { formatVnd } from '@/util/function';
+import ModalLoading from '@/components/ModalLoading';
 
 const { Option } = Select;
 const formItemLayout = {
@@ -37,6 +38,7 @@ function TopUpByTelecom({ dispatch, depositStore }) {
 
     return (
         <div className={styles.content}>
+            {loading && <ModalLoading />}
             <div className={styles.topup}>
                 <h5 className="mb-3">
                     {formatMessage({ id: 'ADD_TRANSACTION_DEPOSIT_BY_TELECOM' })}
