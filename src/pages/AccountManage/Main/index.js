@@ -107,7 +107,6 @@ function AccountManage(props) {
             const payload = {
                 userId: updateCardSecretResponse.ownerId,
             };
-            console.log('payload');
             dispatch({ type: 'ACCOUNT/getSercret', payload });
         }
     }, [updateCardSecretResponse]);

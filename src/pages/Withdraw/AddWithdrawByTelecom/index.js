@@ -6,16 +6,20 @@ import { connect } from 'dva';
 import React, { useEffect } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
+import ModalLoading from '@/components/ModalLoading';
+import ModalDetal from '../ModalDetal';
 
 const { Option } = Select;
 function AddWithdrawByTelecom({ dispatch, withdrawStore }) {
-    const { listPaymentType, loading } = withdrawStore;
+    const { listPaymentType, loading, withdrawTelecom } = withdrawStore;
 
     const [form] = Form.useForm();
 
     useEffect(() => {
         dispatch({ type: 'WITHDRAW/getPaymentType' });
     }, [dispatch]);
+
+    useEffect(() => {}, []);
 
     const handleSubmit = values => {
         if (Number(values.qty) > 100) {
@@ -25,7 +29,7 @@ function AddWithdrawByTelecom({ dispatch, withdrawStore }) {
         const TypeCard = 5;
         const payload = {
             ...values,
-            totalMoney: values.cardValue,
+            totalMoney: Number(values.cardValue) * Number(values.qty),
             paymentType: TypeCard,
             qty: Number(values.qty),
         };
@@ -33,9 +37,11 @@ function AddWithdrawByTelecom({ dispatch, withdrawStore }) {
     };
 
     const listPaymentTypeByCard = listPaymentType.slice(0, 4);
-
+    console.log('withdrawTelecom in page', withdrawTelecom);
     return (
         <div className={styles.addWithdraw}>
+            {loading && <ModalLoading />}
+            {withdrawTelecom && <ModalDetal />}
             <h5 className="mb-3">{formatMessage({ id: 'ADD_TRANSACTION_WITHDRAW_BY_TELECOM' })}</h5>
 
             <div className={styles.form}>

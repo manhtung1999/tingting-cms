@@ -32,12 +32,13 @@ function ModalSecret({ dispatch, currentUserSecret, setCurrentUserSecret, listSe
             destroyOnClose
         >
             <div className={styles.listSecret}>
-                <div className="d-flex justify-content-end">
-                    <button onClick={handleUpdateCardSecret} className={styles.primaryBtn}>
-                        {formatMessage({ id: 'UPDATE_CARD_SECRET_KEY' })}
-                    </button>
-                </div>
-
+                {listSecret.length < 6 && (
+                    <div className="d-flex justify-content-end">
+                        <button onClick={handleUpdateCardSecret} className={styles.primaryBtn}>
+                            {formatMessage({ id: 'UPDATE_CARD_SECRET_KEY' })}
+                        </button>
+                    </div>
+                )}
                 {listSecret.map((item, index) => {
                     return (
                         <div className="mb-2">

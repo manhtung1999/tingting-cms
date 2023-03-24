@@ -8,7 +8,7 @@ import {
 import dynamic from 'umi/dynamic';
 import renderRoutes from 'umi/lib/renderRoutes';
 import history from '@@/history';
-import RendererWrapper0 from '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/.umi/LocaleWrapper.jsx';
+import RendererWrapper0 from '/Users/admin/trungbach/tingtingcms/src/pages/.umi/LocaleWrapper.jsx';
 import { routerRedux, dynamic as _dvaDynamic } from 'dva';
 
 const Router = routerRedux.ConnectedRouter;
@@ -65,7 +65,7 @@ const routes = [
       {
         component: () =>
           React.createElement(
-            require('/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+            require('/Users/admin/trungbach/tingtingcms/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
               .default,
             { pagesPath: 'src/pages', hasRoutesInConfig: true },
           ),
@@ -91,7 +91,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__Transaction__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/Transaction/models/index.js').then(
+                import(/* webpackChunkName: 'p__Transaction__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/Transaction/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -112,7 +112,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__Deposit__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/Deposit/models/index.js').then(
+                import(/* webpackChunkName: 'p__Deposit__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/Deposit/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -133,7 +133,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__Withdraw__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/Withdraw/models/index.js').then(
+                import(/* webpackChunkName: 'p__Withdraw__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/Withdraw/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -154,7 +154,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__AccountManage__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/AccountManage/models/index.js').then(
+                import(/* webpackChunkName: 'p__AccountManage__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/AccountManage/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -175,7 +175,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__DeviceManagement__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/DeviceManagement/models/index.js').then(
+                import(/* webpackChunkName: 'p__DeviceManagement__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/DeviceManagement/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -196,7 +196,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__DeviceManagement__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/DeviceManagement/models/index.js').then(
+                import(/* webpackChunkName: 'p__DeviceManagement__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/DeviceManagement/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -217,7 +217,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__Admin__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/Admin/models/index.js').then(
+                import(/* webpackChunkName: 'p__Admin__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/Admin/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -238,7 +238,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__AccountManage__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/AccountManage/models/index.js').then(
+                import(/* webpackChunkName: 'p__AccountManage__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/AccountManage/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -259,7 +259,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__DeviceManagement__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/DeviceManagement/models/index.js').then(
+                import(/* webpackChunkName: 'p__DeviceManagement__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/DeviceManagement/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -280,7 +280,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__DeviceManagement__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/DeviceManagement/models/index.js').then(
+                import(/* webpackChunkName: 'p__DeviceManagement__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/DeviceManagement/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -301,7 +301,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__IPAddress__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/IPAddress/models/index.js').then(
+                import(/* webpackChunkName: 'p__IPAddress__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/IPAddress/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -322,7 +322,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__Report__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/Report/models/index.js').then(
+                import(/* webpackChunkName: 'p__Report__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/Report/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -343,7 +343,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__InternalTransfer__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/InternalTransfer/models/index.js').then(
+                import(/* webpackChunkName: 'p__InternalTransfer__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/InternalTransfer/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -364,7 +364,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__HistoryEdit__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/HistoryEdit/models/index.js').then(
+                import(/* webpackChunkName: 'p__HistoryEdit__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/HistoryEdit/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -385,7 +385,7 @@ const routes = [
           ? _dvaDynamic({
               app: require('@tmp/dva').getApp(),
               models: () => [
-                import(/* webpackChunkName: 'p__WithdrawHistoryCard__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/WithdrawHistoryCard/models/index.js').then(
+                import(/* webpackChunkName: 'p__WithdrawHistoryCard__models__index.js' */ '/Users/admin/trungbach/tingtingcms/src/pages/WithdrawHistoryCard/models/index.js').then(
                   m => {
                     return { namespace: 'index', ...m.default };
                   },
@@ -403,7 +403,7 @@ const routes = [
       {
         component: () =>
           React.createElement(
-            require('/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+            require('/Users/admin/trungbach/tingtingcms/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
               .default,
             { pagesPath: 'src/pages', hasRoutesInConfig: true },
           ),
@@ -417,7 +417,7 @@ const routes = [
   {
     component: () =>
       React.createElement(
-        require('/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+        require('/Users/admin/trungbach/tingtingcms/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
           .default,
         { pagesPath: 'src/pages', hasRoutesInConfig: true },
       ),

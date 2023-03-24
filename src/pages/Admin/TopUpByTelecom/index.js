@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { MenhGia } from '../../../config/constant';
 import styles from './styles.scss';
+import ModalLoading from '@/components/ModalLoading';
 
 const { Option } = Select;
 function TopUpByTelecom({ dispatch, adminStore }) {
@@ -37,6 +38,7 @@ function TopUpByTelecom({ dispatch, adminStore }) {
     return (
         <div className={styles.addWithdraw}>
             <h5 className="mb-3">{formatMessage({ id: 'ADD_TRANSACTION_DEPOSIT_BY_TELECOM' })}</h5>
+            {loading && <ModalLoading />}
 
             <div className={styles.form}>
                 <Form
