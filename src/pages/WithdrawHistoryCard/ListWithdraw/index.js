@@ -40,6 +40,7 @@ function ListWithdraw(props) {
     const [serial, setSerial] = useState();
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
+    const [cardRequestId, setCardRequestId] = useState();
 
     useEffect(() => {
         dispatch({ type: 'WITHDRAW_CARD/getPaymentType' });
@@ -62,6 +63,7 @@ function ListWithdraw(props) {
             paymentTypeId,
             cardCode,
             serial,
+            requestId: cardRequestId,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             payload.agentId = admin.id;
@@ -93,6 +95,7 @@ function ListWithdraw(props) {
         paymentTypeId,
         cardCode,
         serial,
+        cardRequestId,
     ]);
 
     function disabledDate(current) {
@@ -148,6 +151,7 @@ function ListWithdraw(props) {
             userId: userIdExport,
             agentId,
             cardValue,
+            requestId: cardRequestId,
         });
         fetch(config.API_DOMAIN + url + '?' + params, {
             method: 'GET',
@@ -275,6 +279,14 @@ function ListWithdraw(props) {
                             numeral: true,
                             numeralThousandsGroupStyle: 'thousand',
                         }}
+                    />
+                </div>
+
+                <div className={styles.select}>
+                    <div className="mb-1">Card request id: </div>
+                    <Input
+                        className={styles.textInput}
+                        onChange={e => setCardRequestId(e.target.value)}
                     />
                 </div>
             </div>

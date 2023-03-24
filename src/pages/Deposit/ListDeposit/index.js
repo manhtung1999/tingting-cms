@@ -198,7 +198,7 @@ function ListDeposit(props) {
             cardCode,
             serial,
             paymentTypeId,
-            cardRequestId,
+            requestId: cardRequestId,
         });
 
         fetch(config.API_DOMAIN + url + '?' + params, {
