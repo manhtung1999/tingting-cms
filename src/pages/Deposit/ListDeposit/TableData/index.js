@@ -83,7 +83,9 @@ function TableData({ depositStore, pageIndex, setPageIndex, dispatch }) {
                                         {item.cardCodeEncode && (
                                             <div>({formatMessage({ id: 'CARD_NUMBER' })})</div>
                                         )}
-                                        <span>Request ID: {item.cardRequestId}</span>
+                                        {item.cardRequestId && (
+                                            <span>Request ID: {item.cardRequestId}</span>
+                                        )}
                                     </>
                                 )}
                             </div>

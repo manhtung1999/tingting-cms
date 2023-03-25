@@ -53,6 +53,7 @@ function ListDeposit(props) {
     const [cardCode, setCardCode] = useState();
     const [serial, setSerial] = useState();
     const [cardRequestId, setCardRequestId] = useState();
+    const [cardValue, setCardValue] = useState();
 
     const [pageIndex, setPageIndex] = useState(1);
 
@@ -109,6 +110,7 @@ function ListDeposit(props) {
             cardCode,
             serial,
             requestId: cardRequestId,
+            cardValue,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             payload.agentId = admin.id;
@@ -143,6 +145,7 @@ function ListDeposit(props) {
         cardCode,
         serial,
         cardRequestId,
+        cardValue,
     ]);
 
     function disabledDate(current) {
@@ -199,6 +202,7 @@ function ListDeposit(props) {
             serial,
             paymentTypeId,
             requestId: cardRequestId,
+            cardValue,
         });
 
         fetch(config.API_DOMAIN + url + '?' + params, {
@@ -231,6 +235,11 @@ function ListDeposit(props) {
     const handleChangeMin = e => {
         const amount = Number(e.currentTarget.rawValue);
         setAmount(amount || '');
+    };
+
+    const handleChangeCardValue = e => {
+        const amount = Number(e.currentTarget.rawValue);
+        setCardValue(amount || '');
     };
 
     const listPaymentTypeByCard = listPaymentType.slice(0, 4);
@@ -398,6 +407,19 @@ function ListDeposit(props) {
                         <Input
                             className={styles.textInput}
                             onChange={e => setCardRequestId(e.target.value)}
+                        />
+                    </div>
+
+                    <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
+                        <div className="mb-1">{formatMessage({ id: 'CARD_VALUE' })}</div>
+                        <Cleave
+                            value={amount}
+                            className={styles.textInput}
+                            onChange={handleChangeCardValue}
+                            options={{
+                                numeral: true,
+                                numeralThousandsGroupStyle: 'thousand',
+                            }}
                         />
                     </div>
 
