@@ -307,7 +307,7 @@ function ListReport(props) {
                     />
                 </div>
 
-                <div className={styles.select}>
+                <div className={styles.select} style={{ marginRight: 8 }}>
                     <div className="mb-1">{formatMessage({ id: 'SERIAL' })}</div>
                     <Input className={styles.textInput} onChange={e => setSerial(e.target.value)} />
                 </div>

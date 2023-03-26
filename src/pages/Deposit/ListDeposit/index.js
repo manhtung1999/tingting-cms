@@ -413,7 +413,7 @@ function ListDeposit(props) {
                     <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
                         <div className="mb-1">{formatMessage({ id: 'CARD_VALUE' })}</div>
                         <Cleave
-                            value={amount}
+                            value={cardValue}
                             className={styles.textInput}
                             onChange={handleChangeCardValue}
                             options={{
