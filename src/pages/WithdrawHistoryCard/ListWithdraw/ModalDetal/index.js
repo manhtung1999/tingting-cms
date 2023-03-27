@@ -4,6 +4,8 @@ import { connect } from 'dva';
 import React, { useEffect } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
+import ic_refresh from '@/assets/image/ic_refresh.png';
+
 const { Paragraph } = Typography;
 
 function ModalDetail({ dispatch, currentTrans, setCurrentTrans, withdrawStore }) {
@@ -30,6 +32,12 @@ function ModalDetail({ dispatch, currentTrans, setCurrentTrans, withdrawStore })
     }
 
     console.log('detailTrans', detailTrans);
+    const handleRefreshCard = orderCode => {
+        const payload = {
+            order: orderCode,
+        };
+        dispatch({ type: 'WITHDRAW_CARD/refreshCard', payload });
+    };
 
     return (
         <Modal
@@ -41,6 +49,24 @@ function ModalDetail({ dispatch, currentTrans, setCurrentTrans, withdrawStore })
             destroyOnClose
         >
             <div className={styles.form}>
+                {!detailTrans.historyTransactionCardList?.length && (
+                    <div>
+                        <span>Refresh: </span>
+                        <img
+                            onClick={() => handleRefreshCard(detailTrans.orderCode)}
+                            src={ic_refresh}
+                            alt="refresh"
+                            title="refresh"
+                            style={{
+                                width: 25,
+                                height: 25,
+                                marginLeft: 5,
+                                cursor: 'pointer',
+                            }}
+                        />
+                    </div>
+                )}
+
                 {detailTrans.historyTransactionCardList?.map((item, index) => {
                     return (
                         <>
