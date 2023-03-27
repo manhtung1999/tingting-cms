@@ -33,7 +33,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
 
     const handleRefreshCard = orderCode => {
         const payload = {
-            orderCode,
+            order: orderCode,
         };
         dispatch({ type: 'WITHDRAW_CARD/refreshCard', payload });
     };
@@ -119,6 +119,20 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                         ({item.reason})
                                     </strong>
                                 )}{' '}
+                                {item.transactionStatus === 4 &&
+                                    item.paymentType === PaymentTypeAll.card && (
+                                        <img
+                                            onClick={() => handleRefreshCard(item.orderCode)}
+                                            src={ic_refresh}
+                                            alt="refresh"
+                                            title="refresh"
+                                            style={{
+                                                width: 17,
+                                                height: 17,
+                                                marginLeft: 5,
+                                            }}
+                                        />
+                                    )}
                             </td>
                             <td className="col-2">
                                 {moment(item.createdAt).format(DATE_FORMAT_TRANSACTION)}

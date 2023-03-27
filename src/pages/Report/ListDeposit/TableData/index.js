@@ -52,10 +52,12 @@ function TableData({ reportStore, pageIndex, setPageIndex }) {
                         ? formatVnd(item.totalMoneyChange)
                         : formatVnd(item.totalCurrentMoney)}
                 </td>
+
+                {/* fee */}
                 <td className="col-1">
                     {item.transactionType === TransactionType['send_money']
-                        ? formatVnd(item.totalCurrentMoney - item.totalMoneyChange)
-                        : formatVnd(item.totalMoneyChange - item.totalCurrentMoney)}
+                        ? formatVnd(item.totalCurrentMoney - item.totalMoneyChange + item.cardFee)
+                        : formatVnd(item.totalMoneyChange - item.totalCurrentMoney + item.cardFee)}
                 </td>
                 <td className="col-1">{formatVnd(item.userMoney)}</td>
                 <td className="col-2">
