@@ -2,16 +2,12 @@ const PAGE_SIZE = 20;
 const DATE_TRANSACTION = 'YYYY-MM-DD HH:mm:ss.S';
 const DATE_FORMAT_TRANSACTION = 'YYYY-MM-DD HH:mm:ss';
 const DATE_FILTER = 'YYYY/MM/DD';
-const DATE_FILTER_1 = 'YYYY/MM/DD';
-const TIME_FORMAT = 'THH:mm:ss.SSS+00:00';
 const DATE_TIME = 'HH:mm DD-MM-YYYY';
 const DATE_TIME_FULL = 'HH:mm:ss DD-MM-YYYY';
 const DATE = 'DD/MM/YYYY';
 const DATE_TODAY = 'DD-MM-YYYY';
 const DATE_FORMAT = 'DD/MM/YYYY';
 const ROLE_USER = 0;
-const ROLE_ADMIN_SYSTEM = 1; // 1
-const ROLE_ADMIN_COMPANY = 2; // 2
 const TOKEN_KEY = 'token';
 const ADMIN_KEY = 'Admin';
 const DEVICE_KEY = 'device_key';
@@ -54,7 +50,6 @@ const PaymentType = {
     electronicWalletQr: 2,
     electronicWallet: 3,
     coin: 4,
-    // card: 5,
 };
 
 const PaymentTypeAll = {
@@ -72,7 +67,6 @@ const PaymentTypeValue = {
     2: 'electronicWalletQr',
     3: 'electronicWallet',
     4: 'coin',
-    // 5: 'card',
 };
 
 const PaymentTypeValueAll = {
@@ -123,61 +117,24 @@ const SystemTransactionTypeName = {
     USER_EDIT_MONEY: 'USER_EDIT_MONEY',
 };
 
-const SerialCardType = [
-    {
-        name: 'Viettel',
-        code: 'VTT',
-    },
-    {
-        name: 'Mobifone',
-        code: 'VMS',
-    },
-    {
-        name: 'Vinaphone',
-        code: 'VNP',
-    },
-    {
-        name: 'Giftcode',
-        code: 'GIFTCODE',
-    },
-];
-
-const ErrorTelecom = [
-    {
-        errorNumber: 1,
-        errorName: 'Thành Công',
-    },
-    {
-        errorNumber: -1,
-        errorName: 'Lỗi Hệ Thống',
-    },
-    {
-        errorNumber: 1,
-        errorName: 'Hết thẻ',
-    },
-    {
-        errorNumber: 1,
-        errorName: 'Sai username, mật khẩu',
-    },
-];
-
 const Lock = {
     YES: 'YES',
     NO: 'NO',
 };
+
 const TypeLock = {
     ONE: 'ONE',
     ALL: 'ALL',
 };
 
-const MenhGia = [10000, 20000, 50000, 100000, 200000, 500000, 1000000];
-
-const TelecomCode = {
-    VIETTEL: 'VIETTEL',
-    VINAPHONE: 'VINAPHONE',
-    VNMOBI: 'VNMOBI',
-    MOBIFONE: 'MOBIFONE',
+const TypeLockCard = {
+    OPEN: 'OPEN',
+    CLOSE_ALL: 'CLOSE_ALL',
+    CLOSE_SEND_MONEY: 'CLOSE_SEND_MONEY',
+    CLOSE_WITHDRAW_MONEY: 'CLOSE_WITHDRAW_MONEY',
 };
+
+const MenhGia = [10000, 20000, 50000, 100000, 200000, 500000, 1000000];
 
 const TelecomServiceCode = {
     Viettel: 'Viettel',
@@ -189,13 +146,9 @@ const TelecomServiceCode = {
 export {
     DATE_TRANSACTION,
     PAGE_SIZE,
-    TIME_FORMAT,
     DATE_FILTER,
-    DATE_FILTER_1,
     DATE_TIME,
     DATE,
-    ROLE_ADMIN_SYSTEM,
-    ROLE_ADMIN_COMPANY,
     ROLE_USER,
     DATE_TODAY,
     DATE_FORMAT,
@@ -220,14 +173,12 @@ export {
     SystemTransactionType,
     EXPORT_KEY,
     TIME_DELAY_EXPORT,
-    SerialCardType,
-    ErrorTelecom,
     SystemTransactionTypeName,
     Lock,
     TypeLock,
     MenhGia,
-    TelecomCode,
     TelecomServiceCode,
     PaymentTypeValueAll,
     PaymentTypeAll,
+    TypeLockCard,
 };

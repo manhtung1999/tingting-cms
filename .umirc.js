@@ -111,6 +111,12 @@ export default {
                     component: '../pages/WithdrawHistoryCard',
                     Routes: ['./src/components/AdminAuthentication'],
                 },
+
+                {
+                    path: '/home/card-management',
+                    component: '../pages/CardManagement',
+                    Routes: ['./src/components/AdminAuthentication'],
+                },
             ],
         },
     ],

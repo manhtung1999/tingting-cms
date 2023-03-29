@@ -4,6 +4,7 @@ export default {
     getAccounts: payload => {
         return request.get('api/v1/user/get-user', payload);
     },
+
     getDetailAccount: payload => {
         return request.get('api/v1/user/detail', payload);
     },
@@ -50,5 +51,8 @@ export default {
 
     updateCardSecret: payload => {
         return request.post('api/v1/secret-key/update', payload);
+    },
+    lockCard: payload => {
+        return request.post('api/v1/payment-type/update', payload);
     },
 };

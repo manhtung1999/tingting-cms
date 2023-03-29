@@ -1,4 +1,8 @@
 export default {
+    CARD_MANAGEMENT: 'Card management',
+    LOCK_CARD_DEPOSIT: 'Lock deposit',
+    LOCK_CARD_WITHDRAW: 'Lock withdraw',
+    LOCK_ALL: 'Lock all',
     CARD_VALUE: 'Card value',
     BALANCE_TELECOM: 'Balance telecom',
     DETAIL_TRANSACTION: 'Detail transaction',

@@ -113,6 +113,12 @@ function PageHeader(props) {
                 url: '/home/report',
                 text: formatMessage({ id: 'REPORT' }),
             },
+            {
+                page: 'card',
+                icon: <img src={ic_business} />,
+                url: '/home/card-management',
+                text: formatMessage({ id: 'CARD_MANAGEMENT' }),
+            },
         ];
         listMenu = [...listMenu, ...adminMenu];
     }
@@ -136,6 +142,12 @@ function PageHeader(props) {
                 icon: <img src={ic_business} />,
                 url: '/home/device-management',
                 text: formatMessage({ id: 'DEVICE_MANAGEMENT' }),
+            },
+            {
+                page: 'account-manage',
+                icon: <img src={ic_business} />,
+                url: '/home/account-manage',
+                text: formatMessage({ id: 'MERCHANT' }),
             },
             {
                 page: 'account-manage',
@@ -236,14 +248,14 @@ function PageHeader(props) {
                     </div>
                 )}
 
-                {(admin?.role === Role.ROLE_ADMIN ||
+                {/* {(admin?.role === Role.ROLE_ADMIN ||
                     admin?.role === Role.ROLE_ACCOUNTANT ||
                     admin?.role === Role.ROLE_STAFF) && (
                     <div className={styles.balance}>
                         <span>{formatMessage({ id: 'BALANCE_TELECOM' })}: </span>
                         <span>{balanceTelecom && formatVnd(balanceTelecom)}</span>
                     </div>
-                )}
+                )} */}
 
                 {/* {admin?.role === Role.ROLE_AGENT && detailAccount.userMoneyConfig && (
                     <div className={styles.balance}>
@@ -292,7 +304,7 @@ function PageHeader(props) {
                 mode="inline"
             >
                 <div className={styles.logoMenu}>
-                    <img style={{ width: collapsed ? 100 : 145 }} src={logo_tingting} alt="logo" />
+                    <img style={{ width: collapsed ? 100 : 125 }} src={logo_tingting} alt="logo" />
                 </div>
                 <Menu theme="dark" mode="inline">
                     {renderListMenu}

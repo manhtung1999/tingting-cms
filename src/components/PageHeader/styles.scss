@@ -6,13 +6,14 @@
     .logoMenu {
         display: flex;
         justify-content: center;
-        margin-top: 35px;
+        margin-top: 25px;
     }
 
     .money {
         position: absolute;
-        bottom: 80px;
+        // bottom: 80px;
         right: 10px;
+        top: 140px;
         left: 10px;
         z-index: 1;
 

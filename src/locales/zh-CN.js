@@ -1,5 +1,8 @@
 export default {
+    CARD_MANAGEMENT: 'Quản lý cổng thẻ',
+    LOCK_CARD_PORT: 'Khóa cổng thẻ',
     CARD_VALUE: 'Mệnh giá thẻ',
+    LOCK_ALL: 'Khóa tất cả user',
     BALANCE_TELECOM: 'Số dư cổng thẻ',
     DETAIL_TRANSACTION: 'Chi tiết giao dịch',
     UPDATE_CARD_SECRET_KEY: 'Cập nhập secret key thẻ cào',

@@ -1,4 +1,8 @@
 export default {
+    CARD_MANAGEMENT: 'Quản lý cổng thẻ',
+    LOCK_CARD_DEPOSIT: 'Đóng nạp',
+    LOCK_CARD_WITHDRAW: 'Đóng rút',
+    LOCK_ALL: 'Khóa tất cả user',
     CARD_VALUE: 'Mệnh giá thẻ',
     BALANCE_TELECOM: 'Số dư cổng thẻ',
     DETAIL_TRANSACTION: 'Chi tiết giao dịch',

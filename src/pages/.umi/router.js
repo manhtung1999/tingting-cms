@@ -401,6 +401,27 @@ const routes = [
         _title_default: 'TingTing',
       },
       {
+        path: '/home/card-management',
+        component: __IS_BROWSER
+          ? _dvaDynamic({
+              app: require('@tmp/dva').getApp(),
+              models: () => [
+                import(/* webpackChunkName: 'p__CardManagement__models__index.js' */ '/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/pages/CardManagement/models/index.js').then(
+                  m => {
+                    return { namespace: 'index', ...m.default };
+                  },
+                ),
+              ],
+              component: () =>
+                import(/* webpackChunkName: "p__CardManagement" */ '../CardManagement'),
+            })
+          : require('../CardManagement').default,
+        Routes: [require('../../components/AdminAuthentication').default],
+        exact: true,
+        _title: 'TingTing',
+        _title_default: 'TingTing',
+      },
+      {
         component: () =>
           React.createElement(
             require('/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')

@@ -425,7 +425,7 @@ function AccountManage(props) {
                     {(admin?.role === Role.ROLE_ADMIN || admin?.role === Role.ROLE_ACCOUNTANT) &&
                         role === RoleName[Role.ROLE_USER] && (
                             <div>
-                                <span>LOCK ALL: </span>
+                                <span>{formatMessage({ id: 'LOCK_ALL' })}: </span>
                                 <Switch checked={isLockAll} onChange={onChangeLockAll} />
                             </div>
                         )}
