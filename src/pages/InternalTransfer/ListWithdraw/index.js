@@ -67,7 +67,7 @@ function ListInternalTransfer(props) {
 
         const interval = setInterval(
             () => dispatch({ type: 'INTERNAL_TRANSFER/getWithdraws', payload }),
-            5000,
+            30000,
         );
         return () => {
             clearInterval(interval);

@@ -60,7 +60,7 @@ function PageHeader(props) {
     useEffect(() => {
         const interval = setInterval(() => {
             cronGetAccount();
-        }, 5000);
+        }, 30000);
         return () => {
             clearInterval(interval);
         };

@@ -75,7 +75,7 @@ function ListWithdraw(props) {
 
         const interval = setInterval(
             () => dispatch({ type: 'WITHDRAW_CARD/getWithdraws', payload }),
-            5000,
+            30000,
         );
         return () => {
             clearInterval(interval);

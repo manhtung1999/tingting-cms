@@ -103,7 +103,7 @@ function ListTransaction(props) {
         dispatch({ type: 'TRANSACTION/getDeposits', payload });
         const interval = setInterval(
             () => dispatch({ type: 'TRANSACTION/getDeposits', payload }),
-            5000,
+            30000,
         );
         return () => {
             clearInterval(interval);

@@ -76,7 +76,10 @@ function ListReport(props) {
             payload.userId = admin.id;
         }
         dispatch({ type: 'REPORT/getDeposits', payload });
-        const interval = setInterval(() => dispatch({ type: 'REPORT/getDeposits', payload }), 5000);
+        const interval = setInterval(
+            () => dispatch({ type: 'REPORT/getDeposits', payload }),
+            30000,
+        );
         return () => {
             clearInterval(interval);
         };

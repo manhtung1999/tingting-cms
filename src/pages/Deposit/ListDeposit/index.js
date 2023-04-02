@@ -121,7 +121,7 @@ function ListDeposit(props) {
         dispatch({ type: 'DEPOSIT/getDeposits', payload });
         const interval = setInterval(
             () => dispatch({ type: 'DEPOSIT/getDeposits', payload }),
-            5000,
+            30000,
         );
         return () => {
             clearInterval(interval);
