@@ -30,8 +30,22 @@ function CardManagement(props) {
         dispatch({ type: 'CARD_MANAGEMENT/getPaymentType' });
     }, [dispatch, lockSuccess]);
 
-    const onChangeLockDepositCard = (locked, id) => {
-        const typeLock = locked ? TypeLockCard.CLOSE_SEND_MONEY : TypeLockCard.CLOSE_WITHDRAW_MONEY;
+    const onChangeLockDepositCard = (locked, id, currentType) => {
+        let typeLock;
+
+        if (locked) {
+            if (currentType === TypeLockCard.CLOSE_WITHDRAW_MONEY) {
+                typeLock = TypeLockCard.CLOSE_ALL;
+            } else {
+                typeLock = TypeLockCard.CLOSE_SEND_MONEY;
+            }
+        } else {
+            if (currentType === TypeLockCard.CLOSE_ALL) {
+                typeLock = TypeLockCard.CLOSE_WITHDRAW_MONEY;
+            } else {
+                typeLock = TypeLockCard.OPEN;
+            }
+        }
         const payload = {
             id,
             statusPayment: typeLock,
@@ -46,8 +60,22 @@ function CardManagement(props) {
         setNewPaymentType(newPaymentType);
     };
 
-    const onChangeLockWithdrawCard = (locked, id) => {
-        const typeLock = locked ? TypeLockCard.CLOSE_WITHDRAW_MONEY : TypeLockCard.CLOSE_SEND_MONEY;
+    const onChangeLockWithdrawCard = (locked, id, currentType) => {
+        let typeLock;
+
+        if (locked) {
+            if (currentType === TypeLockCard.CLOSE_SEND_MONEY) {
+                typeLock = TypeLockCard.CLOSE_ALL;
+            } else {
+                typeLock = TypeLockCard.CLOSE_WITHDRAW_MONEY;
+            }
+        } else {
+            if (currentType === TypeLockCard.CLOSE_ALL) {
+                typeLock = TypeLockCard.CLOSE_SEND_MONEY;
+            } else {
+                typeLock = TypeLockCard.OPEN;
+            }
+        }
         const payload = {
             id,
             statusPayment: typeLock,
@@ -62,21 +90,6 @@ function CardManagement(props) {
         setNewPaymentType(newPaymentType);
     };
 
-    const onChangeLockCard = (locked, id) => {
-        const typeLock = locked ? TypeLockCard.CLOSE_ALL : TypeLockCard.OPEN;
-        const payload = {
-            id,
-            statusPayment: typeLock,
-        };
-        dispatch({ type: 'CARD_MANAGEMENT/lockCard', payload });
-        const newPaymentType = paymentTypes.map((i, index) => {
-            if (i.id === id) {
-                i.statusPayment = typeLock;
-            }
-            return i;
-        });
-        setNewPaymentType(newPaymentType);
-    };
     const listPaymentTypeByCard = listPaymentType.length > 5 ? listPaymentType.slice(0, 4) : [];
     const renderDataCard = loading ? (
         <Loading />
@@ -100,25 +113,30 @@ function CardManagement(props) {
                     <td className="col-3">{moment(value.createdAt).format(DATE_TIME_FULL)}</td>
                     <td className="col-3">
                         <div>
-                            <div className="my-3">
-                                <span>{formatMessage({ id: 'LOCK_ALL' })}: </span>
-                                <Switch
-                                    checked={isLockAll}
-                                    onChange={locked => onChangeLockCard(locked, value.id)}
-                                />
-                            </div>
                             <div>
                                 <span>{formatMessage({ id: 'LOCK_CARD_DEPOSIT' })}: </span>
                                 <Switch
                                     checked={isLockDeposit}
-                                    onChange={locked => onChangeLockDepositCard(locked, value.id)}
+                                    onChange={locked =>
+                                        onChangeLockDepositCard(
+                                            locked,
+                                            value.id,
+                                            value.statusPayment,
+                                        )
+                                    }
                                 />
                             </div>
                             <div className="my-3">
                                 <span>{formatMessage({ id: 'LOCK_CARD_WITHDRAW' })}: </span>
                                 <Switch
                                     checked={isLockWithdraw}
-                                    onChange={locked => onChangeLockWithdrawCard(locked, value.id)}
+                                    onChange={locked =>
+                                        onChangeLockWithdrawCard(
+                                            locked,
+                                            value.id,
+                                            value.statusPayment,
+                                        )
+                                    }
                                 />
                             </div>
                         </div>

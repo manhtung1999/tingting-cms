@@ -49,6 +49,7 @@ function AddWithdraw({ dispatch, withdrawStore }) {
     const arrayUniqueByBankName = listPaymentType.filter(paymentType =>
         paymentType.fullNameBank.includes('System-'),
     );
+    console.log({ arrayUniqueByBankName });
 
     const handleDelete = (e, cardId) => {
         e.stopPropagation();
