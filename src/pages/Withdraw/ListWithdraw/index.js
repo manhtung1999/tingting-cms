@@ -10,7 +10,7 @@ import {
     TransactionStatus,
 } from '@/config/constant';
 import config from '@/config/index';
-import { useLocalStorage } from '@/hooks';
+import { useLocalStorage, useDebounce } from '@/hooks';
 import { DatePicker, Input, message, Select } from 'antd';
 import Cleave from 'cleave.js/react';
 import { connect } from 'dva';
@@ -57,6 +57,7 @@ function ListWithdraw(props) {
 
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
+    const debouncedSearchAmount = useDebounce(amount, 500); // 1s
 
     useEffect(() => {
         dispatch({ type: 'WITHDRAW/getDevices' });
@@ -98,7 +99,7 @@ function ListWithdraw(props) {
             deviceId,
             username,
             systemTransactionType: 'MONEY_IN_SYSTEM',
-            amount,
+            amount: debouncedSearchAmount,
             cardCode,
             serial,
             paymentTypeId,
@@ -137,12 +138,12 @@ function ListWithdraw(props) {
         userId,
         deviceId,
         code,
-        amount,
         cardCode,
         serial,
         paymentTypeId,
         cardValue,
         cardRequestId,
+        debouncedSearchAmount,
     ]);
 
     function disabledDate(current) {
@@ -202,6 +203,7 @@ function ListWithdraw(props) {
             paymentTypeId,
             cardValue,
             requestId: cardRequestId,
+            amount: debouncedSearchAmount,
         });
         fetch(config.API_DOMAIN + url + '?' + params, {
             method: 'GET',

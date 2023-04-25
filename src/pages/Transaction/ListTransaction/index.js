@@ -12,7 +12,7 @@ import {
     SystemTransactionType,
 } from '@/config/constant';
 import config from '@/config/index';
-import { useLocalStorage } from '@/hooks';
+import { useLocalStorage, useDebounce } from '@/hooks';
 import { DatePicker, Input, message, Select } from 'antd';
 import Cleave from 'cleave.js/react';
 import { connect } from 'dva';
@@ -51,6 +51,7 @@ function ListTransaction(props) {
 
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
+    const debouncedSearchAmount = useDebounce(amount, 500); // 1s
 
     useEffect(() => {
         dispatch({ type: 'TRANSACTION/getDevices' });
@@ -81,7 +82,7 @@ function ListTransaction(props) {
             endDate: rangeTime?.[1],
             deviceId,
             username,
-            amount,
+            amount: debouncedSearchAmount,
             paymentTypeId,
             cardCode,
             serial,
@@ -120,7 +121,7 @@ function ListTransaction(props) {
         admin,
         deviceId,
         username,
-        amount,
+        debouncedSearchAmount,
         addNoteResponse,
         systemTransactionType,
         paymentTypeId,
@@ -286,7 +287,7 @@ function ListTransaction(props) {
                 </div>
 
                 <div className={styles.select}>
-                    <div className="mb-1">{formatMessage({ id: 'USERNAME' })}</div>
+                    <div className="mb-1">{formatMessage({ id: 'USER_ORDER' })}</div>
                     <Input
                         className={styles.textInput}
                         onChange={e => setUsername(e.target.value)}
