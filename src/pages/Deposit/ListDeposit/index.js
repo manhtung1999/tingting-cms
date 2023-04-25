@@ -11,7 +11,7 @@ import {
     TransactionStatus,
 } from '@/config/constant';
 import config from '@/config/index';
-import { useLocalStorage } from '@/hooks';
+import { useLocalStorage, useDebounce } from '@/hooks';
 import { formatVnd } from '@/util/function';
 import { DatePicker, Input, message, Select } from 'antd';
 import Cleave from 'cleave.js/react';
@@ -53,12 +53,15 @@ function ListDeposit(props) {
     const [cardCode, setCardCode] = useState();
     const [serial, setSerial] = useState();
     const [cardRequestId, setCardRequestId] = useState();
+    const [cardValue, setCardValue] = useState();
 
     const [pageIndex, setPageIndex] = useState(1);
 
     const [admin] = useLocalStorage(ADMIN_KEY);
 
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
+
+    const debouncedSearchAmount = useDebounce(amount, 500); // 1s
 
     useEffect(() => {
         dispatch({ type: 'DEPOSIT/getPaymentType' });
@@ -102,13 +105,14 @@ function ListDeposit(props) {
             startDate: rangeTime?.[0],
             endDate: rangeTime?.[1],
             deviceId,
-            amount,
+            amount: debouncedSearchAmount,
             orderCode: orderCode,
             systemTransactionType: 'MONEY_IN_SYSTEM',
             paymentTypeId,
             cardCode,
             serial,
             requestId: cardRequestId,
+            cardValue,
         };
         if (admin?.role === Role.ROLE_AGENT) {
             payload.agentId = admin.id;
@@ -138,11 +142,12 @@ function ListDeposit(props) {
         admin,
         deviceId,
         username,
-        amount,
+        debouncedSearchAmount,
         paymentTypeId,
         cardCode,
         serial,
         cardRequestId,
+        cardValue,
     ]);
 
     function disabledDate(current) {
@@ -198,7 +203,9 @@ function ListDeposit(props) {
             cardCode,
             serial,
             paymentTypeId,
-            cardRequestId,
+            requestId: cardRequestId,
+            amount: debouncedSearchAmount,
+            cardValue,
         });
 
         fetch(config.API_DOMAIN + url + '?' + params, {
@@ -231,6 +238,11 @@ function ListDeposit(props) {
     const handleChangeMin = e => {
         const amount = Number(e.currentTarget.rawValue);
         setAmount(amount || '');
+    };
+
+    const handleChangeCardValue = e => {
+        const amount = Number(e.currentTarget.rawValue);
+        setCardValue(amount || '');
     };
 
     const listPaymentTypeByCard = listPaymentType.slice(0, 4);
@@ -356,7 +368,7 @@ function ListDeposit(props) {
                     </div>
 
                     <div className={styles.select}>
-                        <div className="mb-1">{formatMessage({ id: 'USERNAME' })}</div>
+                        <div className="mb-1">{formatMessage({ id: 'USER_ORDER' })}</div>
                         <Input
                             className={styles.textInput}
                             onChange={e => setUsername(e.target.value)}
@@ -401,7 +413,21 @@ function ListDeposit(props) {
                         />
                     </div>
 
-                    {currentExchange &&
+                    <div className={styles.select} style={{ marginRight: 8, marginLeft: 8 }}>
+                        <div className="mb-1">{formatMessage({ id: 'CARD_VALUE' })}</div>
+                        <Cleave
+                            value={cardValue}
+                            className={styles.textInput}
+                            onChange={handleChangeCardValue}
+                            options={{
+                                numeral: true,
+                                numeralThousandsGroupStyle: 'thousand',
+                            }}
+                        />
+                    </div>
+
+                    {rangeTime.length > 0 &&
+                        currentExchange &&
                         (admin?.role === Role.ROLE_ADMIN ||
                             admin?.role === Role.ROLE_STAFF ||
                             admin?.role === Role.ROLE_ACCOUNTANT ||
