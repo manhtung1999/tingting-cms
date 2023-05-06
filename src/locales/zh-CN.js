@@ -1,4 +1,10 @@
 export default {
+    IN_PROGRESS_CARD: 'Thẻ đang xử lý',
+    DEVICE_RECEIVING: ' Thiết bị, nhận lệnh',
+    DEVICE_PROCESSING: 'Thiết bị thực hiện',
+    DEVICE_PROCESSED_FAIL: 'Thiết bị, fail, recheck',
+    DEVICE_PROCESSED_DONE: 'Thiết bị, success, recheck',
+    DEVICE_PROCESS_FAIL: 'Thiết bị, thất bại',
     CARD_MANAGEMENT: 'Quản lý cổng thẻ',
     LOCK_CARD_PORT: 'Khóa cổng thẻ',
     CARD_VALUE: 'Mệnh giá thẻ',

@@ -93,6 +93,12 @@ const TransactionStatus = {
     IN_PROGRESS_STAFF: 1,
     SUCCESS: 2,
     FAIL: 3,
+    IN_PROGRESS_CARD: 4,
+    DEVICE_RECEIVING: 5,
+    DEVICE_PROCESSING: 6,
+    DEVICE_PROCESSED_FAIL: 7,
+    DEVICE_PROCESSED_DONE: 8,
+    DEVICE_PROCESS_FAIL: 9,
 };
 
 const TransactionStatusValue = {
@@ -100,6 +106,12 @@ const TransactionStatusValue = {
     1: 'IN_PROGRESS_STAFF',
     2: 'SUCCESS',
     3: 'FAIL',
+    4: 'IN_PROGRESS_CARD',
+    5: 'DEVICE_RECEIVING',
+    6: 'DEVICE_PROCESSING',
+    7: 'DEVICE_PROCESSED_FAIL',
+    8: 'DEVICE_PROCESSED_DONE',
+    9: 'DEVICE_PROCESS_FAIL',
 };
 
 const SystemTransactionType = {
