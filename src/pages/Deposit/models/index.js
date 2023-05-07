@@ -5,6 +5,7 @@ import accountService from '@/services/account';
 import secretService from '@/services/secret';
 import deviceService from '@/services/device';
 import { formatMessage } from 'umi-plugin-react/locale';
+import config from '../../../config';
 export default {
     namespace: 'DEPOSIT',
     state: {
@@ -165,7 +166,7 @@ export default {
                     yield put({ type: 'success', payload: res.body });
                     if (res.body.body.bankName) {
                         window.open(
-                            `http://tingtingvn.info/payment?bankName=${res.body.body.bankName}&bankAccount=${res.body.body.bankAccount}&bankUsername=${res.body.body.bankUsername}&amount=${action.payload.totalMoney}&linkImage=${res.body.body.linkImage}&content=${res.body.body.content}&walletAddress=${res.body.body.walletAddress}&moneyUsdt=${res.body.body.moneyUsdt}&exchangeRate=${res.body.body.exchangeRate}`,
+                            `${config.DOMAIN_NAME}/payment?bankName=${res.body.body.bankName}&bankAccount=${res.body.body.bankAccount}&bankUsername=${res.body.body.bankUsername}&amount=${action.payload.totalMoney}&linkImage=${res.body.body.linkImage}&content=${res.body.body.content}&walletAddress=${res.body.body.walletAddress}&moneyUsdt=${res.body.body.moneyUsdt}&exchangeRate=${res.body.body.exchangeRate}`,
                             // `http://localhost:4000/payment?bankName=${res.body.body.bankName}&bankAccount=${res.body.body.bankAccount}&bankUsername=${res.body.body.bankUsername}&amount=${action.payload.totalMoney}&linkImage=${res.body.body.linkImage}&content=${res.body.body.content}&walletAddress=${res.body.body.walletAddress}&moneyUsdt=${res.body.body.moneyUsdt}&exchangeRate=${res.body.body.exchangeRate}`,
                         );
                     } else {

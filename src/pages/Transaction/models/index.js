@@ -5,6 +5,7 @@ import accountService from '@/services/account';
 import secretService from '@/services/secret';
 import deviceService from '@/services/device';
 import { formatMessage } from 'umi-plugin-react/locale';
+import config from '../../../config';
 
 export default {
     namespace: 'TRANSACTION',
@@ -159,7 +160,7 @@ export default {
                 if (res.status === 200) {
                     yield put({ type: 'success', payload: res.body });
                     window.open(
-                        `http://tingtingvn.info/payment?bankName=${res.body.body.bankName}&bankAccount=${res.body.body.bankAccount}&bankUsername=${res.body.body.bankUsername}&amount=${action.payload.totalMoney}&linkImage=${res.body.body.linkImage}&content=${res.body.body.content}`,
+                        `${config.DOMAIN_NAME}/payment?bankName=${res.body.body.bankName}&bankAccount=${res.body.body.bankAccount}&bankUsername=${res.body.body.bankUsername}&amount=${action.payload.totalMoney}&linkImage=${res.body.body.linkImage}&content=${res.body.body.content}`,
                         // `http://localhost:8000/payment?bankName=${res.body.body.bankName}&bankAccount=${res.body.body.bankAccount}&bankUsername=${res.body.body.bankUsername}&amount=${action.payload.totalMoney}&linkImage=${res.body.body.linkImage}&content=${res.body.body.content}`,
                     );
                 } else {

@@ -18,6 +18,7 @@ import ic_zalopay from '@/assets/image/ic_zalopay.png';
 import qrcode from '@/assets/image/qrcode.png';
 import Usdt from './Usdt';
 import { formatVnd } from '@/util/function';
+import { message } from 'antd';
 
 // usdt
 // bank
@@ -44,11 +45,25 @@ function Payment({ location }) {
                             <div className={styles.contentText}>
                                 {query.linkImage === 'null' || query.linkImage === 'undefined' ? (
                                     <div className={styles.infoBank}>
-                                        <h4>Số tài khoản: {query.bankAccount}</h4>
+                                        <h4 className="d-flex">
+                                            Số tài khoản: {query.bankAccount}{' '}
+                                            <span
+                                                style={{ marginLeft: 'auto', color: '#000' }}
+                                                type="button"
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(
+                                                        query.bankAccount,
+                                                    );
+                                                    message.success('copied!');
+                                                }}
+                                            >
+                                                Copy
+                                            </span>
+                                        </h4>
                                         <h4>Ngân hàng: {query.bankName}</h4>
                                         <h4>Chủ tài khoản: {query.bankUsername}</h4>
                                         <h4>Số tiền: {formatVnd(Number(query.amount))}</h4>
-                                        <h4>
+                                        <h4 className="d-flex">
                                             Nội dung:{' '}
                                             <span
                                                 style={{
@@ -58,6 +73,16 @@ function Payment({ location }) {
                                                 }}
                                             >
                                                 {query.content}
+                                            </span>
+                                            <span
+                                                style={{ marginLeft: 'auto', color: '#000' }}
+                                                type="button"
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(query.content);
+                                                    message.success('copied!');
+                                                }}
+                                            >
+                                                Copy
                                             </span>
                                         </h4>
                                     </div>
