@@ -45,34 +45,11 @@ const routes = [
     component: __IS_BROWSER
       ? _dvaDynamic({
           component: () =>
-            import(/* webpackChunkName: "WrappersSecond" */ '../../WrappersSecond'),
+            import(/* webpackChunkName: "p__Payment" */ '../Payment'),
         })
-      : require('../../WrappersSecond').default,
-    routes: [
-      {
-        path: '/payment',
-        component: __IS_BROWSER
-          ? _dvaDynamic({
-              component: () =>
-                import(/* webpackChunkName: "p__Payment" */ '../Payment'),
-            })
-          : require('../Payment').default,
-        Routes: [require('../../components/AdminAuthentication').default],
-        exact: true,
-        _title: 'TingTing',
-        _title_default: 'TingTing',
-      },
-      {
-        component: () =>
-          React.createElement(
-            require('/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
-              .default,
-            { pagesPath: 'src/pages', hasRoutesInConfig: true },
-          ),
-        _title: 'TingTing',
-        _title_default: 'TingTing',
-      },
-    ],
+      : require('../Payment').default,
+    Routes: [require('../../components/AdminAuthentication').default],
+    exact: true,
     _title: 'TingTing',
     _title_default: 'TingTing',
   },

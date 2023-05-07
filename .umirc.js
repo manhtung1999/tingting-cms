@@ -13,18 +13,23 @@ export default {
             component: '../pages/Login',
             Routes: ['./src/components/AdminAuthentication'],
         },
-
         {
             path: '/payment',
-            component: '../WrappersSecond',
-            routes: [
-                {
-                    path: '/payment',
-                    component: '../pages/Payment',
-                    Routes: ['./src/components/AdminAuthentication'],
-                },
-            ],
+            component: '../pages/Payment',
+            Routes: ['./src/components/AdminAuthentication'],
         },
+
+        // {
+        //     path: '/payment',
+        //     component: '../WrappersSecond',
+        //     routes: [
+        //         {
+        //             path: '/payment',
+        //             component: '../pages/Payment',
+        //             Routes: ['./src/components/AdminAuthentication'],
+        //         },
+        //     ],
+        // },
         {
             path: '/home',
             component: '../Wrappers',

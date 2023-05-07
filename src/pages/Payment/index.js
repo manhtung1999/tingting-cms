@@ -1,125 +1,129 @@
-import { formatVnd } from '@/util/function';
-import { Button, Typography } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
 import { withRouter } from 'umi';
-import { formatMessage } from 'umi-plugin-react/locale';
 import ModalLoading from '../../components/ModalLoading';
 import styles from './styles.scss';
-const { Paragraph } = Typography;
+import logo_tingting from '@/assets/image/logo_tingting.png';
+import ic_vpbank from '@/assets/image/ic_vpbank.png';
+import ic_lienviet from '@/assets/image/ic_lienviet.png';
+import ic_vcb from '@/assets/image/ic_vcb.png';
+import ic_pvcombank from '@/assets/image/ic_pvcombank.png';
+import ic_shb from '@/assets/image/ic_shb.png';
+import ic_vietinbank from '@/assets/image/ic_vietinbank.png';
+import ic_bidv from '@/assets/image/ic_bidv.png';
+import ic_techcombank from '@/assets/image/ic_techcombank.png';
+import ic_tpbank from '@/assets/image/ic_tpbank.png';
+import ic_momo from '@/assets/image/ic_momo.png';
+import ic_zalopay from '@/assets/image/ic_zalopay.png';
+import qrcode from '@/assets/image/qrcode.png';
+import Usdt from './Usdt';
+import { formatVnd } from '@/util/function';
 
+// usdt
+// bank
+// qr bank
+// wallet
+// responsive
 function Payment({ location }) {
     const { query } = location;
 
     if (!query) {
         return <ModalLoading />;
     }
-
-    const handleClose = () => {
-        window.open('', '_self', '');
-        window.close();
-    };
     return (
-        <div className={styles.container}>
-            <h2 className="mb-4">{formatMessage({ id: 'INFO_TRANSFER_BANK' })}:</h2>
-            <div style={{ background: 'rgb(227,225,225)', padding: 30 }}>
-                {query.bankName === 'USDT' ? (
-                    <>
-                        <h3>
-                            {formatMessage({ id: 'AMOUNT' })}: {formatVnd(Number(query.amount))}{' '}
-                        </h3>
-                        <h3>
-                            {formatMessage({ id: 'EXCHANGE_RATE' })}:{' '}
-                            {formatVnd(Number(query.exchangeRate))}{' '}
-                            <h3 className="ms-2 d-inline-block" style={{ color: '#000' }}>
-                                (= 1$)
-                            </h3>
-                        </h3>
-                        <h3>
-                            <Paragraph copyable={{ text: query.moneyUsdt }}>
-                                {formatMessage({ id: 'USDT_TO_DEPOSIT' })}: $ {query.moneyUsdt}{' '}
-                            </Paragraph>
-                        </h3>
-                        <h3>
-                            <Paragraph copyable={{ text: query.walletAddress }}>
-                                {formatMessage({ id: 'WALLET_ADDRESS' })}: {query.walletAddress}
-                            </Paragraph>
-                        </h3>
-                    </>
-                ) : (
-                    <>
-                        {(query.linkImage === 'null' || query.linkImage === 'undefined') && (
-                            <>
-                                <h3>
-                                    <Paragraph copyable={{ text: query.bankAccount }}>
-                                        {formatMessage({ id: 'ACCOUNT_NUMBER' })}:{' '}
-                                        {query.bankAccount}
-                                    </Paragraph>
-                                </h3>
-                                <h3 className="my-3">
-                                    {formatMessage({ id: 'BANK_NAME' })}: {query.bankName}
-                                </h3>
-                                <h3>
-                                    <Paragraph copyable={{ text: query.bankUsername }}>
-                                        {formatMessage({ id: 'ACCOUNT_HOLDER' })}:{' '}
-                                        {query.bankUsername}
-                                    </Paragraph>
-                                </h3>
-                            </>
-                        )}
-
-                        <h3>
-                            <Paragraph copyable={{ text: query.amount }}>
-                                {formatMessage({ id: 'AMOUNT' })}: {formatVnd(Number(query.amount))}
-                            </Paragraph>
-                        </h3>
-                        {query.bankName !== 'USDT' && (
-                            <h3 className="mt-3 d-flex">
-                                {formatMessage({ id: 'MONEY_TRANSFER_CONTENT' })}:{' '}
-                                <Paragraph copyable={{ text: query.content }}>
-                                    <span
-                                        style={{ fontWeight: 'bold', color: 'red', marginLeft: 5 }}
-                                    >
-                                        {query.content}
-                                    </span>
-                                </Paragraph>
-                            </h3>
-                        )}
-
-                        {query.linkImage !== 'null' && query.linkImage !== 'undefined' && (
-                            <h3 className="mt-3">
-                                {formatMessage({ id: 'QR_CODE' })}:{' '}
-                                <div className="mt-3">
-                                    <img
-                                        style={{
-                                            width: 250,
-                                        }}
-                                        src={query.linkImage}
-                                        alt="qr-link"
-                                    />
-                                </div>
-                            </h3>
-                        )}
-                    </>
-                )}
-            </div>
-            <div className="d-flex justify-content-center mt-4">
-                <Button
-                    style={{ color: '#fff', background: '#3f3f65', borderRadius: '20px' }}
-                    className="primary"
-                    size="large"
-                    onClick={handleClose}
-                >
-                    {formatMessage({ id: 'COMPLETE' })}
-                </Button>
-            </div>
-            <div
-                className="mt-3 d-flex justify-content-center"
-                style={{ color: 'red', fontSize: 14 }}
-            >
-                {formatMessage({ id: 'NOTICE_PAYMENT' })}
-            </div>
-        </div>
+        <>
+            {query.bankName === 'USDT' ? (
+                <Usdt query={query} />
+            ) : (
+                <div className={styles.app}>
+                    <div className={styles.container}>
+                        <div className={styles.contentPayment}>
+                            <div className={styles.infoTingting}>
+                                <img className={styles.logoTingting} src={logo_tingting} alt="" />
+                            </div>
+                            <div className={styles.contentText}>
+                                {query.linkImage === 'null' || query.linkImage === 'undefined' ? (
+                                    <div className={styles.infoBank}>
+                                        <h4>Số tài khoản: {query.bankAccount}</h4>
+                                        <h4>Ngân hàng: {query.bankName}</h4>
+                                        <h4>Chủ tài khoản: {query.bankUsername}</h4>
+                                        <h4>Số tiền: {formatVnd(Number(query.amount))}</h4>
+                                        <h4>
+                                            Nội dung:{' '}
+                                            <span
+                                                style={{
+                                                    fontWeight: 'bold',
+                                                    color: 'red',
+                                                    marginLeft: 5,
+                                                }}
+                                            >
+                                                {query.content}
+                                            </span>
+                                        </h4>
+                                    </div>
+                                ) : (
+                                    <div className={styles.qrCode}>
+                                        <img src={qrcode} alt="" />
+                                        <div className={styles.time}>
+                                            *QR sẽ hết hạn trong 2 phút
+                                        </div>
+                                    </div>
+                                )}
+                                <h5>Quý khách lưu ý</h5>
+                                {query.bankName === 'Momo' || query.bankName === 'ZaloPay' ? (
+                                    <div>
+                                        <p>- Chú ý nội dung chuyển khoản chính xác</p>
+                                        <p>
+                                            - Sau 5 phút chưa thấy tài khoản cộng điểm phiền bạn
+                                            liên hệ CSKH
+                                        </p>
+                                        <p>
+                                            - Khách hàng muốn hỗ trợ nạp nhanh số tiền lớn liên hệ
+                                            CSKH
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <p>- Khách hàng chọn hình thức chuyển 24/7</p>
+                                        <p>- Ngân hàng chúng tôi đều miễn phí chuyển tiền</p>
+                                        <p>- Chú ý nội dung chuyển khoản chính xác</p>
+                                        <p>
+                                            - Sau 5 phút chưa thấy tài khoản cộng điểm phiền bạn
+                                            liên hệ CSKH
+                                        </p>
+                                        <p>
+                                            - Khách hàng muốn hỗ trợ nạp nhanh số tiền lớn liên hệ
+                                            CSKH
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    {query.bankName === 'Momo' ? (
+                        <div className={styles.footerWallet}>
+                            <img src={ic_momo} alt="" />
+                        </div>
+                    ) : query.bankName === 'ZaloPay' ? (
+                        <div className={styles.footerWallet}>
+                            <img src={ic_zalopay} alt="" />
+                        </div>
+                    ) : (
+                        <div className={styles.footer}>
+                            <img src={ic_vpbank} alt="" />
+                            <img src={ic_lienviet} alt="" />
+                            <img src={ic_vcb} alt="" />
+                            <img src={ic_pvcombank} alt="" />
+                            <img src={ic_shb} alt="" />
+                            <img src={ic_vietinbank} alt="" />
+                            <img src={ic_bidv} alt="" />
+                            <img src={ic_techcombank} alt="" />
+                            <img src={ic_tpbank} alt="" />
+                        </div>
+                    )}
+                </div>
+            )}
+        </>
     );
 }
 export default connect(({ MASTERDATA }) => ({
