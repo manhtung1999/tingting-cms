@@ -27,7 +27,12 @@ function Usdt({ query }) {
                                     style={{ marginLeft: 'auto', color: '#000' }}
                                     type="button"
                                     onClick={() => {
-                                        navigator.clipboard.writeText(query.walletAddress);
+                                        const input = document.createElement('input');
+                                        document.body.appendChild(input);
+                                        input.value = query.walletAddress;
+                                        input.select();
+                                        document.execCommand('copy');
+                                        document.body.removeChild(input);
                                         message.success('copied!');
                                     }}
                                 >

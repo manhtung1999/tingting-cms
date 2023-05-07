@@ -51,9 +51,12 @@ function Payment({ location }) {
                                                 style={{ marginLeft: 'auto', color: '#000' }}
                                                 type="button"
                                                 onClick={() => {
-                                                    navigator.clipboard.writeText(
-                                                        query.bankAccount,
-                                                    );
+                                                    const input = document.createElement('input');
+                                                    document.body.appendChild(input);
+                                                    input.value = query.bankAccount;
+                                                    input.select();
+                                                    document.execCommand('copy');
+                                                    document.body.removeChild(input);
                                                     message.success('copied!');
                                                 }}
                                             >
@@ -78,7 +81,12 @@ function Payment({ location }) {
                                                 style={{ marginLeft: 'auto', color: '#000' }}
                                                 type="button"
                                                 onClick={() => {
-                                                    navigator.clipboard.writeText(query.content);
+                                                    const input = document.createElement('input');
+                                                    document.body.appendChild(input);
+                                                    input.value = query.content;
+                                                    input.select();
+                                                    document.execCommand('copy');
+                                                    document.body.removeChild(input);
                                                     message.success('copied!');
                                                 }}
                                             >
