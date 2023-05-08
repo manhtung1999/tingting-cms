@@ -25,6 +25,8 @@ function CreateCard(props) {
     const [file, setFile] = useState();
     const [avatar] = useUploadFile(file);
 
+    const [bankId, setBankId] = useState();
+
     useEffect(() => {
         dispatch({ type: 'DEVICE/getPaymentType' });
     }, [dispatch]);
@@ -94,7 +96,11 @@ function CreateCard(props) {
                         rules={[{ required: true }]}
                         name="paymentTypeId"
                     >
-                        <Select style={{ minWidth: 180 }} defaultValue="">
+                        <Select
+                            style={{ minWidth: 180 }}
+                            defaultValue=""
+                            onChange={val => setBankId(val)}
+                        >
                             {listPaymentType
                                 .filter(
                                     i =>
@@ -161,6 +167,16 @@ function CreateCard(props) {
                         />
                     </Form.Item>
 
+                    {listPaymentType.find(i => i.id === bankId)?.sortNameBank === 'ZaloPay' && (
+                        <Form.Item
+                            label={formatMessage({ id: 'ZALO_ID' })}
+                            rules={[{ required: true }]}
+                            name="zaloId"
+                            whitespace
+                        >
+                            <Input className={styles.textInput} />
+                        </Form.Item>
+                    )}
                     <div className="d-flex justify-content-end">
                         <button htmlType="submit" className={styles.primaryBtn}>
                             {formatMessage({ id: 'SUBMIT' })}
