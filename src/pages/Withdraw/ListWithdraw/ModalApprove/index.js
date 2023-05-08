@@ -1,6 +1,6 @@
 import { message, Modal, Select } from 'antd';
 import { connect } from 'dva';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import ModalLoading from '@/components/ModalLoading';
@@ -10,7 +10,15 @@ import { DeviceStatusValue } from '@/config/constant';
 function ModalApprove({ dispatch, currentTrans, setCurrentTrans, withdrawStore }) {
     const { devices } = withdrawStore;
 
+    console.log({ currentTrans });
     const [maxBalanceDevice, setMaxBalanceDevice] = useState();
+
+    useEffect(() => {
+        const payload = {
+            userId: currentTrans.ownerId,
+        };
+        dispatch({ type: 'WITHDRAW/getDevices', payload });
+    }, [dispatch]);
 
     const handleClose = () => {
         setCurrentTrans({
