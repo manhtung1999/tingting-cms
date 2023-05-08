@@ -34,6 +34,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
         isShow: false,
         amout: undefined,
         bankName: undefined,
+        ownerId: undefined,
     });
     const [admin] = useLocalStorage(ADMIN_KEY);
 
@@ -63,12 +64,13 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
         });
     };
 
-    const handleApprove = (id, amount, bankName) => {
+    const handleApprove = (id, amount, bankName, ownerId) => {
         setCurrentTrans({
             id,
             isShow: true,
             amount,
             bankName,
+            ownerId,
         });
     };
 
@@ -232,6 +234,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                                                     item.id,
                                                                     item.totalMoney,
                                                                     item.bankName,
+                                                                    item.ownerId,
                                                                 )
                                                             }
                                                             src={ic_check}
@@ -265,6 +268,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                                                     item.id,
                                                                     item.totalMoney,
                                                                     item.bankName,
+                                                                    item.ownerId,
                                                                 )
                                                             }
                                                             src={ic_check}
