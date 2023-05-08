@@ -171,7 +171,7 @@ function CreateCard(props) {
                         <Form.Item
                             label={formatMessage({ id: 'ZALO_ID' })}
                             rules={[{ required: true }]}
-                            name="zaloId"
+                            name="deviceReceiveId"
                             whitespace
                         >
                             <Input className={styles.textInput} />
