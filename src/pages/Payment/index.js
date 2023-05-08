@@ -96,7 +96,8 @@ function Payment({ location }) {
                                     </div>
                                 ) : (
                                     <div className={styles.qrCode}>
-                                        <img src={qrcode} alt="" />
+                                        {/* <img src={qrcode} alt="" /> */}
+                                        <img src={query.linkImage} alt="" />
                                         <div className={styles.time}>
                                             *QR sẽ hết hạn trong 2 phút
                                         </div>
