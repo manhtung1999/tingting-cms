@@ -38,29 +38,56 @@ function CreateAccount(props) {
         values.phone = values['phone'].trim();
         values.email = values['email'].trim();
         values.password = values['password'].trim();
-        values.userMoneyConfig = {
-            dailyWithdrawMoney: 100000,
-            oneTimesWithdrawMoney: 1000,
-            agentPayFeeBank: 1,
-            agentPayFeeQrBank: 1,
-            agentPayFeeWallet: 1,
-            agentPayFeeWalletQr: 1,
-            agentPayFeeUsdt: 1,
-            systemPayFeeQrBank: 1,
-            systemPayFeeBank: 1,
-            systemPayFeeWalletQr: 1,
-            systemPayFeeWallet: 1,
-            systemPayFeeUsdt: 1,
-            agentWithdrawFeeQrBank: 1,
-            agentWithdrawFeeBank: 1,
-            agentWithdrawFeeWalletQr: 1,
-            agentWithdrawFeeWallet: 1,
-            systemWithdrawFeeQrBank: 1,
-            systemWithdrawFeeBank: 1,
-            systemWithdrawFeeWalletQr: 1,
-            systemWithdrawFeeWallet: 1,
-        };
-        console.log('values', values);
+
+        // 0 fee for agent.
+        if (values.role === Role.ROLE_AGENT) {
+            values.userMoneyConfig = {
+                dailyWithdrawMoney: 100000,
+                oneTimesWithdrawMoney: 1000,
+                agentPayFeeBank: 0,
+                agentPayFeeQrBank: 0,
+                agentPayFeeWallet: 0,
+                agentPayFeeWalletQr: 0,
+                agentPayFeeUsdt: 0,
+                systemPayFeeQrBank: 0,
+                systemPayFeeBank: 0,
+                systemPayFeeWalletQr: 0,
+                systemPayFeeWallet: 0,
+                systemPayFeeUsdt: 0,
+                agentWithdrawFeeQrBank: 0,
+                agentWithdrawFeeBank: 0,
+                agentWithdrawFeeWalletQr: 0,
+                agentWithdrawFeeWallet: 0,
+                systemWithdrawFeeQrBank: 0,
+                systemWithdrawFeeBank: 0,
+                systemWithdrawFeeWalletQr: 0,
+                systemWithdrawFeeWallet: 0,
+            };
+        } else {
+            values.userMoneyConfig = {
+                dailyWithdrawMoney: 100000,
+                oneTimesWithdrawMoney: 1000,
+                agentPayFeeBank: 1,
+                agentPayFeeQrBank: 1,
+                agentPayFeeWallet: 1,
+                agentPayFeeWalletQr: 1,
+                agentPayFeeUsdt: 1,
+                systemPayFeeQrBank: 1,
+                systemPayFeeBank: 1,
+                systemPayFeeWalletQr: 1,
+                systemPayFeeWallet: 1,
+                systemPayFeeUsdt: 1,
+                agentWithdrawFeeQrBank: 1,
+                agentWithdrawFeeBank: 1,
+                agentWithdrawFeeWalletQr: 1,
+                agentWithdrawFeeWallet: 1,
+                systemWithdrawFeeQrBank: 1,
+                systemWithdrawFeeBank: 1,
+                systemWithdrawFeeWalletQr: 1,
+                systemWithdrawFeeWallet: 1,
+            };
+        }
+
         dispatch({ type: 'ACCOUNT/createAccount', payload: values });
     };
 
