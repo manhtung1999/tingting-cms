@@ -14,17 +14,27 @@ import { formatVnd } from '@/util/function';
 import { Modal, Pagination, Input, message } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
-import React from 'react';
+import React, { useState } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import ic_cancel from '@/assets/image/ic_cancel.png';
 import ic_call from '@/assets/image/ic_call.png';
+import ic_uncheck from '@/assets/image/ic_uncheck.svg';
+import ic_check from '@/assets/image/ic_check.svg';
+import ModalApprove from '../../../Withdraw/ListWithdraw/ModalApprove';
+
 const { confirm } = Modal;
 
 function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
     const { listWithdraw, totalRow, loading, devices } = internalStore;
     const [admin] = useLocalStorage(ADMIN_KEY);
-
+    const [currentTrans, setCurrentTrans] = useState({
+        id: undefined,
+        isShow: false,
+        amout: undefined,
+        bankName: undefined,
+        ownerId: undefined,
+    });
     const handleDeny = id => {
         let reason;
         confirm({
@@ -48,6 +58,16 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                 dispatch({ type: 'INTERNAL_TRANSFER/denyTransaction', payload });
             },
             onCancel: () => {},
+        });
+    };
+
+    const handleApprove = (id, amount, bankName, ownerId) => {
+        setCurrentTrans({
+            id,
+            isShow: true,
+            amount,
+            bankName,
+            ownerId,
         });
     };
 
@@ -164,6 +184,135 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                                             />
                                         )}
                                     </>
+                                ) : item.transactionStatus >= TransactionStatus.DEVICE_RECEIVING ? (
+                                    item.staffApproveId ? (
+                                        // device nhận lệnh sau khi duyệt lại 1 lần nữa
+                                        <>
+                                            <div className="mb-2">
+                                                {formatMessage({
+                                                    id:
+                                                        TransactionStatusValue[
+                                                            item.transactionStatus
+                                                        ],
+                                                })}
+                                            </div>
+                                            {(admin?.role === Role.ROLE_ADMIN ||
+                                                admin?.role === Role.ROLE_STAFF) && (
+                                                <span>
+                                                    <img
+                                                        onClick={() => handleDeny(item.id)}
+                                                        className={styles.sizeIcon}
+                                                        src={ic_cancel}
+                                                        alt="unchecked"
+                                                        title="cancel"
+                                                        style={{
+                                                            marginRight: 5,
+                                                            width: 17,
+                                                            height: 17,
+                                                        }}
+                                                    />
+                                                </span>
+                                            )}
+                                            {/* app confirm đơn update 09/12/2022 */}
+                                            {(admin?.role === Role.ROLE_ADMIN ||
+                                                admin?.role === Role.ROLE_ACCOUNTANT) && (
+                                                <img
+                                                    onClick={() => handleAppConfirm(item)}
+                                                    src={ic_call}
+                                                    alt="app confirm"
+                                                    style={{ width: 19, height: 19 }}
+                                                />
+                                            )}
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="mb-2">
+                                                {formatMessage({
+                                                    id:
+                                                        TransactionStatusValue[
+                                                            item.transactionStatus
+                                                        ],
+                                                })}
+                                            </div>
+                                            {/* chỉ admin và nhân viên mới được duyệt */}
+                                            {(admin?.role === Role.ROLE_ADMIN ||
+                                                admin?.role === Role.ROLE_STAFF) && (
+                                                <>
+                                                    <img
+                                                        onClick={() => handleDeny(item.id)}
+                                                        className={styles.sizeIcon}
+                                                        src={ic_uncheck}
+                                                        alt="unchecked"
+                                                        style={{
+                                                            marginRight: 5,
+                                                            width: 17,
+                                                            height: 17,
+                                                        }}
+                                                    />
+                                                    <img
+                                                        onClick={() =>
+                                                            handleApprove(
+                                                                item.id,
+                                                                item.totalMoney,
+                                                                item.bankName,
+                                                                item.ownerId,
+                                                            )
+                                                        }
+                                                        src={ic_check}
+                                                        alt="checked"
+                                                        style={{ width: 17, height: 17 }}
+                                                    />
+                                                </>
+                                            )}
+
+                                            {/* confirm đơn của đại lý */}
+                                            {(admin?.role === Role.ROLE_ADMIN ||
+                                                admin?.role === Role.ROLE_ACCOUNTANT) && (
+                                                <>
+                                                    <img
+                                                        onClick={() => handleDeny(item.id)}
+                                                        className={styles.sizeIcon}
+                                                        src={ic_uncheck}
+                                                        alt="unchecked"
+                                                        style={{
+                                                            marginRight: 5,
+                                                            width: 17,
+                                                            height: 17,
+                                                        }}
+                                                    />
+                                                    <img
+                                                        onClick={() =>
+                                                            handleApprove(
+                                                                item.id,
+                                                                item.totalMoney,
+                                                                item.bankName,
+                                                                item.ownerId,
+                                                            )
+                                                        }
+                                                        src={ic_check}
+                                                        alt="checked"
+                                                        style={{ width: 17, height: 17 }}
+                                                    />
+                                                </>
+                                            )}
+
+                                            {/* app confirm đơn update 09/12/2022
+                                            {(admin?.role === Role.ROLE_ADMIN ||
+                                                admin?.role === Role.ROLE_ACCOUNTANT) &&
+                                                item.paymentType !== PaymentTypeAll.card && (
+                                                    <img
+                                                        onClick={() => handleAppConfirm(item)}
+                                                        src={ic_call}
+                                                        alt="app confirm"
+                                                        style={{
+                                                            width: 17,
+                                                            height: 17,
+                                                            marginLeft: 5,
+                                                        }}
+                                                    />
+                                                )} */}
+                                        </>
+                                    )
                                 ) : (
                                     <div className="mb-2">
                                         {formatMessage({
@@ -212,6 +361,9 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
 
     return (
         <div className={styles.table}>
+            {currentTrans.isShow && (
+                <ModalApprove currentTrans={currentTrans} setCurrentTrans={setCurrentTrans} />
+            )}
             <table>
                 <thead>
                     <tr className="text-center">
