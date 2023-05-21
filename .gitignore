@@ -14,6 +14,6 @@
 # .umi-production
 # .env
 # .umirc.prod.js
-/.umirc.local.js
+.umirc.local.js
 # .umirc.staging.js
 .idea/
