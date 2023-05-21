@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import { Input, Modal, message } from 'antd';
 import { connect } from 'dva';
-import { Modal, Input, message } from 'antd';
+import React, { useState } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
-import * as md5 from 'md5';
-import config from '@/config/index';
 
 function ModalOtp({ dispatch, masterDataStore, showOtp, setShowOtp }) {
-    const { isLogin, mailResponse } = masterDataStore;
+    const { mailResponse } = masterDataStore;
     const [otp, setOtp] = useState();
 
     const handleClose = () => {
@@ -18,13 +16,11 @@ function ModalOtp({ dispatch, masterDataStore, showOtp, setShowOtp }) {
         if (!otp) {
             message.error(formatMessage({ id: 'REQUIRE_VALUE' }));
         } else {
-            const trueOtp = md5(localStorage.getItem('code_tt') + config.SECRET_KEY_OTP);
-            if (trueOtp.substring(0, 6).toLowerCase() !== otp.trim().toLowerCase()) {
-                message.error(formatMessage({ id: 'WRONG_OTP' }));
-            } else {
-                dispatch({ type: 'MASTERDATA/confirmOTP' });
-                handleClose();
-            }
+            const payload = {
+                code: otp,
+                phone: mailResponse?.phone,
+            };
+            dispatch({ type: 'MASTERDATA/verifyOtp', payload });
         }
     };
 
