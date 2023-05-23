@@ -215,7 +215,10 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                                 })}
                                             </div>
                                             {(admin?.role === Role.ROLE_ADMIN ||
-                                                admin?.role === Role.ROLE_ACCOUNTANT) &&
+                                                admin?.role === Role.ROLE_ACCOUNTANT ||
+                                                // nếu đơn không phải khách hàng tạo từ cms thì mới cho phép nhân viên duyệt
+                                                (item.orderCode !== item.code &&
+                                                    admin?.role === Role.ROLE_STAFF)) &&
                                                 !listAgent.find(
                                                     agent => agent.id === item.ownerId,
                                                 ) && (
