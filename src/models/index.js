@@ -4,7 +4,7 @@ import authService from '@/services/auth';
 import depositService from '@/services/deposit';
 import deviceService from '@/services/device';
 import masterService from '@/services/masterData';
-import { generateOtp, handleErrorModel, handleRemoveLocal } from '@/util/function';
+import { handleErrorModel, handleRemoveLocal } from '@/util/function';
 import { message } from 'antd';
 import { router } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
@@ -57,13 +57,15 @@ export default {
         },
 
         loginSuccess(state, action) {
-            const { accessToken } = state.mailResponse;
+            console.log({ payloadAccessToken: action.payload.body });
+            const { accessToken } = action.payload.body;
             localStorage.setItem(TOKEN_KEY, accessToken);
-            localStorage.setItem(ADMIN_KEY, JSON.stringify(state.mailResponse));
+            localStorage.setItem(ADMIN_KEY, JSON.stringify(action.payload.body));
             message.success(formatMessage({ id: 'LOGIN_SUCCESS' }));
             return {
                 ...state,
                 isLogin: true,
+                loginLoading: false,
             };
         },
 
@@ -97,7 +99,7 @@ export default {
             };
         },
 
-        sendMailSuccess(state, action) {
+        stepOneSuccess(state, action) {
             return {
                 ...state,
                 loginLoading: false,
@@ -169,17 +171,7 @@ export default {
             try {
                 const res = yield call(authService.login, action.payload);
                 if (res.status === 200) {
-                    const otp = generateOtp(1e5, 999999);
-                    localStorage.setItem('code_tt', otp);
-                    const mailPayload = {
-                        code: otp,
-                        phone: action.payload.username,
-                    };
-
-                    const resMail = yield call(authService.sendMail, mailPayload);
-                    if (resMail.status === 200) {
-                        yield put({ type: 'sendMailSuccess', payload: res.body });
-                    }
+                    yield put({ type: 'stepOneSuccess', payload: res.body });
                 } else {
                     message.error(res.body.message);
                     yield put({ type: 'loginFail' });
@@ -226,8 +218,22 @@ export default {
                 yield put({ type: 'error' });
             }
         },
-        *confirmOTP(action, { call, put }) {
-            yield put({ type: 'loginSuccess' });
+        *verifyOtp(action, { call, put }) {
+            yield put({ type: 'startLogin' });
+            try {
+                const verifyOtpPayload = {
+                    code: action.payload.code,
+                    phone: action.payload.phone, // note: todo later.
+                };
+
+                const resVerify = yield call(authService.verifyOtp, verifyOtpPayload);
+                if (resVerify.status === 200) {
+                    yield put({ type: 'loginSuccess', payload: resVerify.body });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'loginFail' });
+            }
         },
 
         *resetMail(action, { call, put }) {
@@ -314,7 +320,6 @@ export default {
             try {
                 const res = yield call(depositService.getBalanceTelecom, action.payload);
                 if (res.status === 200) {
-                    console.log('res.body', res.body);
                     yield put({ type: 'getBalanceTelecomSuccess', payload: res.body });
                 } else {
                     message.error(res.body.message);

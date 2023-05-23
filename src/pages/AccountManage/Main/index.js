@@ -2,6 +2,7 @@ import ic_agent from '@/assets/image/ic_agent.png';
 import ic_delete from '@/assets/image/ic_delete.svg';
 import ic_edit from '@/assets/image/ic_edit.svg';
 import ic_eye from '@/assets/image/ic_eye.svg';
+import ic_unlock from '@/assets/image/unlock.png';
 import EmptyComponent from '@/components/EmptyComponent';
 import Loading from '@/components/Loading';
 import {
@@ -203,6 +204,14 @@ function AccountManage(props) {
         dispatch({ type: 'ACCOUNT/updateUser', payload });
     };
 
+    const handleUnlock = id => {
+        const payload = {
+            id,
+            countLoginFail: 0,
+        };
+        dispatch({ type: 'ACCOUNT/updateUser', payload });
+    };
+
     const renderDataUsers = loading ? (
         <Loading />
     ) : accounts.length === 0 ? (
@@ -217,6 +226,18 @@ function AccountManage(props) {
                             : 'col-1'
                     }
                 >
+                    {value?.countLoginFail >= 3 && (
+                        <span onClick={() => handleUnlock(value.id)}>
+                            <img
+                                style={{ cursor: 'pointer', marginRight: 10 }}
+                                src={ic_unlock}
+                                width={25}
+                                height={25}
+                                title="Unlock"
+                                alt=""
+                            />
+                        </span>
+                    )}
                     {value.id}
                 </td>
                 <td

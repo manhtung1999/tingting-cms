@@ -17,7 +17,7 @@ export default {
         return request.post('api/v1/auth/check-otp', payload);
     },
 
-    sendMail: payload => {
-        return request.get('api/v1/public/send-mail', payload);
+    verifyOtp: payload => {
+        return request.get('api/v1/public/verify-OTP', payload);
     },
 };

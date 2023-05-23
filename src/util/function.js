@@ -1,10 +1,6 @@
 import { message } from 'antd';
 import * as constants from '@/config/constant';
 import moment from 'moment';
-import cookies from 'js-cookie';
-export const generateOtp = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-};
 
 export const handleErrorModel = error => {
     console.log('error', error);
