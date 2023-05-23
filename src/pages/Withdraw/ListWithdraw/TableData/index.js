@@ -215,7 +215,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                                                 })}
                                             </div>
                                             {(admin?.role === Role.ROLE_ADMIN ||
-                                                admin?.role === Role.ROLE_STAFF) &&
+                                                admin?.role === Role.ROLE_ACCOUNTANT) &&
                                                 !listAgent.find(
                                                     agent => agent.id === item.ownerId,
                                                 ) && (
