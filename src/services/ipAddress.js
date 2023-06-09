@@ -11,4 +11,8 @@ export default {
     addIp: payload => {
         return request.post('api/v1/ip-address/create', payload);
     },
+
+    updateIp: payload => {
+        return request.post('api/v1/ip-address/update', payload);
+    },
 };

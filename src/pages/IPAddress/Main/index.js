@@ -1,22 +1,44 @@
+import ic_agent from '@/assets/image/ic_agent.png';
 import ic_delete from '@/assets/image/ic_delete.svg';
+
 import EmptyComponent from '@/components/EmptyComponent';
 import Loading from '@/components/Loading';
-import { PAGE_SIZE, DATE_TIME_FULL } from '@/config/constant';
+import { DATE_TIME_FULL, PAGE_SIZE } from '@/config/constant';
 import { Modal, Pagination } from 'antd';
 import { connect } from 'dva';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
+import ModalAddMerchant from '../ModalAddMerchant';
 import ModalCreate from '../ModalCreate';
 import styles from './styles.scss';
-import moment from 'moment';
 const { confirm } = Modal;
 
 function IPAddress(props) {
     let { dispatch, ipStore } = props;
-    let { listIp, totalRow, loading, deleteSuccess, createSuccess } = ipStore;
+    let {
+        listIp,
+        totalRow,
+        loading,
+        deleteSuccess,
+        createSuccess,
+        updateSuccess,
+        listMerchant,
+    } = ipStore;
     const [pageIndex, setPageIndex] = useState(1);
     const [modalCreate, setModalCreate] = useState(false);
+    const [currentAddMerchant, setCurrentAddMerchant] = useState({
+        isShow: false,
+        id: undefined,
+    });
+    useEffect(() => {
+        let payload = {
+            role: 'ROLE_USER',
+            deleted: false,
+        };
+        dispatch({ type: 'IP_ADDRESS/getMerchants', payload });
+    }, [dispatch]);
 
     useEffect(() => {
         let payload = {
@@ -24,7 +46,7 @@ function IPAddress(props) {
             status: 'ON',
         };
         dispatch({ type: 'IP_ADDRESS/getListIp', payload });
-    }, [pageIndex, dispatch, deleteSuccess, createSuccess]);
+    }, [pageIndex, dispatch, deleteSuccess, createSuccess, updateSuccess]);
 
     const handleDelete = id => {
         confirm({
@@ -37,6 +59,14 @@ function IPAddress(props) {
         });
     };
 
+    const handleAddMerchant = (id, ipAddress) => {
+        setCurrentAddMerchant({
+            isShow: true,
+            id,
+            ipAddress,
+        });
+    };
+
     const renderDataIP = loading ? (
         <Loading />
     ) : listIp.length === 0 ? (
@@ -44,8 +74,11 @@ function IPAddress(props) {
     ) : (
         listIp.map((value, index) => (
             <tr className="row text-center" key={(value, index)}>
-                <td className="col-3">{value.id}</td>
-                <td className="col-3">{value.ipAddress}</td>
+                <td className="col-1">{value.id}</td>
+                <td className="col-2">{value.ipAddress}</td>
+                <td className="col-3">
+                    {listMerchant.find(merchant => merchant.id === value.ownerId)?.phone || '---'}
+                </td>
                 <td className="col-3">{moment(value.createdAt).format(DATE_TIME_FULL)}</td>
                 <td className="col-3">
                     <img
@@ -53,7 +86,17 @@ function IPAddress(props) {
                         src={ic_delete}
                         onClick={() => handleDelete(value.id)}
                         alt="Delete"
+                        style={{ marginRight: 5 }}
                     />
+                    {!value.ownerId && (
+                        <img
+                            className={styles.sizeIcon}
+                            src={ic_agent}
+                            onClick={() => handleAddMerchant(value.id, value.ipAddress)}
+                            alt="Thêm khách hàng"
+                            title="Thêm khách hàng"
+                        />
+                    )}
                 </td>
             </tr>
         ))
@@ -76,8 +119,9 @@ function IPAddress(props) {
                 <table>
                     <thead>
                         <tr className="text-center">
-                            <th className="col-3"> {formatMessage({ id: 'ID' })}</th>
-                            <th className="col-3"> {formatMessage({ id: 'IP_ADDRESS' })}</th>
+                            <th className="col-1"> {formatMessage({ id: 'ID' })}</th>
+                            <th className="col-2"> {formatMessage({ id: 'IP_ADDRESS' })}</th>
+                            <th className="col-3"> {formatMessage({ id: 'MERCHANT' })}</th>
                             <th className="col-3">{formatMessage({ id: 'CREATED_AT' })}</th>
                             <th className="col-3">{formatMessage({ id: 'ACTION' })}</th>
                         </tr>
@@ -97,6 +141,13 @@ function IPAddress(props) {
                 </div>
             </div>
             <ModalCreate modalCreate={modalCreate} setModalCreate={setModalCreate} />
+
+            {currentAddMerchant.isShow && (
+                <ModalAddMerchant
+                    currentAddMerchant={currentAddMerchant}
+                    setCurrentAddMerchant={setCurrentAddMerchant}
+                />
+            )}
         </div>
     );
 }

@@ -1,4 +1,5 @@
 import ipAdressService from '@/services/ipAddress';
+import accountService from '@/services/account';
 import { message } from 'antd';
 import { handleErrorModel } from '@/util/function';
 
@@ -10,6 +11,8 @@ export default {
         listIp: [],
         deleteSuccess: undefined,
         createSuccess: undefined,
+        updateSuccess: undefined,
+        listMerchant: [],
     },
     reducers: {
         getListIpSuccess(state, action) {
@@ -32,6 +35,20 @@ export default {
             return {
                 ...state,
                 createSuccess: action.payload,
+            };
+        },
+
+        updateSuccess(state, action) {
+            return {
+                ...state,
+                updateSuccess: action.payload,
+            };
+        },
+
+        getMerchantSuccess(state, action) {
+            return {
+                ...state,
+                listMerchant: action.payload.body,
             };
         },
 
@@ -96,6 +113,37 @@ export default {
                 const res = yield call(ipAdressService.addIp, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'createSuccess', payload: res.body });
+                    message.success(res.body.message);
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *getMerchants(action, { call, put }) {
+            try {
+                const res = yield call(accountService.getAccounts, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'getMerchantSuccess', payload: res.body });
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *updateIp(action, { call, put }) {
+            try {
+                const res = yield call(ipAdressService.updateIp, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'updateSuccess', payload: res.body });
                     message.success(res.body.message);
                 } else {
                     message.error(res.body.message);

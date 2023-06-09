@@ -1,58 +1,47 @@
-import { Input, Modal, Select, message } from 'antd';
+import { Modal, Select } from 'antd';
 import { connect } from 'dva';
 import React, { useState } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 const { Option } = Select;
 
-function ModalCreate({ dispatch, modalCreate, setModalCreate, ipStore }) {
+function ModalAddMerchant({ ipStore, dispatch, currentAddMerchant, setCurrentAddMerchant }) {
     let { listMerchant } = ipStore;
 
-    const [ipAddress, setIpAddress] = useState();
     const [ownerId, setOwnerId] = useState();
 
     const handleClose = () => {
-        setModalCreate(false);
+        setCurrentAddMerchant({
+            ...currentAddMerchant,
+            isShow: false,
+        });
     };
 
-    const handleSubmit = () => {
-        if (!ipAddress || !ownerId) {
-            message.error(formatMessage({ id: 'REQUIRE_VALUE' }));
+    const handleUpdate = () => {
+        if (!ownerId) {
             return;
         }
         const payload = {
-            ipAddress,
+            id: currentAddMerchant.id,
+            ipAddress: currentAddMerchant.ipAddress,
             ownerId,
         };
-        dispatch({ type: 'IP_ADDRESS/addIp', payload });
+        dispatch({ type: 'IP_ADDRESS/updateIp', payload });
         handleClose();
     };
 
-    const _handleKeyDown = e => {
-        if (e.key === 'Enter') {
-            handleSubmit();
-        }
-    };
     return (
         <Modal
-            title={formatMessage({ id: 'ADD_IP_ADDRESS' })}
-            visible={modalCreate}
+            title={formatMessage({ id: 'UPDATE' })}
+            visible={currentAddMerchant.isShow}
             wrapClassName={styles.modal}
-            onOk={handleSubmit}
-            okText={formatMessage({ id: 'SUBMIT' })}
+            onOk={handleUpdate}
+            okText={formatMessage({ id: 'OK' })}
             onCancel={handleClose}
             destroyOnClose
         >
-            <div className={styles.form}>
-                <Input
-                    onChange={e => setIpAddress(e.target.value)}
-                    placeholder={formatMessage({ id: 'INPUT_IP_ADDRESS' })}
-                    className={styles.textInputLight}
-                    onKeyPress={_handleKeyDown}
-                ></Input>
-                <div style={{ marginBottom: 10 }} />
+            <div className={styles.listSecret}>
                 <div className={styles.select}>
-                    <label htmlFor="">{formatMessage({ id: 'MERCHANT' })}: </label> <br />
                     <Select
                         style={{ minWidth: 180 }}
                         defaultValue=""
@@ -73,4 +62,4 @@ function ModalCreate({ dispatch, modalCreate, setModalCreate, ipStore }) {
 }
 export default connect(({ IP_ADDRESS }) => ({
     ipStore: IP_ADDRESS,
-}))(ModalCreate);
+}))(ModalAddMerchant);
