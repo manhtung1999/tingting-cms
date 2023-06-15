@@ -22,6 +22,8 @@ import ic_call from '@/assets/image/ic_call.png';
 import ic_uncheck from '@/assets/image/ic_uncheck.svg';
 import ic_check from '@/assets/image/ic_check.svg';
 import ModalApprove from '../../../Withdraw/ListWithdraw/ModalApprove';
+import md5 from 'md5';
+import config from '@/config/index';
 
 const { confirm } = Modal;
 
@@ -90,6 +92,9 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                     currentMoney: item.totalMoney,
                     type: 1,
                     deviceKey,
+                    md5: md5(
+                        `${deviceKey}-${item.orderUsername}-${item.totalMoney}-${config.PRIVATE_KEY_MD5}`,
+                    ),
                 };
                 dispatch({ type: 'WITHDRAW/appConfirmMoney', payload });
             },
