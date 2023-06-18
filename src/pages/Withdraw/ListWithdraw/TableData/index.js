@@ -24,6 +24,8 @@ import React, { useState } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import ModalApprove from '../ModalApprove';
 import styles from './styles.scss';
+import md5 from 'md5';
+import config from '@/config/index';
 
 const { confirm } = Modal;
 
@@ -93,6 +95,9 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                     currentMoney: item.totalMoney,
                     type: 1,
                     deviceKey,
+                    md5: md5(
+                        `${deviceKey}-${item.orderUsername}-${item.totalMoney}-${config.PRIVATE_KEY_MD5}`,
+                    ),
                 };
                 dispatch({ type: 'WITHDRAW/appConfirmMoney', payload });
             },

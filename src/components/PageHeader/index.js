@@ -149,12 +149,6 @@ function PageHeader(props) {
                 url: '/home/account-manage',
                 text: formatMessage({ id: 'MERCHANT' }),
             },
-            {
-                page: 'account-manage',
-                icon: <img src={ic_business} />,
-                url: '/home/account-manage',
-                text: formatMessage({ id: 'MERCHANT' }),
-            },
         ];
         listMenu = [...listMenu, ...staffMenu];
     }
