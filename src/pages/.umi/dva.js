@@ -20,7 +20,7 @@ export function _onCreate() {
     app.use(plugin);
   });
   
-  app.model({ namespace: 'index', ...(require('/Users/admin/tingting-cms/src/models/index.js').default) });
+  app.model({ namespace: 'index', ...(require('/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/models/index.js').default) });
   return app;
 }
 

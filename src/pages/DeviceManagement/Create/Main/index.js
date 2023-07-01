@@ -69,6 +69,15 @@ function CreateCard(props) {
                     </Form.Item>
 
                     <Form.Item
+                        label={formatMessage({ id: 'DEVICE_NAME' })}
+                        rules={[{ required: true }]}
+                        name="deviceName"
+                        whitespace
+                    >
+                        <Input className={styles.textInput} />
+                    </Form.Item>
+
+                    <Form.Item
                         label={formatMessage({ id: 'ACCOUNT_HOLDER' })}
                         rules={[{ required: true }]}
                         name="username"

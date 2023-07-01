@@ -5,7 +5,7 @@ import ic_agent from '@/assets/image/ic_agent.png';
 import EmptyComponent from '@/components/EmptyComponent';
 import { ADMIN_KEY, DeviceStatus, PAGE_SIZE } from '@/config/constant';
 import { useLocalStorage } from '@/hooks';
-import { Input, Modal, Pagination, Select } from 'antd';
+import { Input, Modal, Pagination, Select, message } from 'antd';
 import { connect } from 'dva';
 import React, { useEffect, useState } from 'react';
 import { router, withRouter } from 'umi';
@@ -87,6 +87,32 @@ function DeviceManagement(props) {
         });
     };
 
+    const handleChangeDeviceName = (id, deviceName) => {
+        let newDeviceName = deviceName;
+        confirm({
+            title: formatMessage({ id: 'DEVICE_NAME' }),
+            content: (
+                <div>
+                    <Input
+                        onChange={e => {
+                            newDeviceName = e.target.value;
+                        }}
+                        defaultValue={newDeviceName}
+                    />
+                </div>
+            ),
+            onOk: () => {
+                if (!newDeviceName || newDeviceName?.trim() === '') {
+                    message.error(formatMessage({ id: 'REQUIRE_VALUE' }));
+                    return;
+                }
+                const payload = { id, deviceName: newDeviceName };
+                dispatch({ type: 'DEVICE/updateDeviceName', payload });
+            },
+            onCancel: () => {},
+        });
+    };
+
     const renderDataUsers = loading ? (
         <ModalLoading />
     ) : devices.length === 0 ? (
@@ -94,7 +120,16 @@ function DeviceManagement(props) {
     ) : (
         devices.map((value, index) => (
             <tr className="row text-center" key={(value, index)}>
-                <td className="col-2">{value.deviceKey}</td>
+                <td className="col-1">{value.deviceKey}</td>
+                <td className="col-1">
+                    {value.deviceName || '-'}
+                    <br />
+                    <img
+                        src={ic_edit}
+                        alt=""
+                        onClick={() => handleChangeDeviceName(value.id, value.deviceName)}
+                    />
+                </td>
                 <td className={admin?.role === Role.ROLE_ADMIN ? 'col-2' : 'col-1'}>
                     {value.username}
                 </td>
@@ -285,7 +320,8 @@ function DeviceManagement(props) {
                 <table>
                     <thead>
                         <tr className="text-center">
-                            <th className="col-2"> {formatMessage({ id: 'ID' })}</th>
+                            <th className="col-1"> {formatMessage({ id: 'ID' })}</th>
+                            <th className="col-1"> {formatMessage({ id: 'DEVICE_NAME' })}</th>
                             <th className={admin?.role === Role.ROLE_ADMIN ? 'col-2' : 'col-1'}>
                                 {' '}
                                 {formatMessage({ id: 'ACCOUNT_HOLDER' })}

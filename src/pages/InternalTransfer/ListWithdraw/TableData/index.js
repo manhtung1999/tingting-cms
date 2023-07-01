@@ -79,7 +79,8 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
             return;
         }
         const deviceKey = devices.find(device => device.id === item.mobileId)?.deviceKey;
-        if (!deviceKey) {
+        const numberAccount = devices.find(device => device.id === item.mobileId)?.numberAccount;
+        if (!deviceKey || !numberAccount) {
             message.error('Không có device rút.');
             return;
         }
@@ -93,8 +94,9 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                     type: 1,
                     deviceKey,
                     md5: md5(
-                        `${deviceKey}-${item.orderUsername}-${item.totalMoney}-${config.PRIVATE_KEY_MD5}`,
+                        `${deviceKey}-${item.orderUsername}-${item.totalMoney}-${numberAccount}-${config.PRIVATE_KEY_MD5}`,
                     ),
+                    numberAccount,
                 };
                 dispatch({ type: 'WITHDRAW/appConfirmMoney', payload });
             },

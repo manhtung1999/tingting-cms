@@ -49,4 +49,8 @@ export default {
     refreshAll: payload => {
         return request.post('api/v1/mobile-device/refresh-all', payload);
     },
+
+    updateDevice: payload => {
+        return request.post('api/v1/mobile-device/update', payload);
+    },
 };

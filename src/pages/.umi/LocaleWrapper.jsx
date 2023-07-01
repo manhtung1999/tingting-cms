@@ -34,7 +34,7 @@ defaultAntd = defaultAntd.default || defaultAntd;
 const localeInfo = {
   'en-US': {
     messages: {
-      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/admin/tingting-cms/src/locales/en-US.js')),
+      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/locales/en-US.js')),
     },
     locale: 'en-US',
     antd: require('antd/es/locale-provider/en_US'),
@@ -43,7 +43,7 @@ const localeInfo = {
   },
   'vi-VN': {
     messages: {
-      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/admin/tingting-cms/src/locales/vi-VN.js')),
+      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/locales/vi-VN.js')),
     },
     locale: 'vi-VN',
     antd: require('antd/es/locale-provider/vi_VN'),
@@ -52,7 +52,7 @@ const localeInfo = {
   },
   'zh-CN': {
     messages: {
-      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/admin/tingting-cms/src/locales/zh-CN.js')),
+      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/macair/TrungBach/Freelance/tingting/TingTingPayCMS/src/locales/zh-CN.js')),
     },
     locale: 'zh-CN',
     antd: require('antd/es/locale-provider/zh_CN'),

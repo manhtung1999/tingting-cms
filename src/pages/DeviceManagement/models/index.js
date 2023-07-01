@@ -45,6 +45,13 @@ export default {
             };
         },
 
+        updateDeviceNameSuccess(state, action) {
+            return {
+                ...state,
+                updateSuccess: action.payload.body,
+            };
+        },
+
         deleteDeviceSuccess(state, action) {
             return {
                 ...state,
@@ -272,6 +279,22 @@ export default {
                 const res = yield call(deviceService.refreshDevice, action.payload);
                 if (res.status === 200) {
                     yield put({ type: 'success' });
+                    message.success(res.body.message);
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
+        *updateDeviceName(action, { call, put }) {
+            try {
+                const res = yield call(deviceService.updateDevice, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'updateDeviceNameSuccess', payload: res.body });
                     message.success(res.body.message);
                 } else {
                     message.error(res.body.message);
