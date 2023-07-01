@@ -26,6 +26,7 @@ function DeviceManagement(props) {
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [pageIndex, setPageIndex] = useState(1);
     const [paymentTypeId, setPaymentTypeId] = useState();
+    const [deviceName, setDeviceName] = useState();
     const [username, setUsername] = useState();
     const [accountNumber, setAccountNumber] = useState();
     const [status, setStatus] = useState();
@@ -63,6 +64,7 @@ function DeviceManagement(props) {
             status,
             username,
             paymentTypeId,
+            deviceName,
         };
         dispatch({ type: 'DEVICE/getDevices', payload });
     }, [
@@ -74,6 +76,7 @@ function DeviceManagement(props) {
         dispatch,
         updateSuccess,
         deleteSuccess,
+        deviceName,
     ]);
 
     const handleDelete = deviceId => {
@@ -313,6 +316,13 @@ function DeviceManagement(props) {
                             return <Option value={item.id}>{item.sortNameBank}</Option>;
                         })}
                     </Select>
+                </div>
+                <div style={{ height: 40 }}>
+                    <div className="mb-1">{formatMessage({ id: 'DEVICE_NAME' })}:</div>
+                    <Input
+                        onChange={e => setDeviceName(e.target.value)}
+                        className={styles.textInput}
+                    />
                 </div>
             </div>
 
