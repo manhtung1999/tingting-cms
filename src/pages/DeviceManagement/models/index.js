@@ -223,6 +223,23 @@ export default {
             }
         },
 
+        *updateDeviceStatus(action, { call, put }) {
+            yield put({ type: 'loading' });
+            try {
+                const res = yield call(deviceService.updateDeviceStatus, action.payload);
+                if (res.status === 200) {
+                    yield put({ type: 'updateStatusSuccess', payload: res.body });
+                    message.success(res.body.message);
+                } else {
+                    message.error(res.body.message);
+                    yield put({ type: 'error' });
+                }
+            } catch (error) {
+                handleErrorModel(error);
+                yield put({ type: 'error' });
+            }
+        },
+
         *getDetailDevice(action, { call, put }) {
             try {
                 const res = yield call(deviceService.getDetailDevice, action.payload);

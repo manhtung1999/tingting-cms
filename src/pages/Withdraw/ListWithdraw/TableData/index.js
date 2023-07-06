@@ -141,7 +141,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                     return (
                         <tr className="text-center" key={index}>
                             <td className="col-1">{item.orderCode}</td>
-                            <td className="col-2">
+                            <td className="col-1">
                                 {listMerchant.find(i => i.id === item.ownerId)?.phone}
                                 {listAgent.find(i => i.id === item.ownerId)?.phone}
                                 {' - '}
@@ -483,6 +483,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                             <td className="col-1">
                                 {moment(item.updatedAt).format(DATE_FORMAT_TRANSACTION)}
                             </td>
+                            <td className="col-1">{item.userCreateTransaction || '--'} </td>
                             <td className="col-1">
                                 {item.staffApproveId ? (
                                     <>
@@ -513,7 +514,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                 <thead>
                     <tr className="text-center">
                         <th className="col-1">{formatMessage({ id: 'MERCHANT_ORDER' })}</th>
-                        <th className="col-2">{formatMessage({ id: 'MERCHANT_USERNAME' })}</th>
+                        <th className="col-1">{formatMessage({ id: 'MERCHANT_USERNAME' })}</th>
                         <th className="col-1">{formatMessage({ id: 'ORDER_ID' })}</th>
                         <th className="col-2">{formatMessage({ id: 'RECIPIENT_ACC' })}</th>
                         <th className="col-1">{formatMessage({ id: 'TRANSFER_ACC' })}</th>
@@ -522,6 +523,7 @@ function TableData({ dispatch, withdrawStore, pageIndex, setPageIndex }) {
                         <th className="col-1">{formatMessage({ id: 'STATUS' })}</th>
                         <th className="col-1">{formatMessage({ id: 'CREATED_AT' })}</th>
                         <th className="col-1">{formatMessage({ id: 'UPDATED_AT' })}</th>
+                        <th className="col-1">{formatMessage({ id: 'CREATOR' })}</th>
                         <th className="col-1">{formatMessage({ id: 'HANDING_AT' })}</th>
                     </tr>
                 </thead>

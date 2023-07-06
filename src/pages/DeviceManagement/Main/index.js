@@ -34,6 +34,7 @@ function DeviceManagement(props) {
         showStatus: false,
         id: undefined,
         status: undefined,
+        deviceKey: undefined,
     });
     const [currentWithdraw, setCurrentWithdraw] = useState({
         showWithdraw: false,
@@ -173,6 +174,7 @@ function DeviceManagement(props) {
                                 showStatus: true,
                                 id: value.id,
                                 status: value.status,
+                                deviceKey: value.deviceKey,
                             });
                     }}
                 >

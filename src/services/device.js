@@ -53,4 +53,8 @@ export default {
     updateDevice: payload => {
         return request.post('api/v1/mobile-device/update', payload);
     },
+
+    updateDeviceStatus: payload => {
+        return request.post('api/v1/public/mobile-device', payload);
+    },
 };

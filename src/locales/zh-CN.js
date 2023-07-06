@@ -1,4 +1,5 @@
 export default {
+    CREATOR: 'Creator',
     ZALO_ID: 'Mã định danh Zalo',
     IN_PROGRESS_CARD: 'Thẻ đang xử lý',
     DEVICE_RECEIVING: ' Thiết bị, nhận lệnh',

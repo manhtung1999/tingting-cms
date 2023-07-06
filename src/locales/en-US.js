@@ -1,4 +1,5 @@
 export default {
+    CREATOR: 'Creator',
     ZALO_ID: 'Receiver ID',
     IN_PROGRESS_CARD: 'Thẻ đang xử lý',
     DEVICE_RECEIVING: ' Thiết bị, nhận lệnh',

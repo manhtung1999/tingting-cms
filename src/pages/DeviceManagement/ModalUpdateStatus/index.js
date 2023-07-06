@@ -4,6 +4,9 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import { Select, Modal } from 'antd';
 import { DeviceStatusValue, DeviceStatus } from '@/config/constant';
 import { connect } from 'dva';
+import { randomString } from '../../../util/function';
+import md5 from 'md5';
+import config from '@/config/index';
 
 const { Option } = Select;
 
@@ -33,6 +36,25 @@ function ModalUpdateStatus({ dispatch, currentUpdate, setCurrentUpdate }) {
         handleClose();
     };
 
+    const handleSubmitAll = () => {
+        const content = randomString(
+            32,
+            '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        );
+
+        const payload = {
+            content,
+            deviceKey: currentUpdate.deviceKey,
+            status,
+            totalMoney: -1,
+            md5: md5(
+                `${currentUpdate.deviceKey}${content}null${config.PRIVATE_KEY_MD5_V2}${status}`,
+            ),
+        };
+        dispatch({ type: 'DEVICE/updateDeviceStatus', payload });
+        handleClose();
+    };
+
     return (
         <>
             <Modal
@@ -42,6 +64,29 @@ function ModalUpdateStatus({ dispatch, currentUpdate, setCurrentUpdate }) {
                 onOk={handleSubmit}
                 okText={formatMessage({ id: 'SUBMIT' })}
                 onCancel={handleClose}
+                footer={
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-end',
+                        }}
+                    >
+                        <button onClick={handleClose} className={styles.secondaryBtn}>
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleSubmit}
+                            className={styles.primaryBtn}
+                            style={{ margin: '0 5px' }}
+                        >
+                            Submit
+                        </button>
+                        <button onClick={handleSubmitAll} className={styles.primaryBtn}>
+                            Submit all
+                        </button>
+                    </div>
+                }
                 destroyOnClose
             >
                 <div className={styles.form}>
