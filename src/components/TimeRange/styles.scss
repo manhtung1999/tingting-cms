@@ -1,0 +1,19 @@
+@import "@/base.scss";
+
+.timeRange {
+    display: flex;
+    align-items: center;
+
+    .timeItem {
+        color: #fff;
+        background-color: var(--background-color);
+        border: none;
+        border-right: 1px solid #453939;
+        padding: 4px 10px;
+        border-radius: 4px;
+    }
+
+    .active {
+        background-color: var(--primary-color);
+    }
+}

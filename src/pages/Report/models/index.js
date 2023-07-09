@@ -17,6 +17,9 @@ export default {
         listSecret: [],
         deleteResponse: undefined,
         devices: [],
+        nap: 0,
+        rut: 0,
+        systemFee: 0,
     },
     reducers: {
         loading(state, action) {
@@ -46,6 +49,10 @@ export default {
                 loading: false,
                 listDeposit: action.payload.body.transaction,
                 totalRow: action.payload.totalRecord,
+                nap: action.payload.body.nap,
+                rut: action.payload.body.rut,
+                systemFee: action.payload.body.systemFee,
+                agentFee: action.payload.body.agentFee,
             };
         },
         getMerchantSuccess(state, action) {

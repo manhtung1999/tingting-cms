@@ -20,6 +20,7 @@ import { withRouter } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import TableData from './TableData';
+import RangeTimeComponent from '@/components/TimeRange';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -258,6 +259,7 @@ function ListWithdraw(props) {
                         onChange={(dates, dateStrings) => setRangeTime(dateStrings)}
                     />
                 </div>
+                <RangeTimeComponent setRangeTime={setRangeTime} />
                 <button className={styles.yellowBtn} onClick={handleExport}>
                     <img width={20} style={{ marginRight: 6 }} src={ic_export} alt="" />
                     {formatMessage({ id: 'EXPORT' })}

@@ -19,6 +19,7 @@ import { withRouter } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import TableData from './TableData';
+import RangeTimeComponent from '@/components/TimeRange';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -172,6 +173,7 @@ function ListInternalTransfer(props) {
                         onChange={(dates, dateStrings) => setRangeTime(dateStrings)}
                     />
                 </div>
+                <RangeTimeComponent setRangeTime={setRangeTime} />
             </div>
             <div className={styles.pageFilter}>
                 <div className={styles.select}>

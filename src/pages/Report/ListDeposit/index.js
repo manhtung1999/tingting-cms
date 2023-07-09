@@ -19,13 +19,25 @@ import { withRouter } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import TableData from './TableData';
+import { formatVnd } from '@/util/function';
+import RangeTimeComponent from '@/components/TimeRange';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 function ListReport(props) {
     const { reportStore, dispatch } = props;
-    const { listPaymentType, listMerchant, deleteResponse, updateResponse, devices } = reportStore;
+    const {
+        listPaymentType,
+        listMerchant,
+        deleteResponse,
+        updateResponse,
+        devices,
+        nap,
+        rut,
+        systemFee,
+        agentFee,
+    } = reportStore;
     const [rangeTime, setRangeTime] = useState([]);
     const [paymentType, setPaymentType] = useState();
     const [deviceId, setDeviceId] = useState();
@@ -37,6 +49,19 @@ function ListReport(props) {
     const [cardCode, setCardCode] = useState();
     const [serial, setSerial] = useState();
     const [cardRequestId, setCardRequestId] = useState();
+    const [currentExchange, setCurrentExchange] = useState();
+
+    useEffect(() => {
+        if (listPaymentType.length > 0) {
+            const usdt = listPaymentType.find(i => i.sortNameBank === 'USDT');
+            if (!usdt) {
+                message.error(formatMessage({ id: 'DONT_HAVE_USDT' }));
+                return;
+            } else {
+                setCurrentExchange(usdt.exchangeRate);
+            }
+        }
+    }, [listPaymentType]);
 
     const [admin] = useLocalStorage(ADMIN_KEY);
     const [exportTime, setExportTime] = useLocalStorage(EXPORT_KEY);
@@ -206,6 +231,7 @@ function ListReport(props) {
                         onChange={(dates, dateStrings) => setRangeTime(dateStrings)}
                     />
                 </div>
+                <RangeTimeComponent setRangeTime={setRangeTime} />
                 <button className={styles.yellowBtn} onClick={handleExport}>
                     <img width={20} style={{ marginRight: 6 }} src={ic_export} alt="" />
                     {formatMessage({ id: 'EXPORT' })}
@@ -322,6 +348,78 @@ function ListReport(props) {
                         onChange={e => setCardRequestId(e.target.value)}
                     />
                 </div>
+
+                {/* Total money */}
+                {rangeTime.length > 0 &&
+                    currentExchange &&
+                    (admin?.role === Role.ROLE_ADMIN ||
+                        admin?.role === Role.ROLE_STAFF ||
+                        admin?.role === Role.ROLE_ACCOUNTANT ||
+                        admin?.role === Role.ROLE_AGENT) && (
+                        <div
+                            style={{ marginLeft: 10 }}
+                            className="d-flex flex-grow-1 flex-column justify-content-end"
+                        >
+                            <div className="d-flex">
+                                <h6 style={{ fontSize: 12, marginRight: 15 }}>
+                                    {formatMessage({ id: 'DEPOSIT' })}: {formatVnd(nap)} (
+                                    <span style={{ fontSize: 12 }}>
+                                        {Number(nap / currentExchange).toFixed(2)} USDT
+                                    </span>
+                                    )
+                                </h6>
+                                <h6 style={{ fontSize: 12 }}>
+                                    {formatMessage({ id: 'WITHDRAW' })}: {formatVnd(rut)} (
+                                    <span style={{ fontSize: 12 }}>
+                                        {Number(rut / currentExchange).toFixed(2)} USDT
+                                    </span>
+                                    )
+                                </h6>
+                            </div>
+                            {(admin?.role === Role.ROLE_ADMIN ||
+                                admin?.role === Role.ROLE_STAFF ||
+                                admin?.role === Role.ROLE_ACCOUNTANT) && (
+                                <div className="d-flex">
+                                    <h6 style={{ fontSize: 12, marginRight: 15 }}>
+                                        {formatMessage({ id: 'FEE' })}:{' '}
+                                        {formatVnd(systemFee + agentFee)} (
+                                        <span style={{ fontSize: 12 }}>
+                                            {Number(
+                                                (systemFee + agentFee) / currentExchange,
+                                            ).toFixed(2)}{' '}
+                                            USDT
+                                        </span>
+                                        )
+                                    </h6>
+                                    <h6 style={{ fontSize: 12 }}>
+                                        {formatMessage({ id: 'BALANCE' })}:{' '}
+                                        {formatVnd(nap - rut - systemFee - agentFee)} (
+                                        <span style={{ fontSize: 12 }}>
+                                            {Number(
+                                                (nap - rut - systemFee - agentFee) /
+                                                    currentExchange,
+                                            ).toFixed(2)}{' '}
+                                            USDT
+                                        </span>
+                                        )
+                                    </h6>
+                                </div>
+                            )}
+
+                            {admin?.role === Role.ROLE_AGENT && (
+                                <div className="d-flex">
+                                    <h6 style={{ fontSize: 12, marginRight: 15 }}>
+                                        {formatMessage({ id: 'commission' })}: {formatVnd(agentFee)}{' '}
+                                        (
+                                        <span style={{ fontSize: 12 }}>
+                                            {Number(agentFee / currentExchange).toFixed(2)} USDT
+                                        </span>
+                                        )
+                                    </h6>
+                                </div>
+                            )}
+                        </div>
+                    )}
             </div>
             <TableData pageIndex={pageIndex} setPageIndex={setPageIndex} />
         </div>

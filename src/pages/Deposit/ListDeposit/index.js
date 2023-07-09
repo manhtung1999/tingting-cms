@@ -22,6 +22,7 @@ import { withRouter } from 'umi';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './styles.scss';
 import TableData from './TableData';
+import RangeTimeComponent from '@/components/TimeRange';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -258,9 +259,13 @@ function ListDeposit(props) {
                     <RangePicker
                         format={DATE_TRANSACTION}
                         disabledDate={disabledDate}
-                        onChange={(dates, dateStrings) => setRangeTime(dateStrings)}
+                        onChange={(dates, dateStrings) => {
+                            console.log({ dateStrings });
+                            setRangeTime(dateStrings);
+                        }}
                     />
                 </div>
+                <RangeTimeComponent setRangeTime={setRangeTime} />
                 <button className={styles.yellowBtn} onClick={handleExport}>
                     <img width={20} style={{ marginRight: 6 }} src={ic_export} alt="" />
                     {formatMessage({ id: 'EXPORT' })}
@@ -426,7 +431,7 @@ function ListDeposit(props) {
                         />
                     </div>
 
-                    {rangeTime.length > 0 &&
+                    {/* {rangeTime.length > 0 &&
                         currentExchange &&
                         (admin?.role === Role.ROLE_ADMIN ||
                             admin?.role === Role.ROLE_STAFF ||
@@ -495,7 +500,7 @@ function ListDeposit(props) {
                                     </div>
                                 )}
                             </div>
-                        )}
+                        )} */}
                 </div>
             </div>
 
