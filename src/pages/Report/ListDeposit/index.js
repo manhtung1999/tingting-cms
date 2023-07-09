@@ -357,7 +357,7 @@ function ListReport(props) {
                         admin?.role === Role.ROLE_ACCOUNTANT ||
                         admin?.role === Role.ROLE_AGENT) && (
                         <div
-                            style={{ marginLeft: 10 }}
+                            style={{ marginLeft: 10, marginBottom: 0, marginTop: 13 }}
                             className="d-flex flex-grow-1 flex-column justify-content-end"
                         >
                             <div className="d-flex">
