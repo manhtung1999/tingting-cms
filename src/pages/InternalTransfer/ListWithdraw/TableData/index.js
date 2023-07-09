@@ -98,7 +98,7 @@ function TableData({ dispatch, internalStore, pageIndex, setPageIndex }) {
                     ),
                     numberAccount,
                 };
-                dispatch({ type: 'WITHDRAW/appConfirmMoney', payload });
+                dispatch({ type: 'INTERNAL_TRANSFER/appConfirmMoney', payload });
             },
             onCancel: () => {},
         });
